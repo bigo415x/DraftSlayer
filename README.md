@@ -82,6 +82,17 @@ quietly apply on your behalf.
 Availability uses **Sleeper 2QB ADP**. ADP is a crowd average, not a promise — the dots
 are odds, not facts.
 
+## Refreshing injuries
+
+    python refresh_injuries.py            # update data.js and artifact.html
+    python refresh_injuries.py --dry-run  # report what would change, write nothing
+
+Rewrites only the injury fields from ESPN's public feed, with Sleeper's `injury_status` as a
+fallback, and refreshes the `bki` tag on backups. Values, ADP, tiers, depth-chart data and the
+manager scouting are untouched, so it is safe to run repeatedly right up to the draft.
+
+Fetches through `curl` — ESPN returns 403 to Python's `urllib` regardless of user-agent.
+
 ## Files
 
 | File | What it is |
