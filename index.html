@@ -1,0 +1,427 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Draft Slayer — Loser Squad</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+:root{
+  --paper:#E9EBE6; --card:#F7F8F5; --card2:#E2E5DF;
+  --ink:#14181C; --ink-2:#4A5157; --ink-3:#767D82;
+  --rule:#C7CCC3; --rule-hard:#A9B0A6;
+  --hot:#C8102E; --go:#2E6B4F; --wait:#B07A16;
+  --qb:#1D3F6E; --rb:#2E6B4F; --wr:#8A5A1E; --te:#6B3A6B;
+  --qb-w:#1D3F6E14; --rb-w:#2E6B4F14; --wr-w:#8A5A1E14; --te-w:#6B3A6B14;
+  --disp:"Barlow Condensed","Arial Narrow",Helvetica,sans-serif;
+  --body:"Barlow","Helvetica Neue",Arial,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#15171A; --card:#1D2024; --card2:#25292E;
+  --ink:#E6E8E3; --ink-2:#A7AEB3; --ink-3:#7C848A;
+  --rule:#333A40; --rule-hard:#4A535A;
+  --hot:#FF5A6E; --go:#68C298; --wait:#E0AC4A;
+  --qb:#7FA9DF; --rb:#68C298; --wr:#D9A55C; --te:#C08FC0;
+  --qb-w:#7FA9DF1A; --rb-w:#68C2981A; --wr-w:#D9A55C1A; --te-w:#C08FC01A;
+}}
+:root[data-theme="dark"]{
+  --paper:#15171A; --card:#1D2024; --card2:#25292E;
+  --ink:#E6E8E3; --ink-2:#A7AEB3; --ink-3:#7C848A;
+  --rule:#333A40; --rule-hard:#4A535A;
+  --hot:#FF5A6E; --go:#68C298; --wait:#E0AC4A;
+  --qb:#7FA9DF; --rb:#68C298; --wr:#D9A55C; --te:#C08FC0;
+  --qb-w:#7FA9DF1A; --rb-w:#68C2981A; --wr-w:#D9A55C1A; --te-w:#C08FC01A;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.4;padding:16px 14px 50px}
+.wrap{max-width:1500px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
+button{font-family:var(--body);cursor:pointer}
+:focus-visible{outline:2px solid var(--hot);outline-offset:2px}
+
+/* ---- top bar ---- */
+.bar{display:flex;flex-wrap:wrap;align-items:stretch;gap:0;border:1px solid var(--rule-hard);background:var(--card)}
+.bar .cell{padding:8px 14px;border-right:1px solid var(--rule);min-width:104px}
+.bar .cell:last-child{border-right:0}
+.bar dt{font-family:var(--disp);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin:0}
+.bar dd{margin:0;font-family:var(--mono);font-size:17px;font-weight:600}
+.bar .big dd{font-size:20px}
+.bar .me dd{color:var(--hot)}
+.bar .spacer{flex:1;border-right:0}
+.tools{display:flex;align-items:center;gap:7px;padding:7px 12px;border-left:1px solid var(--rule)}
+.tools button{
+  font-family:var(--disp);font-size:12px;letter-spacing:.09em;text-transform:uppercase;font-weight:600;
+  background:var(--card2);color:var(--ink);border:1px solid var(--rule-hard);padding:6px 11px;
+}
+.tools button:hover{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+
+/* ---- recommendation ---- */
+.rec{
+  border:2px solid var(--hot);background:var(--card);
+  display:grid;grid-template-columns:auto 1fr auto;gap:0;align-items:stretch;
+}
+.rec .tag{
+  background:var(--hot);color:#fff;font-family:var(--disp);font-weight:700;font-size:13px;
+  letter-spacing:.16em;text-transform:uppercase;padding:14px 12px;
+  writing-mode:vertical-rl;transform:rotate(180deg);text-align:center;
+}
+.rec .body{padding:12px 18px}
+.rec .who{font-family:var(--disp);font-weight:700;font-size:clamp(24px,3.6vw,36px);line-height:1.05;letter-spacing:.01em;margin:0}
+.rec .who .pos{color:var(--ink-3);font-size:.62em;margin-left:9px;letter-spacing:.06em}
+.rec .why{margin:5px 0 0;font-size:14px;color:var(--ink-2);max-width:74ch}
+.rec .why b{color:var(--ink);font-weight:600}
+.rec .nums{
+  display:flex;flex-direction:column;justify-content:center;gap:2px;
+  padding:12px 18px;border-left:1px solid var(--rule);text-align:right;min-width:120px;
+}
+.rec .nums .k{font-family:var(--disp);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3)}
+.rec .nums .n{font-family:var(--mono);font-size:26px;font-weight:600;line-height:1.05;color:var(--hot)}
+.rec .nums .s{font-family:var(--mono);font-size:12px;color:var(--ink-2)}
+.rec.idle{border-color:var(--rule-hard)}
+.rec.idle .tag{background:var(--ink-3)}
+.rec.idle .nums .n{color:var(--ink)}
+
+/* ---- layout ---- */
+.main{display:grid;grid-template-columns:1fr 250px;gap:14px;align-items:start}
+@media(max-width:1080px){.main{grid-template-columns:1fr}}
+.cols{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+@media(max-width:1080px){.cols{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:620px){.cols{grid-template-columns:1fr}}
+
+.col{border:1px solid var(--rule-hard);background:var(--card);display:flex;flex-direction:column;min-width:0}
+.col>header{padding:7px 10px;display:flex;align-items:baseline;gap:8px;border-bottom:1px solid var(--rule-hard)}
+.col>header h2{font-family:var(--disp);font-weight:700;font-size:19px;letter-spacing:.05em;text-transform:uppercase;margin:0}
+.col>header .cnt{margin-left:auto;font-family:var(--mono);font-size:10px;color:var(--ink-3)}
+.col[data-p=QB]>header{background:var(--qb-w);border-bottom-color:var(--qb)} .col[data-p=QB] h2{color:var(--qb)}
+.col[data-p=RB]>header{background:var(--rb-w);border-bottom-color:var(--rb)} .col[data-p=RB] h2{color:var(--rb)}
+.col[data-p=WR]>header{background:var(--wr-w);border-bottom-color:var(--wr)} .col[data-p=WR] h2{color:var(--wr)}
+.col[data-p=TE]>header{background:var(--te-w);border-bottom-color:var(--te)} .col[data-p=TE] h2{color:var(--te)}
+.list{max-height:60vh;overflow-y:auto;overflow-x:hidden}
+
+.row{
+  display:grid;grid-template-columns:8px 1fr auto auto;gap:7px;align-items:baseline;
+  width:100%;text-align:left;background:none;border:0;border-bottom:1px solid var(--rule);
+  padding:5px 9px 5px 0;color:inherit;font-size:14px;
+}
+.row:hover{background:var(--card2)}
+.row .dot{width:8px;height:8px;border-radius:50%;align-self:center}
+.row.go .dot{background:var(--go)} .row.wait .dot{background:var(--wait)} .row.gone .dot{background:var(--hot)}
+.row .nm{font-weight:500;line-height:1.2;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.row .meta{font-family:var(--mono);font-size:9.5px;color:var(--ink-3);display:block;letter-spacing:.02em}
+.row .vona{font-family:var(--mono);font-size:12.5px;font-weight:600;font-variant-numeric:tabular-nums;color:var(--ink-2)}
+.row .val{font-family:var(--mono);font-size:12.5px;font-weight:600;font-variant-numeric:tabular-nums;min-width:32px;text-align:right}
+.row.best{background:var(--card2);box-shadow:inset 3px 0 0 var(--hot)}
+.row.best .nm{font-weight:600}
+.row.tierbreak{border-bottom:2px solid var(--rule-hard)}
+
+/* ---- roster ---- */
+.side{display:flex;flex-direction:column;gap:12px;position:sticky;top:14px}
+.panel{border:1px solid var(--rule-hard);background:var(--card)}
+.panel h3{font-family:var(--disp);font-weight:700;font-size:14px;letter-spacing:.11em;text-transform:uppercase;margin:0;padding:8px 11px;border-bottom:1px solid var(--rule-hard)}
+.slot{display:grid;grid-template-columns:44px 1fr;gap:8px;padding:4px 11px;border-bottom:1px solid var(--rule);font-size:13.5px;align-items:baseline}
+.slot:last-child{border-bottom:0}
+.slot .lab{font-family:var(--disp);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);font-weight:600}
+.slot .who{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.slot.empty .who{color:var(--ink-3);font-style:italic}
+.slot.bench{opacity:.82}
+
+/* ---- setup ---- */
+details.setup{border:1px solid var(--rule-hard);background:var(--card)}
+details.setup summary{font-family:var(--disp);font-size:12px;letter-spacing:.11em;text-transform:uppercase;font-weight:600;padding:8px 12px;cursor:pointer;color:var(--ink-2)}
+.setup .in{display:flex;flex-wrap:wrap;gap:14px;padding:4px 12px 13px;align-items:flex-end}
+.setup label{display:flex;flex-direction:column;gap:3px;font-family:var(--disp);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)}
+.setup input{font-family:var(--mono);font-size:14px;padding:5px 7px;width:80px;background:var(--paper);color:var(--ink);border:1px solid var(--rule-hard)}
+#find{font-family:var(--body);width:210px}
+
+.legend{display:flex;flex-wrap:wrap;gap:14px;font-size:12px;color:var(--ink-3);align-items:center}
+.legend span{display:flex;align-items:center;gap:5px}
+.legend i{width:8px;height:8px;border-radius:50%;display:inline-block}
+.fine{font-size:12px;color:var(--ink-3);line-height:1.5;border-top:1px solid var(--rule);padding-top:10px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="bar">
+    <div class="cell"><dt>Pick</dt><dd id="b-pick">1.01</dd></div>
+    <div class="cell"><dt>Overall</dt><dd id="b-ovr">1</dd></div>
+    <div class="cell big"><dt>On the clock</dt><dd id="b-clock">Team 1</dd></div>
+    <div class="cell me big"><dt>Your next</dt><dd id="b-mine">1.07</dd></div>
+    <div class="cell"><dt>Picks away</dt><dd id="b-away">6</dd></div>
+    <div class="cell spacer"></div>
+    <div class="tools">
+      <input id="find" placeholder="Find player…" aria-label="Find player">
+      <button id="undo">Undo</button>
+      <button id="reset">Reset</button>
+    </div>
+  </div>
+
+  <div class="rec" id="rec">
+    <div class="tag" id="rec-tag">Take</div>
+    <div class="body">
+      <p class="who" id="rec-who">—</p>
+      <p class="why" id="rec-why"></p>
+    </div>
+    <div class="nums">
+      <span class="k">VONA</span>
+      <span class="n" id="rec-vona">—</span>
+      <span class="s" id="rec-sub"></span>
+    </div>
+  </div>
+
+  <div class="main">
+    <div>
+      <div class="cols" id="cols"></div>
+      <p class="legend" style="margin-top:11px">
+        <span><i style="background:var(--go)"></i> should last to your next pick</span>
+        <span><i style="background:var(--wait)"></i> coin flip</span>
+        <span><i style="background:var(--hot)"></i> will be gone</span>
+        <span style="margin-left:auto">Click a player to draft him to whoever is on the clock.</span>
+      </p>
+    </div>
+
+    <div class="side">
+      <div class="panel">
+        <h3>Your roster</h3>
+        <div id="roster"></div>
+      </div>
+      <details class="setup">
+        <summary>League setup</summary>
+        <div class="in">
+          <label>Teams<input id="s-teams" type="number" min="4" max="20" value="12"></label>
+          <label>My slot<input id="s-slot" type="number" min="1" max="20" value="7"></label>
+          <label>Rounds<input id="s-rounds" type="number" min="1" max="30" value="14"></label>
+        </div>
+      </details>
+    </div>
+  </div>
+
+  <p class="fine">
+    <b>VAL</b> is VBD from your configured DraftSheets_2026 — superflex on, WR 1.0 / TE 1.5 / RB 0.5 per catch.
+    <b>VONA</b> is Value Over Next Available: this player's projected points minus the best player at his position expected to survive until your next pick, weighted across your following two picks the way Draft Slayer does it, then scaled by what your roster still needs.
+    Availability uses Sleeper 2QB ADP. ADP is a crowd average, not a promise — it is wrong about individual players constantly, so treat the colored dots as odds rather than facts.
+  </p>
+</div>
+
+<script src="data.js"></script>
+<script>
+const SLOTS=[
+  {id:"QB",  accepts:["QB"]},
+  {id:"RB1", accepts:["RB"]},
+  {id:"RB2", accepts:["RB"]},
+  {id:"WR1", accepts:["WR"]},
+  {id:"WR2", accepts:["WR"]},
+  {id:"TE",  accepts:["TE"]},
+  {id:"FLEX",accepts:["RB","WR","TE"]},
+  {id:"SF",  accepts:["QB","RB","WR","TE"]}
+];
+const BENCH=6, CUSHION=8, KEY="draftslayer.v2";
+
+let S={teams:12,slot:7,rounds:14,picks:[]};
+try{const raw=localStorage.getItem(KEY); if(raw) S=Object.assign(S,JSON.parse(raw));}catch(e){}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}};
+
+const byName=new Map(POOL.map(p=>[p.n,p]));
+const taken=()=>new Set(S.picks.map(x=>x.n));
+
+/* ---------- draft math ---------- */
+// Overall pick number for a given round (1-based) and slot, snake order.
+function overallFor(round,slot){
+  const t=S.teams;
+  return (round-1)*t + (round%2===1 ? slot : t-slot+1);
+}
+function myPickList(){
+  const out=[];
+  for(let r=1;r<=S.rounds;r++) out.push(overallFor(r,S.slot));
+  return out;
+}
+function slotOnClock(overall){
+  const t=S.teams, r=Math.floor((overall-1)/t)+1, i=(overall-1)%t+1;
+  return r%2===1 ? i : t-i+1;
+}
+const label=o=>{const t=S.teams;return `${Math.floor((o-1)/t)+1}.${String((o-1)%t+1).padStart(2,"0")}`;};
+
+/* ---------- roster ---------- */
+function fillRoster(){
+  const filled=SLOTS.map(s=>({...s,player:null})), bench=[];
+  for(const pick of S.picks.filter(p=>p.slot===S.slot)){
+    const pl=byName.get(pick.n); if(!pl) continue;
+    const s=filled.find(f=>!f.player&&f.accepts.includes(pl.p));
+    if(s) s.player=pl; else bench.push(pl);
+  }
+  return {filled,bench};
+}
+// How much this position still matters to us, 0..1
+function needFactor(pos){
+  const {filled,bench}=fillRoster();
+  const openDedicated=filled.some(f=>!f.player&&f.accepts.length===1&&f.accepts[0]===pos);
+  if(openDedicated) return 1;
+  const openFlexy=filled.some(f=>!f.player&&f.accepts.length>1&&f.accepts.includes(pos));
+  if(openFlexy) return .85;
+  if(pos==="QB"){
+    const qbs=[...filled.filter(f=>f.player&&f.player.p==="QB"),...bench.filter(b=>b.p==="QB")].length;
+    return qbs<3 ? .6 : .3;   // a third QB is real trade currency in superflex
+  }
+  return .5;
+}
+
+/* ---------- availability + VONA ---------- */
+const avail=()=>{const t=taken();return POOL.filter(p=>!t.has(p.n));};
+function bestAt(pos,pickNo,pool){
+  let best=null;
+  for(const p of pool) if(p.p===pos && p.adp>=pickNo+CUSHION && (!best||p.pts>best.pts)) best=p;
+  return best;
+}
+function state(){
+  const made=S.picks.length, cur=made+1;
+  const mine=myPickList().filter(o=>o>=cur);
+  const isMine=slotOnClock(cur)===S.slot && cur<=S.teams*S.rounds;
+  // target = the pick we are advising on (this one if it's ours, otherwise our next).
+  // compare1/compare2 = our following two picks — what we'd fall back to by waiting.
+  return {made,cur,isMine,target:mine[0]??null,compare1:mine[1]??null,compare2:mine[2]??null};
+}
+function computeVona(){
+  const pool=avail(), st=state();
+  // Compare against what survives to our following picks — the cost of waiting.
+  const c1=st.compare1, c2=st.compare2;
+  const cache={};
+  const base=(pos,pick)=>{
+    if(pick==null) return 0;
+    const k=pos+":"+pick;
+    if(!(k in cache)){const b=bestAt(pos,pick,pool);cache[k]=b?b.pts:0;}
+    return cache[k];
+  };
+  for(const p of pool){
+    const a=c1!=null ? p.pts-base(p.p,c1) : 0;
+    const b=c2!=null ? (p.pts-base(p.p,c2))*0.5 : 0;
+    p._raw=a+b;
+    p._need=needFactor(p.p);
+    p._vona=p._raw*p._need;
+    // Reachability: if it isn't your turn, a player ADP says is long gone isn't advice.
+    p._reach = st.isMine ? true : (st.target==null || p.adp>=st.target-10);
+  }
+  return {pool,st};
+}
+// Will this player survive until `pick`? Green yes, amber coin-flip, red gone.
+function tone(p,pick){
+  if(pick==null) return "";
+  if(p.adp>=pick+12) return "go";
+  if(p.adp>=pick-6)  return "wait";
+  return "gone";
+}
+
+/* ---------- render ---------- */
+function render(){
+  const {pool,st}=computeVona();
+  const t=S.teams, total=t*S.rounds, done=st.cur>total;
+
+  document.getElementById("b-pick").textContent  = done?"—":label(st.cur);
+  document.getElementById("b-ovr").textContent   = done?"done":st.cur;
+  document.getElementById("b-clock").textContent = done?"Draft over":(st.isMine?"YOU":"Team "+slotOnClock(st.cur));
+  document.getElementById("b-mine").textContent  = st.target?label(st.target):"—";
+  document.getElementById("b-away").textContent  = st.target?Math.max(0,st.target-st.cur):"—";
+
+  // ----- recommendation -----
+  const cands=pool.filter(p=>p._reach).sort((a,b)=>b._vona-a._vona);
+  const top=cands[0], rec=document.getElementById("rec");
+  if(top&&!done){
+    rec.classList.toggle("idle",!st.isMine);
+    document.getElementById("rec-tag").textContent = st.isMine?"Take":"Plan";
+    document.getElementById("rec-who").innerHTML =
+      `${top.n}<span class="pos">${top.p} · ${top.t}${top.b?" · bye "+top.b:""}</span>`;
+    const alt=cands.find(p=>p.p!==top.p);
+    const fall=bestAt(top.p,st.compare1??9999,pool);
+    const why=[];
+    why.push(st.isMine
+      ? `It is your pick.`
+      : `Projection for <b>${label(st.target)}</b>, ${Math.max(0,st.target-st.cur)} picks away.`);
+    why.push(fall
+      ? `Wait and the best ${top.p} likely left is <b>${fall.n}</b> — ${top.pts-fall.pts} fewer projected points.`
+      : `Nothing at ${top.p} projects to survive that long.`);
+    if(top._need<1) why.push(`Discounted to ${Math.round(top._need*100)}% — ${top.p} only fits a flex slot or your bench now.`);
+    if(alt) why.push(`Next best is <b>${alt.n}</b> (${alt.p}, VONA ${alt._vona.toFixed(0)}).`);
+    document.getElementById("rec-why").innerHTML = why.join(" ");
+    document.getElementById("rec-vona").textContent = top._vona.toFixed(0);
+    document.getElementById("rec-sub").textContent  = `VAL ${top.v} · ${top.pts} pts · ADP ${top.adp.toFixed(0)}`;
+  }else{
+    rec.classList.add("idle");
+    document.getElementById("rec-tag").textContent="Done";
+    document.getElementById("rec-who").textContent = done?"Draft complete":"No players left";
+    document.getElementById("rec-why").textContent="";
+    document.getElementById("rec-vona").textContent="—";
+    document.getElementById("rec-sub").textContent="";
+  }
+
+  // ----- columns -----
+  // The dot answers "will he still be here when I pick again?" — so if it is our
+  // turn right now, that means surviving to compare1, not to this very pick.
+  const survivePick = st.isMine ? st.compare1 : st.target;
+  const q=(document.getElementById("find").value||"").trim().toLowerCase();
+  const cols=document.getElementById("cols");
+  cols.innerHTML="";
+  for(const pos of ["QB","RB","WR","TE"]){
+    let list=pool.filter(p=>p.p===pos);
+    const bestId=list.reduce((a,b)=>!a||b._vona>a._vona?b:a,null);
+    list=list.sort((a,b)=>b.v-a.v);
+    if(q) list=list.filter(p=>p.n.toLowerCase().includes(q));
+    list=list.slice(0,40);
+
+    const col=document.createElement("section");
+    col.className="col"; col.dataset.p=pos;
+    col.innerHTML=`<header><h2>${pos}</h2><span class="cnt">${pool.filter(p=>p.p===pos).length} left</span></header>`;
+    const box=document.createElement("div"); box.className="list";
+    let prevTier=null;
+    for(const p of list){
+      const b=document.createElement("button");
+      b.type="button";
+      b.className="row "+tone(p,survivePick)+(p===bestId?" best":"")+(prevTier!==null&&p.tr!==prevTier?" tierbreak":"");
+      prevTier=p.tr;
+      b.innerHTML=
+        `<span class="dot"></span>`+
+        `<span class="nm">${p.n}<span class="meta">${p.t}${p.b?" · bye "+p.b:""} · adp ${p.adp.toFixed(0)} · t${p.tr}</span></span>`+
+        `<span class="vona">${p._vona>0?"+":""}${p._vona.toFixed(0)}</span>`+
+        `<span class="val">${p.v}</span>`;
+      b.title=`Draft ${p.n} to ${st.isMine?"your team":"Team "+slotOnClock(st.cur)}`;
+      b.addEventListener("click",()=>draft(p));
+      box.appendChild(b);
+    }
+    col.appendChild(box);
+    cols.appendChild(col);
+  }
+
+  // ----- roster -----
+  const {filled,bench}=fillRoster(), r=document.getElementById("roster");
+  r.innerHTML="";
+  const line=(lab,pl,cls)=>{
+    const d=document.createElement("div");
+    d.className="slot "+(pl?"":"empty ")+(cls||"");
+    d.innerHTML=`<span class="lab">${lab}</span><span class="who">${pl?pl.n:"—"}</span>`;
+    r.appendChild(d);
+  };
+  filled.forEach(f=>line(f.id,f.player));
+  for(let i=0;i<BENCH;i++) line("BN"+(i+1),bench[i],"bench");
+}
+
+function draft(p){
+  const st=state();
+  if(st.cur>S.teams*S.rounds) return;
+  S.picks.push({n:p.n,slot:slotOnClock(st.cur),ovr:st.cur});
+  save(); render();
+}
+document.getElementById("undo").addEventListener("click",()=>{S.picks.pop();save();render();});
+document.getElementById("reset").addEventListener("click",()=>{
+  if(confirm("Clear every pick and start the draft over?")){S.picks=[];save();render();}
+});
+document.getElementById("find").addEventListener("input",render);
+for(const [id,key] of [["s-teams","teams"],["s-slot","slot"],["s-rounds","rounds"]]){
+  const el=document.getElementById(id);
+  el.value=S[key];
+  el.addEventListener("change",()=>{S[key]=Math.max(1,parseInt(el.value)||S[key]);save();render();});
+}
+render();
+</script>
+</body>
+</html>
