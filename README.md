@@ -91,17 +91,27 @@ are odds, not facts.
 
 ## Keeper economics
 
-Keeping a player forfeits that round's pick next year, so a keeper costs exactly what the pick
-is worth. On this board a mid-round pick is worth roughly:
+**2 keepers max. At most one from rounds 2–6. Never two early. No first-rounders. Keeping a
+player forfeits that round's pick next year. A waiver pickup costs a round-10 pick. Two
+consecutive years maximum, then he returns to the pool.**
 
-| Round | 2 | 3 | 5 | 8 | 10 | 12 | 14 |
-|---|---|---|---|---|---|---|---|
-| VBD | 96 | 83 | 54 | 23 | **1** | **−11** | **−29** |
+A keeper therefore costs exactly what the forfeited pick is worth:
 
-The curve crosses zero at round 10. Keeping a late-round hit is free; keeping a round-2 player
-costs 96 VBD of draft capital every year you hold him. Three late keepers means entering next
-year with rounds 1–9 intact *and* three starters — which is why rounds 9–14 are the highest
-leverage stretch of the draft, not round 2.
+| Round | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | **10** | **11** | **12** | **13** | **14** | **Waiver** |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| VBD | 96 | 83 | 66 | 54 | 44 | 33 | 23 | 10 | **1** | **−6** | **−11** | **−21** | **−29** | **1** |
+
+The curve crosses zero at round 10. So **two late keepers (Option 2) is almost always right** —
+rounds 12 and 13 together cost **−32 VBD**, forfeiting two picks worth less than nothing, while
+Option 1 at its best still costs 33.
+
+Two consequences that are easy to miss:
+
+- **The waiver rule is the best rule in the league.** A midseason breakout won on FAAB costs a
+  round-10 pick to keep — effectively free. The keeper race runs all season, so spend FAAB on
+  ascending players like they are draft picks.
+- **Age barely matters.** Two years is the entire window, so a 28-year-old in his prime is as
+  good a keeper as a 23-year-old. Target production in 2026 and 2027, not birthdays.
 
 ## Live sync
 

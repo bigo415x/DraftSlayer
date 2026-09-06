@@ -245,6 +245,7 @@ details.setup summary{font-family:var(--disp);font-size:12px;letter-spacing:.11e
 .panel.mine{border-left:4px solid var(--hot)}
 .panel.econ{border-left:4px solid var(--go)}
 table.econtab td{white-space:normal}
+table.econtab .sub{font-family:var(--mono);font-size:9px;color:var(--ink-3);letter-spacing:.04em}
 table.econtab tr.free td{background:color-mix(in srgb,var(--go) 14%,transparent)}
 .slots{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:12px}
 .plan{border:1px solid var(--rule-hard);background:var(--card);padding:0 15px 13px}
@@ -475,24 +476,31 @@ td.p-WR{border-left:3px solid var(--wr)} td.p-TE{border-left:3px solid var(--te)
 
 
       <div class="panel facts econ">
-        <h3>Keeper economics <span class="hint">— you forfeit that round's pick, so a keeper costs exactly what the pick is worth</span></h3>
+        <h3>Keeper economics <span class="hint">— 2 keepers max, at most one from rounds 2&ndash;6, no first-rounders, 2 consecutive years max</span></h3>
         <div class="gridwrap"><table class="grid econtab">
-          <thead><tr><th>Keep a player from…</th><th>You give up a pick worth</th><th>Verdict</th></tr></thead>
+          <thead><tr><th>Bucket</th><th>Round</th><th>Pick you forfeit is worth</th><th></th></tr></thead>
           <tbody>
-            <tr><td>Round 2</td><td>≈ 96 VBD</td><td>Steep. He must be a top-20 asset next year just to break even.</td></tr>
-            <tr><td>Round 3</td><td>≈ 83 VBD</td><td>Steep.</td></tr>
-            <tr><td>Round 5</td><td>≈ 54 VBD</td><td>Fair only for a genuine starter.</td></tr>
-            <tr><td>Round 8</td><td>≈ 23 VBD</td><td>Cheap. Good hunting ground.</td></tr>
-            <tr class="free"><td>Round 10</td><td>≈ 1 VBD</td><td><b>Free.</b> The curve crosses zero here.</td></tr>
-            <tr class="free"><td>Round 12</td><td>≈ −11 VBD</td><td><b>Better than free</b> — you forfeit a pick with negative value.</td></tr>
-            <tr class="free"><td>Round 14</td><td>≈ −29 VBD</td><td><b>Better than free.</b></td></tr>
+            <tr><td rowspan="5"><b>EARLY</b><br><span class="sub">at most ONE</span></td><td>2</td><td>96 VBD</td><td>Needs a top-15 overall asset just to break even.</td></tr>
+            <tr><td>3</td><td>83 VBD</td><td>Steep.</td></tr>
+            <tr><td>4</td><td>66 VBD</td><td>Steep.</td></tr>
+            <tr><td>5</td><td>54 VBD</td><td>Fair for a genuine starter.</td></tr>
+            <tr><td>6</td><td>44 VBD</td><td>The only early round that regularly clears its cost.</td></tr>
+            <tr><td rowspan="9"><b>LATE</b><br><span class="sub">1 or 2</span></td><td>7</td><td>33 VBD</td><td>Real money for a "late" keeper.</td></tr>
+            <tr><td>8</td><td>23 VBD</td><td>Cheap.</td></tr>
+            <tr><td>9</td><td>10 VBD</td><td>Nearly free.</td></tr>
+            <tr class="free"><td>10</td><td>1 VBD</td><td><b>Free.</b> The curve crosses zero here.</td></tr>
+            <tr class="free"><td>11</td><td>&minus;6 VBD</td><td><b>Better than free.</b></td></tr>
+            <tr class="free"><td>12</td><td>&minus;11 VBD</td><td><b>Better than free.</b></td></tr>
+            <tr class="free"><td>13</td><td>&minus;21 VBD</td><td><b>Better than free.</b></td></tr>
+            <tr class="free"><td>14</td><td>&minus;29 VBD</td><td><b>Better than free.</b></td></tr>
+            <tr class="free"><td><b>Waiver</b></td><td>costs a round-10 pick &mdash; 1 VBD</td><td><b>The best rule in the league.</b> A midseason pickup you paid FAAB for is a free keeper.</td></tr>
           </tbody>
         </table></div>
         <ul>
-          <li><b>The keeper game is played in rounds 9 through 14, not round 2.</b> A pick after round 10 is worth nothing on this board, so keeping a late-round hit costs nothing. Keeping a round-2 player costs 96 VBD of draft capital every year you hold him.</li>
-          <li><b>Three late keepers means you enter next year with rounds 1&ndash;9 intact <i>and</i> three starters.</b> Three early keepers guts your next draft. That gap is the whole game.</li>
-          <li><b>So do not draft a QB in round 2 "for the keeper value."</b> Draft him because you need to win in 2026. The keeper decision comes later, separately, and it will almost certainly favour someone you took in the 11th.</li>
-          <li>At the margin, <b>prefer a slightly worse player kept in round 12 to a slightly better one kept in round 3.</b></li>
+          <li><b>Option 2 &mdash; two late keepers &mdash; is almost always right.</b> Rounds 12 and 13 together cost <b>&minus;32 VBD</b>: you forfeit two picks worth less than nothing and keep every pick that matters. Option 1 at its best (round 6 + round 12) still costs 33.</li>
+          <li><b>Do not plan an early keeper on draft day.</b> Round 2 costs 96 VBD a year. Only take that slot if a round-5 or round-6 pick turns into something genuinely elite &mdash; and you will know that in December, not tonight.</li>
+          <li><b>The waiver rule means the keeper race runs all season.</b> A breakout you win on FAAB in October costs a round-10 pick to keep &mdash; effectively nothing. Spend FAAB on ascending players like they are draft picks, because they are.</li>
+          <li><b>Two years is the whole window, so age barely matters.</b> A 28-year-old in his prime is as good a keeper as a 23-year-old &mdash; both give you exactly two seasons. Target <i>production in 2026 and 2027</i>, not birthdays.</li>
         </ul>
       </div>
 
@@ -504,7 +512,7 @@ td.p-WR{border-left:3px solid var(--wr)} td.p-TE{border-left:3px solid var(--te)
           <li><b>Round 2 is for winning 2026, not for keeping.</b> The QB plateau starts there, so take one &mdash; but keeping a round-2 player later costs a round-2 pick, which is close to break-even. Draft him to win now.</li>
           <li><b>Elite TE or wait.</b> Bowers/McBride, or nothing until Warren and Fannin around the 7th. The middle is the trap.</li>
           <li><b>Fade receiving backs.</b> They catch at half a receiver's rate here. Buy early-down and goal-line workloads.</li>
-          <li><b>Rounds 9&ndash;14 are where the league is actually won.</b> A pick that late is worth ~0 VBD, so any hit there becomes a free keeper for up to three years. Young upside only &mdash; no veteran depth, no handcuffs.</li>
+          <li><b>Rounds 10&ndash;14 are free keeper equity.</b> Picks that late are worth ~0 VBD, so a hit there is a keeper that costs you nothing. You only get two keepers, so you need two hits &mdash; take four or five swings. Age is irrelevant over a two-year window; take whoever is likeliest to be good in 2027.</li>
         </ol>
       </div>
 
