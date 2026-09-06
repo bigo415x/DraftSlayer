@@ -25,7 +25,7 @@ Three tabs:
 | | `Sort: VALUE / VONA` toggles what the columns are ordered by. In VONA mode each player carries his **overall VONA rank** across all four positions — top 5 in red |
 | **Draft board** | The full snake grid, round by round, filling in as picks land. Your column is outlined |
 | **Teams** | All 12 rosters by slot, each with the starting spots it still needs |
-| **Strategy** | Board shape, a plan for each draft-slot range (1-3 / 4-6 / 7-9 / 10-12), and the rules that hold regardless of slot |
+| **Strategy** | Board shape, scouting notes on the room from the 2025 Yahoo draft, the user's own tendencies, a plan for each draft-slot range (1-3 / 4-6 / 7-9 / 10-12), and the rules that hold regardless of slot |
 
 Team names are editable under **League setup & team names** and persist with the draft.
 - Everything persists in `localStorage`, so a refresh mid-draft costs nothing.
