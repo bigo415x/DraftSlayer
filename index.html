@@ -111,6 +111,11 @@ button{font-family:var(--body);cursor:pointer}
 .row .dot{width:8px;height:8px;border-radius:50%;align-self:center}
 .row.go .dot{background:var(--go)} .row.wait .dot{background:var(--wait)} .row.gone .dot{background:var(--hot)}
 .row .nm{font-weight:500;line-height:1.2;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rk{
+  font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:.02em;
+  background:var(--ink-2);color:var(--paper);padding:1px 3px;border-radius:2px;margin-right:5px;vertical-align:1px;
+}
+.rk.top{background:var(--hot)}
 .row .meta{font-family:var(--mono);font-size:9.5px;color:var(--ink-3);display:block;letter-spacing:.02em}
 .row .vona{font-family:var(--mono);font-size:12.5px;font-weight:600;font-variant-numeric:tabular-nums;color:var(--ink-2)}
 .row .val{font-family:var(--mono);font-size:12.5px;font-weight:600;font-variant-numeric:tabular-nums;min-width:32px;text-align:right}
@@ -212,6 +217,7 @@ td.p-WR{border-left:3px solid var(--wr)} td.p-TE{border-left:3px solid var(--te)
     <div class="cell spacer"></div>
     <div class="tools">
       <input id="find" placeholder="Find player…" aria-label="Find player">
+      <button id="sortby" title="Switch what the four columns are ordered by">Sort: VALUE</button>
       <button id="undo">Undo</button>
       <button id="reset">Reset</button>
     </div>
@@ -298,7 +304,7 @@ const SLOTS=[
 ];
 const BENCH=6, CUSHION=8, KEY="draftslayer.v2";
 
-let S={teams:12,slot:7,rounds:14,picks:[],names:[]};
+let S={teams:12,slot:7,rounds:14,picks:[],names:[],sort:"val"};
 try{const raw=localStorage.getItem(KEY); if(raw) S=Object.assign(S,JSON.parse(raw));}catch(e){}
 function teamName(slot){
   const n=(S.names||[])[slot-1];
@@ -440,6 +446,10 @@ function render(){
     document.getElementById("rec-sub").textContent="";
   }
 
+  // ----- overall VONA ranking (across all four positions) -----
+  const ranked=[...pool].filter(p=>p._reach).sort((a,b)=>b._vona-a._vona);
+  const vonaRank=new Map(ranked.map((p,i)=>[p.n,i+1]));
+
   // ----- columns -----
   // The dot answers "will he still be here when I pick again?" — so if it is our
   // turn right now, that means surviving to compare1, not to this very pick.
@@ -450,7 +460,7 @@ function render(){
   for(const pos of ["QB","RB","WR","TE"]){
     let list=pool.filter(p=>p.p===pos);
     const bestId=list.reduce((a,b)=>!a||b._vona>a._vona?b:a,null);
-    list=list.sort((a,b)=>b.v-a.v);
+    list=list.sort((a,b)=> S.sort==="vona" ? b._vona-a._vona : b.v-a.v);
     if(q) list=list.filter(p=>p.n.toLowerCase().includes(q));
     list=list.slice(0,40);
 
@@ -466,7 +476,7 @@ function render(){
       prevTier=p.tr;
       b.innerHTML=
         `<span class="dot"></span>`+
-        `<span class="nm">${p.n}${injTag(p)}<span class="meta">${p.t}${p.b?" · bye "+p.b:""} · adp ${p.adp.toFixed(0)} · t${p.tr}</span></span>`+
+        `<span class="nm">${S.sort==="vona"&&vonaRank.has(p.n)?`<span class="rk ${vonaRank.get(p.n)<=5?"top":""}">#${vonaRank.get(p.n)}</span>`:""}${p.n}${injTag(p)}<span class="meta">${p.t}${p.b?" · bye "+p.b:""} · adp ${p.adp.toFixed(0)} · t${p.tr}</span></span>`+
         `<span class="vona">${p._vona>0?"+":""}${p._vona.toFixed(0)}</span>`+
         `<span class="val">${p.v}</span>`;
       b.title=`Draft ${p.n} to ${st.isMine?"your team":teamName(slotOnClock(st.cur))}`;
@@ -570,6 +580,13 @@ function draft(p){
   S.picks.push({n:p.n,slot:slotOnClock(st.cur),ovr:st.cur});
   save(); render();
 }
+const sortBtn=document.getElementById("sortby");
+sortBtn.textContent = "Sort: "+(S.sort==="vona"?"VONA":"VALUE");
+sortBtn.addEventListener("click",()=>{
+  S.sort = S.sort==="vona" ? "val" : "vona";
+  sortBtn.textContent = "Sort: "+(S.sort==="vona"?"VONA":"VALUE");
+  save(); render();
+});
 document.getElementById("undo").addEventListener("click",()=>{S.picks.pop();save();render();});
 document.getElementById("reset").addEventListener("click",()=>{
   if(confirm("Clear every pick and start the draft over?")){S.picks=[];save();render();}

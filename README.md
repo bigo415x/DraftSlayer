@@ -22,6 +22,7 @@ Three tabs:
 | Tab | What it shows |
 |---|---|
 | **Make a pick** | Four position columns, the recommendation banner, your roster |
+| | `Sort: VALUE / VONA` toggles what the columns are ordered by. In VONA mode each player carries his **overall VONA rank** across all four positions — top 5 in red |
 | **Draft board** | The full snake grid, round by round, filling in as picks land. Your column is outlined |
 | **Teams** | All 12 rosters by slot, each with the starting spots it still needs |
 
