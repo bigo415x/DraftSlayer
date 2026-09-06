@@ -305,6 +305,11 @@ td.p-WR{border-left:3px solid var(--wr)} td.p-TE{border-left:3px solid var(--te)
   margin:0;padding:7px 10px;border-bottom:1px solid var(--rule-hard);display:flex;gap:7px;align-items:baseline;
 }
 .tcard h4 .n{margin-left:auto;font-family:var(--mono);font-size:10.5px;color:var(--ink-3);letter-spacing:0}
+.tcard .intel{padding:6px 10px 8px;border-bottom:1px solid var(--rule);display:flex;flex-direction:column;gap:2px}
+.tcard .intel.me{background:var(--card2)}
+.tcard .intel .who{font-family:var(--disp);font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink)}
+.tcard .intel .ly{font-family:var(--mono);font-size:9.5px;color:var(--ink-3);letter-spacing:.02em}
+.tcard .intel .nt{font-size:11.5px;line-height:1.35;color:var(--ink-2)}
 .tcard .need{padding:5px 10px;border-bottom:1px solid var(--rule);font-family:var(--mono);font-size:10px;color:var(--ink-3);letter-spacing:.04em}
 .tcard .need b{color:var(--hot);font-weight:600}
 .nameedit{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:7px;padding:4px 12px 13px}
@@ -420,6 +425,11 @@ td.p-WR{border-left:3px solid var(--wr)} td.p-TE{border-left:3px solid var(--te)
         </ul>
       </div>
 
+      <div class="panel facts scout">
+        <h3>The managers <span class="hint">— 2025 draft behaviour, by Sleeper handle</span></h3>
+        <div class="gridwrap"><table class="grid" id="scout"></table></div>
+      </div>
+
       <div class="panel facts mine">
         <h3>Your own tape <span class="hint">— King Henry, 2025, 6th of 12 in draft-day points</span></h3>
         <ul>
@@ -515,6 +525,11 @@ const BENCH=6, CUSHION=8, KEY="draftslayer.v2";
 
 let S={teams:12,slot:7,rounds:14,picks:[],names:[],sort:"val"};
 try{const raw=localStorage.getItem(KEY); if(raw) S=Object.assign(S,JSON.parse(raw));}catch(e){}
+function intelFor(name){
+  if(typeof ALIAS==="undefined") return null;
+  const k=ALIAS[(name||"").trim().toLowerCase()];
+  return k?INTEL[k]:null;
+}
 function teamName(slot){
   const n=(S.names||[])[slot-1];
   return (n&&n.trim())?n.trim():"Team "+slot;
@@ -738,6 +753,20 @@ function render(){
   renderTeams();
   syncBar();
   renderNameEditor();
+  renderScout();
+}
+
+function renderScout(){
+  const el=document.getElementById("scout");
+  if(!el||el.dataset.done||typeof INTEL==="undefined") return;
+  const rows=Object.entries(INTEL).sort((a,b)=>(a[1].slot||99)-(b[1].slot||99));
+  el.innerHTML="<thead><tr><th>Sleeper</th><th>Who</th><th>2025 team</th><th>Draft</th><th>QB1</th><th>TE1</th><th>Read</th></tr></thead><tbody>"+
+    rows.map(([k,v])=>`<tr${v.me?' class="mineCol"':""}>`+
+      `<td>${k}</td><td>${v.who}${v.maybe?' <span title="identity inferred, not confirmed">?</span>':""}</td>`+
+      `<td>${v.ly||"—"}</td><td>${v.rank?v.rank+"/12":"—"}</td>`+
+      `<td>${v.qb||"—"}</td><td>${v.te||"—"}</td>`+
+      `<td style="white-space:normal;max-width:420px">${v.note}</td></tr>`).join("")+"</tbody>";
+  el.dataset.done="1";
 }
 
 /* ---------- draft board grid ---------- */
@@ -775,6 +804,12 @@ function renderTeams(){
     card.className="tcard"+(s===S.slot?" mine":"");
     let h=`<h4>${teamName(s)}${s===S.slot?' <span class="n" style="margin:0;color:var(--hot)">YOU</span>':""}<span class="n">${filled.filter(f=>f.player).length+bench.length} picks</span></h4>`;
     h+=`<div class="need">${need.length?"NEEDS <b>"+need.join(" · ")+"</b>":"STARTERS FULL"}</div>`;
+    const ix=intelFor(teamName(s));
+    if(ix) h+=`<div class="intel${ix.me?" me":""}">`+
+      `<span class="who">${ix.who}${ix.maybe?" ?":""}</span>`+
+      (ix.ly?`<span class="ly">'25 ${ix.ly} · ${ix.rank}/12`+
+             (ix.qb?` · QB1 @${ix.qb}`:"")+(ix.te?` · TE1 @${ix.te}`:"")+`</span>`:"")+
+      `<span class="nt">${ix.note}</span></div>`;
     for(const f of filled){
       h+=`<div class="slot${f.player?"":" empty"}"><span class="lab">${f.id}</span>`+
          `<span class="who">${f.player?f.player.n+injTag(f.player):"—"}</span></div>`;
