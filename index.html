@@ -243,6 +243,9 @@ details.setup summary{font-family:var(--disp);font-size:12px;letter-spacing:.11e
 .strat li i{color:var(--ink-2)}
 .panel.room{border-left:4px solid var(--wr)}
 .panel.mine{border-left:4px solid var(--hot)}
+.panel.econ{border-left:4px solid var(--go)}
+table.econtab td{white-space:normal}
+table.econtab tr.free td{background:color-mix(in srgb,var(--go) 14%,transparent)}
 .slots{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:12px}
 .plan{border:1px solid var(--rule-hard);background:var(--card);padding:0 15px 13px}
 .plan h4{
@@ -470,15 +473,38 @@ td.p-WR{border-left:3px solid var(--wr)} td.p-TE{border-left:3px solid var(--te)
         </article>
       </div>
 
+
+      <div class="panel facts econ">
+        <h3>Keeper economics <span class="hint">— you forfeit that round's pick, so a keeper costs exactly what the pick is worth</span></h3>
+        <div class="gridwrap"><table class="grid econtab">
+          <thead><tr><th>Keep a player from…</th><th>You give up a pick worth</th><th>Verdict</th></tr></thead>
+          <tbody>
+            <tr><td>Round 2</td><td>≈ 96 VBD</td><td>Steep. He must be a top-20 asset next year just to break even.</td></tr>
+            <tr><td>Round 3</td><td>≈ 83 VBD</td><td>Steep.</td></tr>
+            <tr><td>Round 5</td><td>≈ 54 VBD</td><td>Fair only for a genuine starter.</td></tr>
+            <tr><td>Round 8</td><td>≈ 23 VBD</td><td>Cheap. Good hunting ground.</td></tr>
+            <tr class="free"><td>Round 10</td><td>≈ 1 VBD</td><td><b>Free.</b> The curve crosses zero here.</td></tr>
+            <tr class="free"><td>Round 12</td><td>≈ −11 VBD</td><td><b>Better than free</b> — you forfeit a pick with negative value.</td></tr>
+            <tr class="free"><td>Round 14</td><td>≈ −29 VBD</td><td><b>Better than free.</b></td></tr>
+          </tbody>
+        </table></div>
+        <ul>
+          <li><b>The keeper game is played in rounds 9 through 14, not round 2.</b> A pick after round 10 is worth nothing on this board, so keeping a late-round hit costs nothing. Keeping a round-2 player costs 96 VBD of draft capital every year you hold him.</li>
+          <li><b>Three late keepers means you enter next year with rounds 1&ndash;9 intact <i>and</i> three starters.</b> Three early keepers guts your next draft. That gap is the whole game.</li>
+          <li><b>So do not draft a QB in round 2 "for the keeper value."</b> Draft him because you need to win in 2026. The keeper decision comes later, separately, and it will almost certainly favour someone you took in the 11th.</li>
+          <li>At the margin, <b>prefer a slightly worse player kept in round 12 to a slightly better one kept in round 3.</b></li>
+        </ul>
+      </div>
+
       <div class="panel rules">
         <h3>Regardless of slot</h3>
         <ol>
           <li><b>Two QBs by round 5</b>, first one by round 3. Tightened from round 6 after reading the 2025 draft &mdash; this room took its first QB at pick 22 in a <i>one-QB</i> league.</li>
           <li><b>Round 1 is a rental.</b> First-rounders cannot be kept, so take the best player and ignore age.</li>
-          <li><b>Round 2 is your franchise QB.</b> First keepable pick, and the plateau starts exactly there. Drake Maye at 24 is the standout.</li>
+          <li><b>Round 2 is for winning 2026, not for keeping.</b> The QB plateau starts there, so take one &mdash; but keeping a round-2 player later costs a round-2 pick, which is close to break-even. Draft him to win now.</li>
           <li><b>Elite TE or wait.</b> Bowers/McBride, or nothing until Warren and Fannin around the 7th. The middle is the trap.</li>
           <li><b>Fade receiving backs.</b> They catch at half a receiver's rate here. Buy early-down and goal-line workloads.</li>
-          <li><b>Last four rounds are young keepers only.</b> Round-based cost means a 13th-round breakout is a 13th-round keeper. No veteran depth, no handcuffs.</li>
+          <li><b>Rounds 9&ndash;14 are where the league is actually won.</b> A pick that late is worth ~0 VBD, so any hit there becomes a free keeper for up to three years. Young upside only &mdash; no veteran depth, no handcuffs.</li>
         </ol>
       </div>
 

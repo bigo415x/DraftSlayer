@@ -89,6 +89,20 @@ are odds, not facts.
 | `index.html` | The whole app — no build step, no dependencies |
 | `data.js` | 814 players — 231 projected (value, points, tier, bye, superflex ADP) plus 583 depth players from Sleeper's roster feed |
 
+## Keeper economics
+
+Keeping a player forfeits that round's pick next year, so a keeper costs exactly what the pick
+is worth. On this board a mid-round pick is worth roughly:
+
+| Round | 2 | 3 | 5 | 8 | 10 | 12 | 14 |
+|---|---|---|---|---|---|---|---|
+| VBD | 96 | 83 | 54 | 23 | **1** | **−11** | **−29** |
+
+The curve crosses zero at round 10. Keeping a late-round hit is free; keeping a round-2 player
+costs 96 VBD of draft capital every year you hold him. Three late keepers means entering next
+year with rounds 1–9 intact *and* three starters — which is why rounds 9–14 are the highest
+leverage stretch of the draft, not round 2.
+
 ## Live sync
 
 `Sync: ON` polls Sleeper every 5 seconds for the league's draft — it discovers the draft id
