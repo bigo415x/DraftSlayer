@@ -31,6 +31,23 @@ Team names are editable under **League setup & team names** and persist with the
 - Everything persists in `localStorage`, so a refresh mid-draft costs nothing.
   `Undo` steps back one pick; `Reset` clears the draft.
 
+## The two numbers on every row
+
+Each column is headed `Player | VONA | VAL`.
+
+- **VAL** — value over replacement. Static, computed before the draft from this league's scoring.
+  Allen is 138 at pick 1 and 138 at pick 100. It answers *who is genuinely most valuable here*.
+- **VONA** — value over next available. Recomputed after every pick against what ADP says will
+  survive until your next turn. It answers *what do I lose by waiting*. Sort by it to rank the
+  board live.
+
+So `Josh Allen +68 138` reads: he is 138 points above a replacement QB, and taking him now rather
+than at your next pick gains you 68.
+
+**Tier chips** (`T1`, `T2`, …) take each column's own colour and fade as the tier deepens. Players
+inside one tier are near-interchangeable — the drop *between* tiers is what actually costs you, so
+the last player in a tier is the one worth reaching half a round for.
+
 ## The numbers
 
 `VAL` is VBD from `DraftSheets_2026`, configured for this league's actual scoring —

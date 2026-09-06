@@ -106,10 +106,33 @@ button{font-family:var(--body);cursor:pointer}
 .col>header{padding:7px 10px;display:flex;align-items:baseline;gap:8px;border-bottom:1px solid var(--rule-hard)}
 .col>header h2{font-family:var(--disp);font-weight:700;font-size:19px;letter-spacing:.05em;text-transform:uppercase;margin:0}
 .col>header .cnt{margin-left:auto;font-family:var(--mono);font-size:10px;color:var(--ink-3)}
+.col[data-p=QB]{--pc:var(--qb)}
+.col[data-p=RB]{--pc:var(--rb)}
+.col[data-p=WR]{--pc:var(--wr)}
+.col[data-p=TE]{--pc:var(--te)}
 .col[data-p=QB]>header{background:var(--qb-w);border-bottom-color:var(--qb)} .col[data-p=QB] h2{color:var(--qb)}
 .col[data-p=RB]>header{background:var(--rb-w);border-bottom-color:var(--rb)} .col[data-p=RB] h2{color:var(--rb)}
 .col[data-p=WR]>header{background:var(--wr-w);border-bottom-color:var(--wr)} .col[data-p=WR] h2{color:var(--wr)}
 .col[data-p=TE]>header{background:var(--te-w);border-bottom-color:var(--te)} .col[data-p=TE] h2{color:var(--te)}
+.colhead{
+  display:grid;grid-template-columns:8px 1fr auto auto;gap:7px;
+  padding:4px 9px 4px 0;border-bottom:1px solid var(--rule-hard);background:var(--card2);
+  font-family:var(--disp);font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--ink-3);font-weight:600;
+}
+.colhead span:nth-child(3),.colhead span:nth-child(4){text-align:right}
+.colhead span:nth-child(4){min-width:32px}
+.tc{
+  font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:.02em;
+  padding:1px 4px;border-radius:2px;margin-right:5px;color:var(--ink);
+  background:var(--card2);
+}
+.tc1{background:color-mix(in srgb,var(--pc) 42%,transparent);font-weight:700}
+.tc2{background:color-mix(in srgb,var(--pc) 32%,transparent);font-weight:700}
+.tc3{background:color-mix(in srgb,var(--pc) 24%,transparent)}
+.tc4{background:color-mix(in srgb,var(--pc) 17%,transparent)}
+.tc5{background:color-mix(in srgb,var(--pc) 11%,transparent)}
+.tc6{background:color-mix(in srgb,var(--pc) 6%,transparent)}
 .list{max-height:60vh;overflow-y:auto;overflow-x:hidden}
 
 .row{
@@ -168,6 +191,7 @@ details.setup summary{font-family:var(--disp);font-size:12px;letter-spacing:.11e
 
 .legend{display:flex;flex-wrap:wrap;gap:14px;font-size:12px;color:var(--ink-3);align-items:center}
 .legend span{display:flex;align-items:center;gap:5px}
+.legend .tc{margin-right:0}
 .legend i{width:8px;height:8px;border-radius:50%;display:inline-block}
 
 /* ---- strategy ---- */
@@ -294,6 +318,7 @@ td.p-WR{border-left:3px solid var(--wr)} td.p-TE{border-left:3px solid var(--te)
         <span><i style="background:var(--go)"></i> should last to your next pick</span>
         <span><i style="background:var(--wait)"></i> coin flip</span>
         <span><i style="background:var(--hot)"></i> will be gone</span>
+        <span style="--pc:var(--ink-2)"><span class="tc tc1">T1</span><span class="tc tc3">T3</span><span class="tc tc6">T6</span> tier — inside one, players are near-interchangeable; the drop between them is what costs you</span>
         <span><span class="val est" style="font-family:var(--mono);font-size:11px">123</span> estimated from Sleeper projections</span>
         <span><span class="inj Q">Q</span> questionable &nbsp;<span class="inj OUT">OUT</span> out / IR — ESPN, 2026-09-05</span>
         <span style="margin-left:auto">Click a player to draft him to whoever is on the clock.</span>
@@ -582,7 +607,10 @@ function render(){
 
     const col=document.createElement("section");
     col.className="col"; col.dataset.p=pos;
-    col.innerHTML=`<header><h2>${pos}</h2><span class="cnt">${valued.length} left</span></header>`;
+    col.innerHTML=`<header><h2>${pos}</h2><span class="cnt">${valued.length} left</span></header>`+
+      `<div class="colhead"><span></span><span>Player</span>`+
+      `<span title="Value Over Next Available — points you lose by waiting until your next pick">VONA</span>`+
+      `<span title="Value over replacement, from this league's scoring">VAL</span></div>`;
     const box=document.createElement("div"); box.className="list";
     let prevTier=null;
     for(const p of list){
@@ -592,7 +620,7 @@ function render(){
       prevTier=p.tr;
       b.innerHTML=
         `<span class="dot"></span>`+
-        `<span class="nm">${S.sort==="vona"&&vonaRank.has(p.n)?`<span class="rk ${vonaRank.get(p.n)<=5?"top":""}">#${vonaRank.get(p.n)}</span>`:""}${p.n}${injTag(p)}<span class="meta">${p.t}${p.b?" · bye "+p.b:""}${p.adp<260?" · adp "+p.adp.toFixed(0):""}${p.tr?" · t"+p.tr:""}${p.e?" · est":""}${p.d?" · no projection":""}${p.p25!=null?" · ’25 "+p.p25+"pt"+(p.sn!=null?"/"+p.sn+"%":""):""}${p.bk?" · behind "+p.bk+(p.bki?" ("+p.bki+")":""):""}</span></span>`+
+        `<span class="nm">${S.sort==="vona"&&vonaRank.has(p.n)?`<span class="rk ${vonaRank.get(p.n)<=5?"top":""}">#${vonaRank.get(p.n)}</span>`:""}${p.n}${injTag(p)}<span class="meta">${p.tr?`<span class="tc tc${Math.min(p.tr,6)}" title="Tier ${p.tr} at ${p.p} — players inside a tier are near-interchangeable">T${p.tr}</span>`:""}${p.t}${p.b?" · bye "+p.b:""}${p.adp<260?" · adp "+p.adp.toFixed(0):""}${p.e?" · est":""}${p.d?" · no projection":""}${p.p25!=null?" · ’25 "+p.p25+"pt"+(p.sn!=null?"/"+p.sn+"%":""):""}${p.bk?" · behind "+p.bk+(p.bki?" ("+p.bki+")":""):""}</span></span>`+
         `<span class="vona">${p.d?"":(p._vona>0?"+":"")+p._vona.toFixed(0)}</span>`+
         `<span class="val${p.e?" est":""}${p.d?" cont":""}" title="${p.d?(p.bkv!=null?`No projection. Inherits a ${p.bkv}-value role if ${p.bk} misses time.`:"No projection from either source."):(p.e?"Estimated from Sleeper 2026 projections, scored with this league’s rules and calibrated to the DraftSheets scale.":"DraftSheets projection, this league’s scoring.")}">${p.v!=null?p.v:(p.bkv!=null?"→"+p.bkv:"—")}</span>`;
       b.title=`Draft ${p.n} to ${st.isMine?"your team":teamName(slotOnClock(st.cur))}`;
