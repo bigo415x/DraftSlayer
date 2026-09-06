@@ -82,6 +82,14 @@ quietly apply on your behalf.
 Availability uses **Sleeper 2QB ADP**. ADP is a crowd average, not a promise — the dots
 are odds, not facts.
 
+## The IR slot
+
+The league has one IR slot and Sleeper is configured `reserve_allow_out=1` with doubtful,
+non-football-injury, suspended, COVID and did-not-report all `0` — so **only Out and IR players
+qualify**. The `IR` button in the toolbar filters all four columns to exactly those players,
+ranked by value, and a drafted IR/Out player is parked in the roster's IR slot rather than
+eating a bench spot.
+
 ## Refreshing injuries
 
     python refresh_injuries.py            # update data.js and artifact.html

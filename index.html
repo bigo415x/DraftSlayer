@@ -68,6 +68,7 @@ button{font-family:var(--body);cursor:pointer}
 .syncbar b{color:var(--ink);font-weight:600}
 .syncbar .warn{color:var(--hot)}
 #sync.on{background:var(--go);color:#fff;border-color:var(--go)}
+#irfilter.on{background:var(--hot);color:#fff;border-color:var(--hot)}
 
 /* ---- recommendation ---- */
 .rec{
@@ -210,6 +211,8 @@ button{font-family:var(--body);cursor:pointer}
 .slot .who{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .slot.empty .who{color:var(--ink-3);font-style:italic}
 .slot.bench{opacity:.82}
+.slot.irslot{border-top:2px solid var(--rule-hard);opacity:1}
+.slot.irslot .lab{color:var(--hot)}
 
 /* ---- setup ---- */
 details.setup{border:1px solid var(--rule-hard);background:var(--card)}
@@ -335,6 +338,7 @@ td.p-WR{border-left:3px solid var(--wr)} td.p-TE{border-left:3px solid var(--te)
     <div class="cell spacer"></div>
     <div class="tools">
       <input id="find" placeholder="Find player…" aria-label="Find player">
+      <button id="irfilter" title="Show only players eligible for your IR slot">IR</button>
       <button id="sync" title="Poll Sleeper for live draft picks">Sync: OFF</button>
       <button id="sortby" title="Switch what the four columns are ordered by">Sort: VALUE</button>
       <button id="undo">Undo</button>
@@ -377,6 +381,7 @@ td.p-WR{border-left:3px solid var(--wr)} td.p-TE{border-left:3px solid var(--te)
         <span style="--pc:var(--ink-2)"><span class="tc tc1">T1</span><span class="tc tc3">T3</span><span class="tc tc6">T6</span> tier — inside one, players are near-interchangeable; the drop between them is what costs you</span>
         <span><span class="val est" style="font-family:var(--mono);font-size:11px">123</span> estimated from Sleeper projections</span>
         <span><span class="inj Q">Q</span> questionable &nbsp;<span class="inj OUT">OUT</span> out / IR — ESPN, 2026-09-05</span>
+        <span><b style="color:var(--hot)">IR</b> button lists only players your IR slot accepts — <b>Out and IR only</b>, not questionable or suspended</span>
         <span style="margin-left:auto">Click a player to draft him to whoever is on the clock.</span>
       </p>
     </div>
@@ -512,6 +517,8 @@ td.p-WR{border-left:3px solid var(--wr)} td.p-TE{border-left:3px solid var(--te)
           <li><b>Round 2 is for winning 2026, not for keeping.</b> The QB plateau starts there, so take one &mdash; but keeping a round-2 player later costs a round-2 pick, which is close to break-even. Draft him to win now.</li>
           <li><b>Elite TE or wait.</b> Bowers/McBride, or nothing until Warren and Fannin around the 7th. The middle is the trap.</li>
           <li><b>Fade receiving backs.</b> They catch at half a receiver's rate here. Buy early-down and goal-line workloads.</li>
+          <li><b>Spend your last pick on an IR stash.</b> A player who starts the year on IR occupies your IR slot, not a bench spot &mdash; so a 14th-round stash is a free roster spot <i>and</i> a free keeper if he comes back and produces. Hit the <b>IR</b> button to list them. Best available now: <b>Jordyn Tyson</b> (WR, NO), <b>Josh Jacobs</b> (RB, GB, out on a court date), <b>Zach Charbonnet</b>, <b>Isiah Pacheco</b>, <b>Trey Benson</b>, <b>Ricky Pearsall</b>.</li>
+          <li><b>Your IR slot only accepts Out and IR</b> &mdash; Sleeper has <code>reserve_allow_out=1</code> and doubtful, non-football-injury, suspended, COVID and did-not-report all set to <b>0</b>. A questionable player cannot be stashed there, and neither can a reserve/NFI player. If you expect it to take more than that, the commissioner has to change the setting.</li>
           <li><b>Rounds 10&ndash;14 are free keeper equity.</b> Picks that late are worth ~0 VBD, so a hit there is a keeper that costs nothing, twice over. You keep two, so take four or five swings &mdash; and weight them toward players likely to still be good in <b>2028</b>, because that is how long you can hold them.</li>
         </ol>
       </div>
@@ -545,6 +552,7 @@ td.p-WR{border-left:3px solid var(--wr)} td.p-TE{border-left:3px solid var(--te)
 
 <script src="data.js"></script>
 <script>
+const IR_SLOTS=1;
 const SLOTS=[
   {id:"QB",  accepts:["QB"]},
   {id:"RB1", accepts:["RB"]},
@@ -557,7 +565,7 @@ const SLOTS=[
 ];
 const BENCH=6, CUSHION=8, KEY="draftslayer.v2";
 
-let S={teams:12,slot:7,rounds:14,picks:[],names:[],sort:"val"};
+let S={teams:12,slot:7,rounds:14,picks:[],names:[],sort:"val",ir:false};
 try{const raw=localStorage.getItem(KEY); if(raw) S=Object.assign(S,JSON.parse(raw));}catch(e){}
 function intelFor(name){
   if(typeof ALIAS==="undefined") return null;
@@ -578,6 +586,7 @@ const tint=(p,role)=>{
   return `<span class="tt tt${p.tr?Math.min(p.tr,6):6}${r?" mk "+r[1]:""}" style="--pc:${POSC[p.p]||"var(--ink-2)"}">`+
          `${p.n}${r?`<span class="rolechip">${r[0]}</span>`:""}</span>`;
 };
+const IR_OK=p=>p.inj==="IR"||p.inj==="OUT";   // reserve_allow_out=1; doubtful/NA/susp/cov/dnr are all 0
 const injTag=p=>p.inj?`<span class="inj ${p.inj}" title="${(p.injn||p.inj).replace(/"/g,"&quot;")}">${p.inj}</span>`:"";
 const taken=()=>new Set(S.picks.map(x=>x.n));
 
@@ -601,13 +610,14 @@ const label=o=>{const t=S.teams;return `${Math.floor((o-1)/t)+1}.${String((o-1)%
 /* ---------- roster ---------- */
 function fillRoster(slot){
   if(slot===undefined) slot=S.slot;
-  const filled=SLOTS.map(s=>({...s,player:null})), bench=[];
+  const filled=SLOTS.map(s=>({...s,player:null})), bench=[], ir=[];
   for(const pick of S.picks.filter(p=>p.slot===slot)){
     const pl=byName.get(pick.n)||{n:pick.n,p:pick.xp||"?",t:pick.xt||"",v:null}; if(!pl.p) continue;
+    if(IR_OK(pl)&&ir.length<IR_SLOTS){ ir.push(pl); continue; }   // cannot be started; park him on IR
     const s=filled.find(f=>!f.player&&f.accepts.includes(pl.p));
     if(s) s.player=pl; else bench.push(pl);
   }
-  return {filled,bench};
+  return {filled,bench,ir};
 }
 // How much this position still matters to us, 0..1
 function needFactor(pos){
@@ -732,13 +742,14 @@ function render(){
     const valued=pool.filter(p=>p.p===pos&&p.v!=null);
     const bestId=valued.reduce((a,b)=>!a||b._vona>a._vona?b:a,null);
     let list=q ? pool.filter(p=>p.p===pos) : valued;
+    if(S.ir) list=pool.filter(p=>p.p===pos&&IR_OK(p)).sort((a,b)=>(b.v??-999)-(a.v??-999));
     list=list.sort((a,b)=> S.sort==="vona" ? b._vona-a._vona : b.v-a.v);
     if(q) list=list.filter(p=>p.n.toLowerCase().includes(q));
     list=list.slice(0,q?60:40);
 
     const col=document.createElement("section");
     col.className="col"; col.dataset.p=pos;
-    col.innerHTML=`<header><h2>${pos}</h2><span class="cnt">${valued.length} left</span></header>`+
+    col.innerHTML=`<header><h2>${pos}</h2><span class="cnt">${S.ir?pool.filter(p=>p.p===pos&&IR_OK(p)).length+" IR-eligible":valued.length+" left"}</span></header>`+
       `<div class="colhead"><span></span><span>Player</span>`+
       `<span title="Value Over Next Available — points you lose by waiting until your next pick">VONA</span>`+
       `<span title="Value over replacement, from this league's scoring">VAL</span></div>`;
@@ -772,7 +783,7 @@ function render(){
   }
 
   // ----- roster -----
-  const {filled,bench}=fillRoster(), r=document.getElementById("roster");
+  const {filled,bench,ir}=fillRoster(), r=document.getElementById("roster");
   r.innerHTML="";
   const line=(lab,pl,cls)=>{
     const d=document.createElement("div");
@@ -782,6 +793,7 @@ function render(){
   };
   filled.forEach(f=>line(f.id,f.player));
   for(let i=0;i<BENCH;i++) line("BN"+(i+1),bench[i],"bench");
+  for(let i=0;i<IR_SLOTS;i++) line("IR",ir[i],"bench irslot");
 
   renderGrid(st);
   renderTeams();
@@ -832,7 +844,7 @@ function renderTeams(){
   const box=document.getElementById("teams");
   box.innerHTML="";
   for(let s=1;s<=S.teams;s++){
-    const {filled,bench}=fillRoster(s);
+    const {filled,bench,ir}=fillRoster(s);
     const need=filled.filter(f=>!f.player).map(f=>f.id);
     const card=document.createElement("div");
     card.className="tcard"+(s===S.slot?" mine":"");
@@ -850,6 +862,9 @@ function renderTeams(){
     }
     bench.forEach((b,i)=>{
       h+=`<div class="slot bench"><span class="lab">BN${i+1}</span><span class="who">${b.n}${injTag(b)}</span></div>`;
+    });
+    ir.forEach(b=>{
+      h+=`<div class="slot bench irslot"><span class="lab">IR</span><span class="who">${b.n}${injTag(b)}</span></div>`;
     });
     card.innerHTML=h;
     box.appendChild(card);
@@ -892,6 +907,11 @@ function draft(p){
   S.picks.push({n:p.n,slot:slotOnClock(st.cur),ovr:st.cur});
   save(); render();
 }
+const irBtn=document.getElementById("irfilter");
+irBtn.classList.toggle("on",!!S.ir);
+irBtn.addEventListener("click",()=>{
+  S.ir=!S.ir; irBtn.classList.toggle("on",S.ir); save(); render();
+});
 const sortBtn=document.getElementById("sortby");
 sortBtn.textContent = "Sort: "+(S.sort==="vona"?"VONA":"VALUE");
 sortBtn.addEventListener("click",()=>{
