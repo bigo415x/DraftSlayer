@@ -25,6 +25,7 @@ Three tabs:
 | | `Sort: VALUE / VONA` toggles what the columns are ordered by. In VONA mode each player carries his **overall VONA rank** across all four positions — top 5 in red |
 | **Draft board** | The full snake grid, round by round, filling in as picks land. Your column is outlined |
 | **Teams** | All 12 rosters by slot, each with the starting spots it still needs |
+| **Strategy** | Board shape, a plan for each draft-slot range (1-3 / 4-6 / 7-9 / 10-12), and the rules that hold regardless of slot |
 
 Team names are editable under **League setup & team names** and persist with the draft.
 - Everything persists in `localStorage`, so a refresh mid-draft costs nothing.
@@ -56,7 +57,17 @@ are odds, not facts.
 | File | What it is |
 |---|---|
 | `index.html` | The whole app — no build step, no dependencies |
-| `data.js` | 231 players: value, projected points, tier, team, bye, superflex ADP, injury designation |
+| `data.js` | 814 players — 231 projected (value, points, tier, bye, superflex ADP) plus 583 depth players from Sleeper's roster feed |
+
+## Depth players
+
+The 231 projected players come from DraftSheets. Everyone else on an NFL roster at QB/RB/WR/TE
+is merged in from Sleeper's public player feed and marked `d:1` — no projection, no value, never
+recommended. They stay hidden until you search for one.
+
+That matters because the board tracks the whole draft: when a rival takes a fifth-string tight
+end, you still need to record it or every later pick is misattributed. Search the name, click it,
+carry on.
 
 ## Setup
 

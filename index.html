@@ -109,6 +109,7 @@ button{font-family:var(--body);cursor:pointer}
 }
 .row:hover{background:var(--card2)}
 .row .dot{width:8px;height:8px;border-radius:50%;align-self:center}
+.row.depth .dot{background:var(--rule-hard)}
 .row.go .dot{background:var(--go)} .row.wait .dot{background:var(--wait)} .row.gone .dot{background:var(--hot)}
 .row .nm{font-weight:500;line-height:1.2;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .rk{
@@ -118,6 +119,7 @@ button{font-family:var(--body);cursor:pointer}
 .rk.top{background:var(--hot)}
 .row .meta{font-family:var(--mono);font-size:9.5px;color:var(--ink-3);display:block;letter-spacing:.02em}
 .row .vona{font-family:var(--mono);font-size:12.5px;font-weight:600;font-variant-numeric:tabular-nums;color:var(--ink-2)}
+.row.depth .nm{color:var(--ink-2)}
 .row .val{font-family:var(--mono);font-size:12.5px;font-weight:600;font-variant-numeric:tabular-nums;min-width:32px;text-align:right}
 .row.best{background:var(--card2);box-shadow:inset 3px 0 0 var(--hot)}
 .row.best .nm{font-weight:600}
@@ -155,6 +157,33 @@ details.setup summary{font-family:var(--disp);font-size:12px;letter-spacing:.11e
 .legend{display:flex;flex-wrap:wrap;gap:14px;font-size:12px;color:var(--ink-3);align-items:center}
 .legend span{display:flex;align-items:center;gap:5px}
 .legend i{width:8px;height:8px;border-radius:50%;display:inline-block}
+
+/* ---- strategy ---- */
+.strat{display:flex;flex-direction:column;gap:14px}
+.strat .panel{padding-bottom:2px}
+.strat ul,.strat ol{margin:0;padding:10px 14px 12px 30px;display:flex;flex-direction:column;gap:6px;font-size:14px;color:var(--ink-2)}
+.strat li b{color:var(--ink);font-weight:600}
+.slots{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:12px}
+.plan{border:1px solid var(--rule-hard);background:var(--card);padding:0 15px 13px}
+.plan h4{
+  font-family:var(--disp);font-weight:700;font-size:18px;letter-spacing:.03em;text-transform:uppercase;
+  margin:0 -15px 10px;padding:9px 15px;border-bottom:1px solid var(--rule-hard);
+  display:flex;align-items:center;gap:10px;
+}
+.pill{
+  font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:.02em;
+  background:var(--ink);color:var(--paper);padding:2px 8px;border-radius:2px;
+}
+.plan p{margin:0 0 8px;font-size:13.5px;color:var(--ink-2);line-height:1.5}
+.plan p:last-child{margin-bottom:0}
+.plan b{color:var(--ink);font-weight:600}
+.plan p.warn{border-left:3px solid var(--hot);padding-left:10px;color:var(--ink-2)}
+.strat .live p{margin:0;padding:10px 14px;font-size:13.5px;color:var(--ink-2);line-height:1.5}
+.strat .live p.rule{
+  font-family:var(--mono);font-size:13px;color:var(--ink);
+  border-top:1px solid var(--rule);background:var(--card2);letter-spacing:.01em;
+}
+
 /* ---- tabs ---- */
 .tabs{display:flex;gap:0;border-bottom:2px solid var(--ink)}
 .tab{
@@ -240,6 +269,7 @@ td.p-WR{border-left:3px solid var(--wr)} td.p-TE{border-left:3px solid var(--te)
     <button class="tab on" data-tab="pick" role="tab" aria-selected="true">Make a pick</button>
     <button class="tab" data-tab="board" role="tab" aria-selected="false">Draft board</button>
     <button class="tab" data-tab="teams" role="tab" aria-selected="false">Teams</button>
+    <button class="tab" data-tab="plan" role="tab" aria-selected="false">Strategy</button>
   </nav>
 
   <div class="main" id="tab-pick">
@@ -271,6 +301,72 @@ td.p-WR{border-left:3px solid var(--wr)} td.p-TE{border-left:3px solid var(--te)
 
   <section id="tab-teams" hidden>
     <div class="teams" id="teams"></div>
+  </section>
+
+
+  <section id="tab-plan" hidden>
+    <div class="strat">
+
+      <div class="panel facts">
+        <h3>The shape of this board</h3>
+        <ul>
+          <li><b>Elite five</b> — Nacua 165, Chase 164, Gibbs 157, Smith-Njigba 153, St. Brown 146. Clear of everything else.</li>
+          <li><b>Allen alone</b> at 138, then a 38-point drop.</li>
+          <li><b>QB plateau 13 deep</b> — Lamar 100 down to Nix 76. Twenty startable QBs for twenty-four superflex slots.</li>
+          <li><b>Two tight ends</b> — Bowers 121, McBride 116, then a <b>47-point cliff</b>, the steepest on the board.</li>
+          <li><b>WR cliff of 42</b> after the top four; <b>RB cliff of 31</b> after the top four.</li>
+        </ul>
+      </div>
+
+      <div class="slots">
+        <article class="plan">
+          <h4><span class="pill">1 &ndash; 3</span> Elite talent, brutal wait</h4>
+          <p>You get one of Nacua / Chase / Gibbs. Take him.</p>
+          <p>The cost is the gap: at slot 1 you pick <b>1, then 24 and 25</b>. But that back-to-back turn is a superflex weapon &mdash; <b>double up on QBs there</b>. Expect 8&ndash;12 QBs gone by 24; the plateau is 13 deep, so you should land two of QB6&ndash;QB14.</p>
+          <p class="warn">Across a 23-pick gap, never take a player one slot above a cliff expecting the same next turn. If 14+ QBs are gone at your turn, abandon the plan: take Bowers or McBride and accept QB15&ndash;20.</p>
+        </article>
+
+        <article class="plan">
+          <h4><span class="pill">4 &ndash; 6</span> Where Allen is actually correct</h4>
+          <p>You get the fourth or fifth elite skill player &mdash; or Allen falls.</p>
+          <p>If the first three to five picks are all skill players, <b>Allen is the top remaining value and the only QB with a 38-point moat</b>. Everywhere else that pick is a slight reach; here it is simply right.</p>
+          <p>Friendliest gaps in the draft (slot 5: picks 5, 20, 29). Best available at 1, QB at 2, QB or a fallen elite TE at 3.</p>
+        </article>
+
+        <article class="plan">
+          <h4><span class="pill">7 &ndash; 9</span> The tight end window</h4>
+          <p>Elite five are gone. Choose among Bijan 136, Bowers 121, McBride 116, Taylor 115, McCaffrey 115, Jefferson 104.</p>
+          <p><b>Take the elite TE.</b> This is the largest edge available to you, because almost nobody else in the room prices tight end at 1.5 per catch. The 47-point cliff means you are buying something they cannot replace.</p>
+          <p class="warn">Your gaps (7 &rarr; 18 &rarr; 31) expose you to a run across thirteen picks. Do not get cute at 18 &mdash; if the plateau has thinned at all, that is your first QB.</p>
+        </article>
+
+        <article class="plan">
+          <h4><span class="pill">10 &ndash; 12</span> The best superflex seat</h4>
+          <p>You pick back-to-back (slot 12: <b>12 and 13</b>; slot 11: <b>11 and 14</b>). You can take <b>two quarterbacks in one turn</b> and never face a run in between.</p>
+          <p>In range: Jefferson 104, Lamb 101, London 96, plus Hurts 98 / Maye 96 / Daniels 96 &mdash; and often McBride, if the room undervalues TE.</p>
+          <p>Best opening turns: <b>QB + elite TE</b>, or <b>QB + QB</b>. Fix whichever you skipped at your 3/4 turn.</p>
+        </article>
+      </div>
+
+      <div class="panel rules">
+        <h3>Regardless of slot</h3>
+        <ol>
+          <li><b>Two QBs by round 6.</b> No exceptions. Twenty startable, twenty-four slots &mdash; four teams start a corpse every week.</li>
+          <li><b>Round 1 is a rental.</b> First-rounders cannot be kept, so take the best player and ignore age.</li>
+          <li><b>Round 2 is your franchise QB.</b> First keepable pick, and the plateau starts exactly there. Drake Maye at 24 is the standout.</li>
+          <li><b>Elite TE or wait.</b> Bowers/McBride, or nothing until Warren and Fannin around the 7th. The middle is the trap.</li>
+          <li><b>Fade receiving backs.</b> They catch at half a receiver's rate here. Buy early-down and goal-line workloads.</li>
+          <li><b>Last four rounds are young keepers only.</b> Round-based cost means a 13th-round breakout is a 13th-round keeper. No veteran depth, no handcuffs.</li>
+        </ol>
+      </div>
+
+      <div class="panel live">
+        <h3>During the draft</h3>
+        <p><b>Sort: VONA</b> ranks the whole board live against what survives to your next pick. <b>Teams</b> shows every rival's unfilled slots &mdash; before each pick, count how many teams ahead of you still need a quarterback.</p>
+        <p class="rule">QBs left in the top 20 &minus; teams ahead of you who still need one &nbsp;&le;&nbsp; 2 &nbsp;&rarr;&nbsp; take a QB now.</p>
+      </div>
+
+    </div>
   </section>
 
   <details class="setup">
@@ -362,7 +458,7 @@ function needFactor(pos){
 const avail=()=>{const t=taken();return POOL.filter(p=>!t.has(p.n));};
 function bestAt(pos,pickNo,pool){
   let best=null;
-  for(const p of pool) if(p.p===pos && p.adp>=pickNo+CUSHION && (!best||p.pts>best.pts)) best=p;
+  for(const p of pool) if(p.p===pos && p.pts!=null && p.adp>=pickNo+CUSHION && (!best||p.pts>best.pts)) best=p;
   return best;
 }
 function state(){
@@ -385,6 +481,7 @@ function computeVona(){
     return cache[k];
   };
   for(const p of pool){
+    if(p.d){ p._vona=-Infinity; p._need=0; p._reach=false; continue; }   // no projection, no advice
     const a=c1!=null ? p.pts-base(p.p,c1) : 0;
     const b=c2!=null ? (p.pts-base(p.p,c2))*0.5 : 0;
     p._raw=a+b;
@@ -446,6 +543,8 @@ function render(){
     document.getElementById("rec-sub").textContent="";
   }
 
+  const q=(document.getElementById("find").value||"").trim().toLowerCase();
+
   // ----- overall VONA ranking (across all four positions) -----
   const ranked=[...pool].filter(p=>p._reach).sort((a,b)=>b._vona-a._vona);
   const vonaRank=new Map(ranked.map((p,i)=>[p.n,i+1]));
@@ -454,31 +553,31 @@ function render(){
   // The dot answers "will he still be here when I pick again?" — so if it is our
   // turn right now, that means surviving to compare1, not to this very pick.
   const survivePick = st.isMine ? st.compare1 : st.target;
-  const q=(document.getElementById("find").value||"").trim().toLowerCase();
   const cols=document.getElementById("cols");
   cols.innerHTML="";
   for(const pos of ["QB","RB","WR","TE"]){
-    let list=pool.filter(p=>p.p===pos);
-    const bestId=list.reduce((a,b)=>!a||b._vona>a._vona?b:a,null);
+    const valued=pool.filter(p=>p.p===pos&&!p.d);
+    const bestId=valued.reduce((a,b)=>!a||b._vona>a._vona?b:a,null);
+    let list=q ? pool.filter(p=>p.p===pos) : valued;
     list=list.sort((a,b)=> S.sort==="vona" ? b._vona-a._vona : b.v-a.v);
     if(q) list=list.filter(p=>p.n.toLowerCase().includes(q));
-    list=list.slice(0,40);
+    list=list.slice(0,q?60:40);
 
     const col=document.createElement("section");
     col.className="col"; col.dataset.p=pos;
-    col.innerHTML=`<header><h2>${pos}</h2><span class="cnt">${pool.filter(p=>p.p===pos).length} left</span></header>`;
+    col.innerHTML=`<header><h2>${pos}</h2><span class="cnt">${valued.length} left</span></header>`;
     const box=document.createElement("div"); box.className="list";
     let prevTier=null;
     for(const p of list){
       const b=document.createElement("button");
       b.type="button";
-      b.className="row "+tone(p,survivePick)+(p===bestId?" best":"")+(prevTier!==null&&p.tr!==prevTier?" tierbreak":"");
+      b.className="row "+(p.d?"depth ":"")+tone(p,survivePick)+(p===bestId?" best":"")+(prevTier!==null&&p.tr!==prevTier?" tierbreak":"");
       prevTier=p.tr;
       b.innerHTML=
         `<span class="dot"></span>`+
-        `<span class="nm">${S.sort==="vona"&&vonaRank.has(p.n)?`<span class="rk ${vonaRank.get(p.n)<=5?"top":""}">#${vonaRank.get(p.n)}</span>`:""}${p.n}${injTag(p)}<span class="meta">${p.t}${p.b?" · bye "+p.b:""} · adp ${p.adp.toFixed(0)} · t${p.tr}</span></span>`+
-        `<span class="vona">${p._vona>0?"+":""}${p._vona.toFixed(0)}</span>`+
-        `<span class="val">${p.v}</span>`;
+        `<span class="nm">${S.sort==="vona"&&vonaRank.has(p.n)?`<span class="rk ${vonaRank.get(p.n)<=5?"top":""}">#${vonaRank.get(p.n)}</span>`:""}${p.n}${injTag(p)}<span class="meta">${p.t}${p.b?" · bye "+p.b:""}${p.d?" · no projection":" · adp "+p.adp.toFixed(0)+" · t"+p.tr}</span></span>`+
+        `<span class="vona">${p.d?"":(p._vona>0?"+":"")+p._vona.toFixed(0)}</span>`+
+        `<span class="val">${p.d?"—":p.v}</span>`;
       b.title=`Draft ${p.n} to ${st.isMine?"your team":teamName(slotOnClock(st.cur))}`;
       b.addEventListener("click",()=>draft(p));
       box.appendChild(b);
