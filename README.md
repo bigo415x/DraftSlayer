@@ -16,6 +16,16 @@ it tells you **what to pick right now** and why.
 - **Colored dots** answer "will he still be there when I pick again?"
   green = should last, amber = coin flip, red = gone.
 - **Your roster** fills the real lineup (QB / RB / RB / WR / WR / TE / FLEX / SUPERFLEX + 6 bench).
+
+Three tabs:
+
+| Tab | What it shows |
+|---|---|
+| **Make a pick** | Four position columns, the recommendation banner, your roster |
+| **Draft board** | The full snake grid, round by round, filling in as picks land. Your column is outlined |
+| **Teams** | All 12 rosters by slot, each with the starting spots it still needs |
+
+Team names are editable under **League setup & team names** and persist with the draft.
 - Everything persists in `localStorage`, so a refresh mid-draft costs nothing.
   `Undo` steps back one pick; `Reset` clears the draft.
 

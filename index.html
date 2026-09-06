@@ -36,6 +36,7 @@
   --qb-w:#7FA9DF1A; --rb-w:#68C2981A; --wr-w:#D9A55C1A; --te-w:#C08FC01A;
 }
 *{box-sizing:border-box}
+[hidden]{display:none!important}  /* display:grid on .main would otherwise beat it */
 html,body{margin:0}
 body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.4;padding:16px 14px 50px}
 .wrap{max-width:1500px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
@@ -139,6 +140,53 @@ details.setup summary{font-family:var(--disp);font-size:12px;letter-spacing:.11e
 .legend{display:flex;flex-wrap:wrap;gap:14px;font-size:12px;color:var(--ink-3);align-items:center}
 .legend span{display:flex;align-items:center;gap:5px}
 .legend i{width:8px;height:8px;border-radius:50%;display:inline-block}
+/* ---- tabs ---- */
+.tabs{display:flex;gap:0;border-bottom:2px solid var(--ink)}
+.tab{
+  font-family:var(--disp);font-weight:600;font-size:14px;letter-spacing:.1em;text-transform:uppercase;
+  background:none;border:1px solid var(--rule-hard);border-bottom:0;color:var(--ink-3);
+  padding:8px 18px;margin-right:4px;position:relative;top:1px;
+}
+.tab.on{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.tab:hover:not(.on){color:var(--ink);background:var(--card2)}
+.panel h3 .hint{font-family:var(--body);font-size:12px;letter-spacing:0;text-transform:none;color:var(--ink-3);font-weight:400}
+
+/* ---- draft board grid ---- */
+.gridwrap{overflow-x:auto}
+table.grid{border-collapse:collapse;width:100%;font-size:12.5px}
+table.grid th,table.grid td{border:1px solid var(--rule);padding:4px 7px;text-align:left;vertical-align:top;white-space:nowrap}
+table.grid thead th{
+  font-family:var(--disp);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--ink-2);background:var(--card2);position:sticky;top:0;z-index:2;
+}
+table.grid th.rnd{
+  font-family:var(--mono);font-size:11px;color:var(--ink-3);background:var(--card2);
+  position:sticky;left:0;z-index:1;text-align:center;
+}
+table.grid td .pn{display:block;font-weight:500;overflow:hidden;text-overflow:ellipsis;max-width:132px}
+table.grid td .pm{display:block;font-family:var(--mono);font-size:9.5px;color:var(--ink-3)}
+table.grid td.empty{color:var(--ink-3)}
+table.grid td.now{background:var(--card2);box-shadow:inset 0 0 0 2px var(--hot)}
+table.grid col.mine,table.grid td.mineCol{background:var(--qb-w)}
+table.grid th.mineCol{box-shadow:inset 0 -3px 0 var(--hot)}
+td.p-QB{border-left:3px solid var(--qb)} td.p-RB{border-left:3px solid var(--rb)}
+td.p-WR{border-left:3px solid var(--wr)} td.p-TE{border-left:3px solid var(--te)}
+
+/* ---- teams ---- */
+.teams{display:grid;grid-template-columns:repeat(auto-fill,minmax(232px,1fr));gap:12px}
+.tcard{border:1px solid var(--rule-hard);background:var(--card)}
+.tcard.mine{border-color:var(--hot);border-width:2px}
+.tcard h4{
+  font-family:var(--disp);font-weight:700;font-size:14px;letter-spacing:.07em;text-transform:uppercase;
+  margin:0;padding:7px 10px;border-bottom:1px solid var(--rule-hard);display:flex;gap:7px;align-items:baseline;
+}
+.tcard h4 .n{margin-left:auto;font-family:var(--mono);font-size:10.5px;color:var(--ink-3);letter-spacing:0}
+.tcard .need{padding:5px 10px;border-bottom:1px solid var(--rule);font-family:var(--mono);font-size:10px;color:var(--ink-3);letter-spacing:.04em}
+.tcard .need b{color:var(--hot);font-weight:600}
+.nameedit{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:7px;padding:4px 12px 13px}
+.nameedit label{flex-direction:row;align-items:center;gap:6px}
+.nameedit input{width:100%;font-family:var(--body);font-size:13px}
+.nameedit .sl{font-family:var(--mono);font-size:10px;color:var(--ink-3);min-width:16px}
 .fine{font-size:12px;color:var(--ink-3);line-height:1.5;border-top:1px solid var(--rule);padding-top:10px}
 </style>
 </head>
@@ -172,7 +220,13 @@ details.setup summary{font-family:var(--disp);font-size:12px;letter-spacing:.11e
     </div>
   </div>
 
-  <div class="main">
+  <nav class="tabs" role="tablist">
+    <button class="tab on" data-tab="pick" role="tab" aria-selected="true">Make a pick</button>
+    <button class="tab" data-tab="board" role="tab" aria-selected="false">Draft board</button>
+    <button class="tab" data-tab="teams" role="tab" aria-selected="false">Teams</button>
+  </nav>
+
+  <div class="main" id="tab-pick">
     <div>
       <div class="cols" id="cols"></div>
       <p class="legend" style="margin-top:11px">
@@ -188,16 +242,29 @@ details.setup summary{font-family:var(--disp);font-size:12px;letter-spacing:.11e
         <h3>Your roster</h3>
         <div id="roster"></div>
       </div>
-      <details class="setup">
-        <summary>League setup</summary>
-        <div class="in">
-          <label>Teams<input id="s-teams" type="number" min="4" max="20" value="12"></label>
-          <label>My slot<input id="s-slot" type="number" min="1" max="20" value="7"></label>
-          <label>Rounds<input id="s-rounds" type="number" min="1" max="30" value="14"></label>
-        </div>
-      </details>
     </div>
   </div>
+
+  <section id="tab-board" hidden>
+    <div class="panel">
+      <h3>Draft board <span class="hint">— live, snake order. Your column is outlined.</span></h3>
+      <div class="gridwrap"><table class="grid" id="grid"></table></div>
+    </div>
+  </section>
+
+  <section id="tab-teams" hidden>
+    <div class="teams" id="teams"></div>
+  </section>
+
+  <details class="setup">
+    <summary>League setup &amp; team names</summary>
+    <div class="in">
+      <label>Teams<input id="s-teams" type="number" min="4" max="20" value="12"></label>
+      <label>My slot<input id="s-slot" type="number" min="1" max="20" value="7"></label>
+      <label>Rounds<input id="s-rounds" type="number" min="1" max="30" value="14"></label>
+    </div>
+    <div class="nameedit" id="nameedit"></div>
+  </details>
 
   <p class="fine">
     <b>VAL</b> is VBD from your configured DraftSheets_2026 — superflex on, WR 1.0 / TE 1.5 / RB 0.5 per catch.
@@ -220,8 +287,12 @@ const SLOTS=[
 ];
 const BENCH=6, CUSHION=8, KEY="draftslayer.v2";
 
-let S={teams:12,slot:7,rounds:14,picks:[]};
+let S={teams:12,slot:7,rounds:14,picks:[],names:[]};
 try{const raw=localStorage.getItem(KEY); if(raw) S=Object.assign(S,JSON.parse(raw));}catch(e){}
+function teamName(slot){
+  const n=(S.names||[])[slot-1];
+  return (n&&n.trim())?n.trim():"Team "+slot;
+}
 const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}};
 
 const byName=new Map(POOL.map(p=>[p.n,p]));
@@ -245,9 +316,10 @@ function slotOnClock(overall){
 const label=o=>{const t=S.teams;return `${Math.floor((o-1)/t)+1}.${String((o-1)%t+1).padStart(2,"0")}`;};
 
 /* ---------- roster ---------- */
-function fillRoster(){
+function fillRoster(slot){
+  if(slot===undefined) slot=S.slot;
   const filled=SLOTS.map(s=>({...s,player:null})), bench=[];
-  for(const pick of S.picks.filter(p=>p.slot===S.slot)){
+  for(const pick of S.picks.filter(p=>p.slot===slot)){
     const pl=byName.get(pick.n); if(!pl) continue;
     const s=filled.find(f=>!f.player&&f.accepts.includes(pl.p));
     if(s) s.player=pl; else bench.push(pl);
@@ -320,7 +392,7 @@ function render(){
 
   document.getElementById("b-pick").textContent  = done?"—":label(st.cur);
   document.getElementById("b-ovr").textContent   = done?"done":st.cur;
-  document.getElementById("b-clock").textContent = done?"Draft over":(st.isMine?"YOU":"Team "+slotOnClock(st.cur));
+  document.getElementById("b-clock").textContent = done?"Draft over":(st.isMine?"YOU":teamName(slotOnClock(st.cur)));
   document.getElementById("b-mine").textContent  = st.target?label(st.target):"—";
   document.getElementById("b-away").textContent  = st.target?Math.max(0,st.target-st.cur):"—";
 
@@ -384,7 +456,7 @@ function render(){
         `<span class="nm">${p.n}<span class="meta">${p.t}${p.b?" · bye "+p.b:""} · adp ${p.adp.toFixed(0)} · t${p.tr}</span></span>`+
         `<span class="vona">${p._vona>0?"+":""}${p._vona.toFixed(0)}</span>`+
         `<span class="val">${p.v}</span>`;
-      b.title=`Draft ${p.n} to ${st.isMine?"your team":"Team "+slotOnClock(st.cur)}`;
+      b.title=`Draft ${p.n} to ${st.isMine?"your team":teamName(slotOnClock(st.cur))}`;
       b.addEventListener("click",()=>draft(p));
       box.appendChild(b);
     }
@@ -403,6 +475,80 @@ function render(){
   };
   filled.forEach(f=>line(f.id,f.player));
   for(let i=0;i<BENCH;i++) line("BN"+(i+1),bench[i],"bench");
+
+  renderGrid(st);
+  renderTeams();
+  renderNameEditor();
+}
+
+/* ---------- draft board grid ---------- */
+function renderGrid(st){
+  const t=S.teams, g=document.getElementById("grid");
+  const picked=new Map(S.picks.map(p=>[p.ovr,p]));
+  let html="<colgroup><col>"+Array.from({length:t},(_,i)=>
+      `<col class="${i+1===S.slot?"mine":""}">`).join("")+"</colgroup>";
+  html+="<thead><tr><th class='rnd'>RD</th>"+Array.from({length:t},(_,i)=>
+      `<th class="${i+1===S.slot?"mineCol":""}">${teamName(i+1)}</th>`).join("")+"</tr></thead><tbody>";
+  for(let r=1;r<=S.rounds;r++){
+    html+=`<tr><th class="rnd">${r}</th>`;
+    for(let s=1;s<=t;s++){
+      const ovr=overallFor(r,s), pk=picked.get(ovr);
+      const pl=pk?byName.get(pk.n):null;
+      const cls=[pl?"p-"+pl.p:"empty", s===S.slot?"mineCol":"", ovr===st.cur?"now":""]
+                 .filter(Boolean).join(" ");
+      html+=`<td class="${cls}">`+(pl
+        ? `<span class="pn">${pl.n}</span><span class="pm">${pl.p} · ${pl.t} · ${label(ovr)}</span>`
+        : `<span class="pm">${label(ovr)}</span>`)+`</td>`;
+    }
+    html+="</tr>";
+  }
+  g.innerHTML=html+"</tbody>";
+}
+
+/* ---------- all teams ---------- */
+function renderTeams(){
+  const box=document.getElementById("teams");
+  box.innerHTML="";
+  for(let s=1;s<=S.teams;s++){
+    const {filled,bench}=fillRoster(s);
+    const need=filled.filter(f=>!f.player).map(f=>f.id);
+    const card=document.createElement("div");
+    card.className="tcard"+(s===S.slot?" mine":"");
+    let h=`<h4>${teamName(s)}${s===S.slot?' <span class="n" style="margin:0;color:var(--hot)">YOU</span>':""}<span class="n">${filled.filter(f=>f.player).length+bench.length} picks</span></h4>`;
+    h+=`<div class="need">${need.length?"NEEDS <b>"+need.join(" · ")+"</b>":"STARTERS FULL"}</div>`;
+    for(const f of filled){
+      h+=`<div class="slot${f.player?"":" empty"}"><span class="lab">${f.id}</span>`+
+         `<span class="who">${f.player?f.player.n:"—"}</span></div>`;
+    }
+    bench.forEach((b,i)=>{
+      h+=`<div class="slot bench"><span class="lab">BN${i+1}</span><span class="who">${b.n}</span></div>`;
+    });
+    card.innerHTML=h;
+    box.appendChild(card);
+  }
+}
+
+/* ---------- team name editor ---------- */
+let nameEditorBuilt=false;
+function renderNameEditor(){
+  if(nameEditorBuilt) return;
+  const host=document.getElementById("nameedit");
+  if(!host) return;
+  host.innerHTML="";
+  for(let s=1;s<=S.teams;s++){
+    const l=document.createElement("label");
+    l.innerHTML=`<span class="sl">${s}</span>`;
+    const i=document.createElement("input");
+    i.type="text"; i.value=(S.names||[])[s-1]||""; i.placeholder="Team "+s;
+    i.addEventListener("input",()=>{
+      S.names=S.names||[]; S.names[s-1]=i.value; save();
+      renderGrid(state()); renderTeams();
+      document.getElementById("b-clock").textContent =
+        state().isMine?"YOU":teamName(slotOnClock(state().cur));
+    });
+    l.appendChild(i); host.appendChild(l);
+  }
+  nameEditorBuilt=true;
 }
 
 function draft(p){
@@ -419,8 +565,18 @@ document.getElementById("find").addEventListener("input",render);
 for(const [id,key] of [["s-teams","teams"],["s-slot","slot"],["s-rounds","rounds"]]){
   const el=document.getElementById(id);
   el.value=S[key];
-  el.addEventListener("change",()=>{S[key]=Math.max(1,parseInt(el.value)||S[key]);save();render();});
+  el.addEventListener("change",()=>{S[key]=Math.max(1,parseInt(el.value)||S[key]);nameEditorBuilt=false;save();render();});
 }
+document.querySelectorAll(".tab").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    document.querySelectorAll(".tab").forEach(b=>{
+      const on=b===btn;
+      b.classList.toggle("on",on);
+      b.setAttribute("aria-selected",on?"true":"false");
+      document.getElementById("tab-"+b.dataset.tab).hidden=!on;
+    });
+  });
+});
 render();
 </script>
 </body>
