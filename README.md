@@ -49,6 +49,11 @@ so a block of same-coloured rows *is* a tier, and the moment the colour steps do
 can see without reading a number. Players inside one tier are near-interchangeable; the drop
 *between* tiers is what costs you, so the last player in a tier is the one worth reaching for.
 
+The three players the recommendation names are **outlined in the columns with matching role
+chips** — red `TAKE` for the pick, amber `WAIT` for what you get instead if you pass, cyan `ALT`
+for the best option at another position. Tier tint tells you *which tier*; these tell you *which
+player*, so you can find the name from the banner without reading down the list.
+
 VONA is set larger than VAL and turns red when positive, because it is the number you act on.
 Player names quoted in the recommendation carry the same tier tint they have on the board, so the
 banner and the columns read as one thing.
