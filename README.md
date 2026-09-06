@@ -44,9 +44,17 @@ Each column is headed `Player | VONA | VAL`.
 So `Josh Allen +68 138` reads: he is 138 points above a replacement QB, and taking him now rather
 than at your next pick gains you 68.
 
-**Tier chips** (`T1`, `T2`, …) take each column's own colour and fade as the tier deepens. Players
-inside one tier are near-interchangeable — the drop *between* tiers is what actually costs you, so
-the last player in a tier is the one worth reaching half a round for.
+**The whole row is tinted by tier**, in that column's own colour, fading as the tier deepens —
+so a block of same-coloured rows *is* a tier, and the moment the colour steps down is a cliff you
+can see without reading a number. Players inside one tier are near-interchangeable; the drop
+*between* tiers is what costs you, so the last player in a tier is the one worth reaching for.
+
+VONA is set larger than VAL and turns red when positive, because it is the number you act on.
+Player names quoted in the recommendation carry the same tier tint they have on the board, so the
+banner and the columns read as one thing.
+
+Hover any row for the full picture: projection, VAL, VONA, 2025 production and snap share, who he
+backs up, and the injury note.
 
 ## The numbers
 
