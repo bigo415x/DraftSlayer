@@ -12,7 +12,7 @@
   --paper:#E9EBE6; --card:#F7F8F5; --card2:#E2E5DF;
   --ink:#14181C; --ink-2:#4A5157; --ink-3:#767D82;
   --rule:#C7CCC3; --rule-hard:#A9B0A6;
-  --hot:#C8102E; --go:#2E6B4F; --wait:#B07A16;
+  --hot:#C8102E; --go:#2E6B4F; --wait:#B07A16; --alt:#0E6E8C;
   --qb:#1B4FA8; --rb:#12854F; --wr:#C2700A; --te:#93359F;
   --qb-w:#1B4FA81F; --rb-w:#12854F1F; --wr-w:#C2700A1F; --te-w:#93359F1F;
   --disp:"Barlow Condensed","Arial Narrow",Helvetica,sans-serif;
@@ -23,7 +23,7 @@
   --paper:#15171A; --card:#1D2024; --card2:#25292E;
   --ink:#E6E8E3; --ink-2:#A7AEB3; --ink-3:#7C848A;
   --rule:#333A40; --rule-hard:#4A535A;
-  --hot:#FF5A6E; --go:#68C298; --wait:#E0AC4A;
+  --hot:#FF5A6E; --go:#68C298; --wait:#E0AC4A; --alt:#4FD3EE;
   --qb:#6FB2FF; --rb:#3FD89A; --wr:#FFAE3C; --te:#E087F0;
   --qb-w:#6FB2FF26; --rb-w:#3FD89A26; --wr-w:#FFAE3C26; --te-w:#E087F026;
 }}
@@ -31,7 +31,7 @@
   --paper:#15171A; --card:#1D2024; --card2:#25292E;
   --ink:#E6E8E3; --ink-2:#A7AEB3; --ink-3:#7C848A;
   --rule:#333A40; --rule-hard:#4A535A;
-  --hot:#FF5A6E; --go:#68C298; --wait:#E0AC4A;
+  --hot:#FF5A6E; --go:#68C298; --wait:#E0AC4A; --alt:#4FD3EE;
   --qb:#6FB2FF; --rb:#3FD89A; --wr:#FFAE3C; --te:#E087F0;
   --qb-w:#6FB2FF26; --rb-w:#3FD89A26; --wr-w:#FFAE3C26; --te-w:#E087F026;
 }
@@ -179,6 +179,13 @@ button{font-family:var(--body);cursor:pointer}
 .row .val.cont{color:var(--wait)}
 .row .val.est{color:var(--ink-2);font-style:italic}
 .row .val{font-family:var(--mono);font-size:11.5px;font-weight:500;font-variant-numeric:tabular-nums;min-width:24px;text-align:right;color:var(--ink-3)}
+.row.mk{outline:2px solid var(--mk);outline-offset:-2px;box-shadow:inset 5px 0 0 var(--mk)}
+.mk-top{--mk:var(--hot)} .mk-fall{--mk:var(--wait)} .mk-alt{--mk:var(--alt)}
+.rolechip{
+  font-family:var(--disp);font-size:9px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;
+  background:var(--mk);color:#fff;padding:1px 5px;border-radius:2px;margin-left:6px;vertical-align:1px;
+}
+.tt.mk{outline:2px solid var(--mk);outline-offset:1px;border-radius:3px}
 .row.best{box-shadow:inset 5px 0 0 var(--hot)}
 .row.best .nm{font-weight:600}
 .row.tierbreak{border-bottom:2px solid var(--rule-hard)}
@@ -352,6 +359,9 @@ td.p-WR{border-left:3px solid var(--wr)} td.p-TE{border-left:3px solid var(--te)
         <span><i style="background:var(--go)"></i> should last to your next pick</span>
         <span><i style="background:var(--wait)"></i> coin flip</span>
         <span><i style="background:var(--hot)"></i> will be gone</span>
+        <span style="--mk:var(--hot)"><span class="rolechip" style="margin-left:0">Take</span> the recommendation</span>
+        <span style="--mk:var(--wait)"><span class="rolechip" style="margin-left:0">Wait</span> what you get instead if you pass</span>
+        <span style="--mk:var(--alt)"><span class="rolechip" style="margin-left:0">Alt</span> best option at another position</span>
         <span style="--pc:var(--ink-2)"><span class="tc tc1">T1</span><span class="tc tc3">T3</span><span class="tc tc6">T6</span> tier — inside one, players are near-interchangeable; the drop between them is what costs you</span>
         <span><span class="val est" style="font-family:var(--mono);font-size:11px">123</span> estimated from Sleeper projections</span>
         <span><span class="inj Q">Q</span> questionable &nbsp;<span class="inj OUT">OUT</span> out / IR — ESPN, 2026-09-05</span>
@@ -486,7 +496,12 @@ const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}};
 
 const byName=new Map(POOL.map(p=>[p.n,p]));
 const POSC={QB:"var(--qb)",RB:"var(--rb)",WR:"var(--wr)",TE:"var(--te)"};
-const tint=p=>`<span class="tt tt${p.tr?Math.min(p.tr,6):6}" style="--pc:${POSC[p.p]||"var(--ink-2)"}">${p.n}</span>`;
+const ROLE={top:["TAKE","mk-top"],fall:["WAIT","mk-fall"],alt:["ALT","mk-alt"]};
+const tint=(p,role)=>{
+  const r=role?ROLE[role]:null;
+  return `<span class="tt tt${p.tr?Math.min(p.tr,6):6}${r?" mk "+r[1]:""}" style="--pc:${POSC[p.p]||"var(--ink-2)"}">`+
+         `${p.n}${r?`<span class="rolechip">${r[0]}</span>`:""}</span>`;
+};
 const injTag=p=>p.inj?`<span class="inj ${p.inj}" title="${(p.injn||p.inj).replace(/"/g,"&quot;")}">${p.inj}</span>`:"";
 const taken=()=>new Set(S.picks.map(x=>x.n));
 
@@ -592,23 +607,27 @@ function render(){
   // ----- recommendation -----
   const cands=pool.filter(p=>p._reach).sort((a,b)=>b._vona-a._vona);
   const top=cands[0], rec=document.getElementById("rec");
+  const marks=new Map();
   if(top&&!done){
     rec.classList.toggle("idle",!st.isMine);
     document.getElementById("rec-tag").textContent = st.isMine?"Take":"Plan";
     document.getElementById("rec-who").innerHTML =
-      `${tint(top)}${injTag(top)}<span class="pos">${top.p} · ${top.t}${top.b?" · bye "+top.b:""}${top.tr?" · tier "+top.tr:""}</span>`;
+      `${tint(top,"top")}${injTag(top)}<span class="pos">${top.p} · ${top.t}${top.b?" · bye "+top.b:""}${top.tr?" · tier "+top.tr:""}</span>`;
     const alt=cands.find(p=>p.p!==top.p);
     const fall=bestAt(top.p,st.compare1??9999,pool);
+    marks.set(top.n,"top");
+    if(fall) marks.set(fall.n,"fall");
+    if(alt&&!marks.has(alt.n)) marks.set(alt.n,"alt");
     const why=[];
     why.push(st.isMine
       ? `It is your pick.`
       : `Projection for <b>${label(st.target)}</b>, ${Math.max(0,st.target-st.cur)} picks away.`);
     why.push(fall
-      ? `Wait and the best ${top.p} likely left is ${tint(fall)} — ${top.pts-fall.pts} fewer projected points.`
+      ? `Wait and the best ${top.p} likely left is ${tint(fall,"fall")} — ${top.pts-fall.pts} fewer projected points.`
       : `Nothing at ${top.p} projects to survive that long.`);
     if(top._need<1) why.push(`Discounted to ${Math.round(top._need*100)}% — ${top.p} only fits a flex slot or your bench now.`);
     if(top.inj) why.push(`<b>${top.inj}</b>${top.injn?" — "+top.injn:""}`);
-    if(alt) why.push(`Next best is ${tint(alt)} (${alt.p}, VONA ${alt._vona.toFixed(0)}).`);
+    if(alt) why.push(`Next best is ${tint(alt,"alt")} (${alt.p}, VONA ${alt._vona.toFixed(0)}).`);
     document.getElementById("rec-why").innerHTML = why.join(" ");
     document.getElementById("rec-vona").textContent = top._vona.toFixed(0);
     document.getElementById("rec-sub").textContent  = `VAL ${top.v} · ${top.pts} pts · ADP ${top.adp.toFixed(0)}`;
@@ -652,11 +671,12 @@ function render(){
     for(const p of list){
       const b=document.createElement("button");
       b.type="button";
-      b.className="row "+(p.tr?"tr"+Math.min(p.tr,6)+" ":"")+(p.v==null?"depth ":"")+tone(p,survivePick)+(p===bestId?" best":"")+(prevTier!==null&&p.tr!==prevTier?" tierbreak":"");
+      const mk=marks.get(p.n);
+      b.className="row "+(p.tr?"tr"+Math.min(p.tr,6)+" ":"")+(p.v==null?"depth ":"")+tone(p,survivePick)+(mk?" mk mk-"+mk:"")+(p===bestId&&!mk?" best":"")+(prevTier!==null&&p.tr!==prevTier?" tierbreak":"");
       prevTier=p.tr;
       b.innerHTML=
         `<span class="dot"></span>`+
-        `<span class="nm">${S.sort==="vona"&&vonaRank.has(p.n)?`<span class="rk ${vonaRank.get(p.n)<=5?"top":""}">#${vonaRank.get(p.n)}</span>`:""}${p.n}${injTag(p)}<span class="meta">${p.tr?`<span class="tc tc${Math.min(p.tr,6)}" title="Tier ${p.tr} at ${p.p}">T${p.tr}</span>`:""}${p.t}${p.b?"·"+p.b:""}${p.adp<260?" · adp "+p.adp.toFixed(0):""}${p.e?" · est":""}${p.d?" · no proj":""}${(p.e||p.d)&&p.p25!=null?" · ’25 "+p.p25+"pt"+(p.sn!=null?"/"+p.sn+"%":""):""}${(p.e||p.d)&&p.bk?" · behind "+p.bk:""}</span></span>`+
+        `<span class="nm">${mk?`<span class="rolechip" style="margin-left:0;margin-right:6px">${ROLE[mk][0]}</span>`:""}${S.sort==="vona"&&vonaRank.has(p.n)?`<span class="rk ${vonaRank.get(p.n)<=5?"top":""}">#${vonaRank.get(p.n)}</span>`:""}${p.n}${injTag(p)}<span class="meta">${p.tr?`<span class="tc tc${Math.min(p.tr,6)}" title="Tier ${p.tr} at ${p.p}">T${p.tr}</span>`:""}${p.t}${p.b?"·"+p.b:""}${p.adp<260?" · adp "+p.adp.toFixed(0):""}${p.e?" · est":""}${p.d?" · no proj":""}${(p.e||p.d)&&p.p25!=null?" · ’25 "+p.p25+"pt"+(p.sn!=null?"/"+p.sn+"%":""):""}${(p.e||p.d)&&p.bk?" · behind "+p.bk:""}</span></span>`+
         `<span class="vona${p._vona>0?" gain":""}">${p.pts==null?"":(p._vona>0?"+":"")+p._vona.toFixed(0)}</span>`+
         `<span class="val${p.e?" est":""}${p.d?" cont":""}" title="${p.d?(p.bkv!=null?`No projection. Inherits a ${p.bkv}-value role if ${p.bk} misses time.`:"No projection from either source."):(p.e?"Estimated from Sleeper 2026 projections, scored with this league’s rules and calibrated to the DraftSheets scale.":"DraftSheets projection, this league’s scoring.")}">${p.v!=null?p.v:(p.bkv!=null?"→"+p.bkv:"—")}</span>`;
       b.title=[
