@@ -59,9 +59,31 @@ are odds, not facts.
 | `index.html` | The whole app — no build step, no dependencies |
 | `data.js` | 814 players — 231 projected (value, points, tier, bye, superflex ADP) plus 583 depth players from Sleeper's roster feed |
 
+## Live sync
+
+`Sync: ON` polls Sleeper every 5 seconds for the league's draft — it discovers the draft id
+itself, so a recreated draft is picked up automatically. Picks, team count and round count come
+straight from Sleeper; once the commissioner sets the draft order it also fills in **every team
+name and your own draft slot**.
+
+Manual clicking is disabled while sync is on, because Sleeper owns the pick list. Toggle it off
+and the board reverts to click-to-draft with whatever it last pulled.
+
+Sync needs a real origin, so it works on the **GitHub Pages site**, not inside a Claude Artifact
+(artifact CSP blocks outbound fetch).
+
 ## Unprojected players and contingent value
 
-Depth players carry no VBD of their own — inventing one would be fiction. Instead each shows
+Every rostered player now carries a value. The 231 from DraftSheets are the spine. The other 575
+are **estimated**: Sleeper's own 2026 projections, scored with this league's exact rules, then
+calibrated onto the DraftSheets scale by the per-position median ratio (QB 0.89, RB 0.94, WR 0.85,
+TE 0.82 — Sleeper projects 18 games and runs optimistic). They render in italic so you always know
+which number you are looking at, and 8 players with no projection from either source show `—`.
+
+Each also carries **2025 actual points under this league's scoring**, games played and snap share,
+so a name you don't recognize comes with evidence rather than a shrug.
+
+Backups additionally show
 his **depth-chart role and the starter he sits behind**, and where that starter is projected,
 an inherited value: `→44`.
 

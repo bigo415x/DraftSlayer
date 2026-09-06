@@ -59,6 +59,16 @@ button{font-family:var(--body);cursor:pointer}
 }
 .tools button:hover{background:var(--ink);color:var(--paper);border-color:var(--ink)}
 
+.syncbar{
+  border:1px solid var(--rule-hard);border-left:4px solid var(--go);background:var(--card);
+  padding:7px 13px;font-family:var(--mono);font-size:12px;color:var(--ink-2);
+  display:flex;flex-wrap:wrap;gap:6px 18px;align-items:baseline;
+}
+.syncbar.bad{border-left-color:var(--hot)}
+.syncbar b{color:var(--ink);font-weight:600}
+.syncbar .warn{color:var(--hot)}
+#sync.on{background:var(--go);color:#fff;border-color:var(--go)}
+
 /* ---- recommendation ---- */
 .rec{
   border:2px solid var(--hot);background:var(--card);
@@ -121,6 +131,7 @@ button{font-family:var(--body);cursor:pointer}
 .row .vona{font-family:var(--mono);font-size:12.5px;font-weight:600;font-variant-numeric:tabular-nums;color:var(--ink-2)}
 .row.depth .nm{color:var(--ink-2)}
 .row .val.cont{color:var(--wait)}
+.row .val.est{color:var(--ink-2);font-style:italic}
 .row .val{font-family:var(--mono);font-size:12.5px;font-weight:600;font-variant-numeric:tabular-nums;min-width:32px;text-align:right}
 .row.best{background:var(--card2);box-shadow:inset 3px 0 0 var(--hot)}
 .row.best .nm{font-weight:600}
@@ -247,11 +258,14 @@ td.p-WR{border-left:3px solid var(--wr)} td.p-TE{border-left:3px solid var(--te)
     <div class="cell spacer"></div>
     <div class="tools">
       <input id="find" placeholder="Find player…" aria-label="Find player">
+      <button id="sync" title="Poll Sleeper for live draft picks">Sync: OFF</button>
       <button id="sortby" title="Switch what the four columns are ordered by">Sort: VALUE</button>
       <button id="undo">Undo</button>
       <button id="reset">Reset</button>
     </div>
   </div>
+
+  <div class="syncbar" id="syncbar" hidden></div>
 
   <div class="rec" id="rec">
     <div class="tag" id="rec-tag">Take</div>
@@ -280,7 +294,7 @@ td.p-WR{border-left:3px solid var(--wr)} td.p-TE{border-left:3px solid var(--te)
         <span><i style="background:var(--go)"></i> should last to your next pick</span>
         <span><i style="background:var(--wait)"></i> coin flip</span>
         <span><i style="background:var(--hot)"></i> will be gone</span>
-        <span><span class="val cont" style="font-family:var(--mono);font-size:11px">→44</span> value inherited if the starter misses time</span>
+        <span><span class="val est" style="font-family:var(--mono);font-size:11px">123</span> estimated from Sleeper projections</span>
         <span><span class="inj Q">Q</span> questionable &nbsp;<span class="inj OUT">OUT</span> out / IR — ESPN, 2026-09-05</span>
         <span style="margin-left:auto">Click a player to draft him to whoever is on the clock.</span>
       </p>
@@ -437,7 +451,7 @@ function fillRoster(slot){
   if(slot===undefined) slot=S.slot;
   const filled=SLOTS.map(s=>({...s,player:null})), bench=[];
   for(const pick of S.picks.filter(p=>p.slot===slot)){
-    const pl=byName.get(pick.n); if(!pl) continue;
+    const pl=byName.get(pick.n)||{n:pick.n,p:pick.xp||"?",t:pick.xt||"",v:null}; if(!pl.p) continue;
     const s=filled.find(f=>!f.player&&f.accepts.includes(pl.p));
     if(s) s.player=pl; else bench.push(pl);
   }
@@ -484,7 +498,7 @@ function computeVona(){
     return cache[k];
   };
   for(const p of pool){
-    if(p.d){ p._vona=-Infinity; p._need=0; p._reach=false; continue; }   // no projection, no advice
+    if(p.pts==null){ p._vona=-Infinity; p._need=0; p._reach=false; continue; }   // nothing to project
     const a=c1!=null ? p.pts-base(p.p,c1) : 0;
     const b=c2!=null ? (p.pts-base(p.p,c2))*0.5 : 0;
     p._raw=a+b;
@@ -559,7 +573,7 @@ function render(){
   const cols=document.getElementById("cols");
   cols.innerHTML="";
   for(const pos of ["QB","RB","WR","TE"]){
-    const valued=pool.filter(p=>p.p===pos&&!p.d);
+    const valued=pool.filter(p=>p.p===pos&&p.v!=null);
     const bestId=valued.reduce((a,b)=>!a||b._vona>a._vona?b:a,null);
     let list=q ? pool.filter(p=>p.p===pos) : valued;
     list=list.sort((a,b)=> S.sort==="vona" ? b._vona-a._vona : b.v-a.v);
@@ -574,13 +588,13 @@ function render(){
     for(const p of list){
       const b=document.createElement("button");
       b.type="button";
-      b.className="row "+(p.d?"depth ":"")+tone(p,survivePick)+(p===bestId?" best":"")+(prevTier!==null&&p.tr!==prevTier?" tierbreak":"");
+      b.className="row "+(p.v==null?"depth ":"")+tone(p,survivePick)+(p===bestId?" best":"")+(prevTier!==null&&p.tr!==prevTier?" tierbreak":"");
       prevTier=p.tr;
       b.innerHTML=
         `<span class="dot"></span>`+
-        `<span class="nm">${S.sort==="vona"&&vonaRank.has(p.n)?`<span class="rk ${vonaRank.get(p.n)<=5?"top":""}">#${vonaRank.get(p.n)}</span>`:""}${p.n}${injTag(p)}<span class="meta">${p.t}${p.b?" · bye "+p.b:""}${p.d?"":" · adp "+p.adp.toFixed(0)+" · t"+p.tr}${p.bk?" · "+p.p+(p.dc||"")+" behind "+p.bk+(p.bki?" ("+p.bki+")":""):(p.d?" · no projection":"")}</span></span>`+
+        `<span class="nm">${S.sort==="vona"&&vonaRank.has(p.n)?`<span class="rk ${vonaRank.get(p.n)<=5?"top":""}">#${vonaRank.get(p.n)}</span>`:""}${p.n}${injTag(p)}<span class="meta">${p.t}${p.b?" · bye "+p.b:""}${p.adp<260?" · adp "+p.adp.toFixed(0):""}${p.tr?" · t"+p.tr:""}${p.e?" · est":""}${p.d?" · no projection":""}${p.p25!=null?" · ’25 "+p.p25+"pt"+(p.sn!=null?"/"+p.sn+"%":""):""}${p.bk?" · behind "+p.bk+(p.bki?" ("+p.bki+")":""):""}</span></span>`+
         `<span class="vona">${p.d?"":(p._vona>0?"+":"")+p._vona.toFixed(0)}</span>`+
-        `<span class="val${p.d&&p.bkv!=null?" cont":""}" ${p.d&&p.bkv!=null?`title="No projection of his own. Inherits a ${p.bkv}-value role if ${p.bk} misses time."`:""}>${p.d?(p.bkv!=null?"→"+p.bkv:"—"):p.v}</span>`;
+        `<span class="val${p.e?" est":""}${p.d?" cont":""}" title="${p.d?(p.bkv!=null?`No projection. Inherits a ${p.bkv}-value role if ${p.bk} misses time.`:"No projection from either source."):(p.e?"Estimated from Sleeper 2026 projections, scored with this league’s rules and calibrated to the DraftSheets scale.":"DraftSheets projection, this league’s scoring.")}">${p.v!=null?p.v:(p.bkv!=null?"→"+p.bkv:"—")}</span>`;
       b.title=`Draft ${p.n} to ${st.isMine?"your team":teamName(slotOnClock(st.cur))}`;
       b.addEventListener("click",()=>draft(p));
       box.appendChild(b);
@@ -603,6 +617,7 @@ function render(){
 
   renderGrid(st);
   renderTeams();
+  syncBar();
   renderNameEditor();
 }
 
@@ -618,7 +633,7 @@ function renderGrid(st){
     html+=`<tr><th class="rnd">${r}</th>`;
     for(let s=1;s<=t;s++){
       const ovr=overallFor(r,s), pk=picked.get(ovr);
-      const pl=pk?byName.get(pk.n):null;
+      const pl=pk?(byName.get(pk.n)||{n:pk.n,p:pk.xp||"?",t:pk.xt||""}):null;
       const cls=[pl?"p-"+pl.p:"empty", s===S.slot?"mineCol":"", ovr===st.cur?"now":""]
                  .filter(Boolean).join(" ");
       html+=`<td class="${cls}">`+(pl
@@ -683,6 +698,7 @@ function renderNameEditor(){
 }
 
 function draft(p){
+  if(SYNC.on) return;               // Sleeper owns the pick list while sync is on
   const st=state();
   if(st.cur>S.teams*S.rounds) return;
   S.picks.push({n:p.n,slot:slotOnClock(st.cur),ovr:st.cur});
@@ -705,6 +721,89 @@ for(const [id,key] of [["s-teams","teams"],["s-slot","slot"],["s-rounds","rounds
   el.value=S[key];
   el.addEventListener("change",()=>{S[key]=Math.max(1,parseInt(el.value)||S[key]);nameEditorBuilt=false;save();render();});
 }
+
+/* ---------- live sync with the Sleeper draft ---------- */
+const API="https://api.sleeper.app/v1";
+const byId=new Map(POOL.filter(p=>p.id).map(p=>[p.id,p]));
+let SYNC={on:false,draftId:null,timer:null,last:null,err:null,status:null,n:0};
+
+function syncBar(){
+  const el=document.getElementById("syncbar");
+  if(!SYNC.on){ el.hidden=true; return; }
+  el.hidden=false;
+  el.classList.toggle("bad",!!SYNC.err);
+  const bits=[];
+  bits.push(SYNC.err ? `<span class="warn">sync error: ${SYNC.err}</span>`
+                     : `<span>live sync <b>on</b></span>`);
+  if(SYNC.draftId) bits.push(`draft <b>${SYNC.draftId}</b>${SYNC.status?" ("+SYNC.status+")":""}`);
+  bits.push(`picks <b>${SYNC.n}</b>`);
+  if(SYNC.last) bits.push(`updated ${SYNC.last.toLocaleTimeString()}`);
+  bits.push(`<span>clicking is disabled while sync is on</span>`);
+  el.innerHTML=bits.join("");
+}
+
+function applyDraftMeta(d){
+  SYNC.status=d.status||null;
+  const s=d.settings||{};
+  if(s.teams) S.teams=s.teams;
+  if(s.rounds) S.rounds=s.rounds;
+  if(d.draft_order && typeof MANAGERS==="object"){
+    S.names=S.names||[];
+    for(const [uid,slot] of Object.entries(d.draft_order)){
+      if(MANAGERS[uid]) S.names[slot-1]=MANAGERS[uid];
+      if(uid===MY_USER_ID) S.slot=slot;
+    }
+    nameEditorBuilt=false;
+    for(const [id,key] of [["s-teams","teams"],["s-slot","slot"],["s-rounds","rounds"]]){
+      const el=document.getElementById(id); if(el) el.value=S[key];
+    }
+  }
+  save();
+}
+
+function applyPicks(picks){
+  const list=[...picks].sort((a,b)=>(a.pick_no||0)-(b.pick_no||0));
+  S.picks=list.map(pk=>{
+    const p=byId.get(String(pk.player_id));
+    const md=pk.metadata||{};
+    const name=p ? p.n : [md.first_name,md.last_name].filter(Boolean).join(" ").trim() || ("Pick "+pk.pick_no);
+    return {n:name, slot:pk.draft_slot, ovr:pk.pick_no, ...(p?{}:{x:1,xp:md.position||"?",xt:md.team||""})};
+  });
+  SYNC.n=S.picks.length;
+  save();
+}
+
+async function syncOnce(){
+  try{
+    if(!SYNC.draftId){
+      const ds=await (await fetch(`${API}/league/${LEAGUE_ID}/drafts`)).json();
+      if(!Array.isArray(ds)||!ds.length) throw new Error("no draft on this league yet");
+      ds.sort((a,b)=>(b.created||0)-(a.created||0));
+      SYNC.draftId=ds[0].draft_id;
+    }
+    const d=await (await fetch(`${API}/draft/${SYNC.draftId}`)).json();
+    applyDraftMeta(d);
+    const picks=await (await fetch(`${API}/draft/${SYNC.draftId}/picks`)).json();
+    applyPicks(Array.isArray(picks)?picks:[]);
+    SYNC.err=null; SYNC.last=new Date();
+  }catch(e){
+    SYNC.err=(e&&e.message)||"request failed";
+    SYNC.draftId=null;             // re-discover next tick, the id changes if the draft is recreated
+  }
+  render();
+}
+function setSync(on){
+  SYNC.on=on;
+  const b=document.getElementById("sync");
+  b.textContent="Sync: "+(on?"ON":"OFF");
+  b.classList.toggle("on",on);
+  if(SYNC.timer){clearInterval(SYNC.timer);SYNC.timer=null;}
+  if(on){ syncOnce(); SYNC.timer=setInterval(syncOnce,5000); }
+  else { SYNC.err=null; SYNC.draftId=null; }
+  render();
+}
+document.getElementById("sync").addEventListener("click",()=>setSync(!SYNC.on));
+
 document.querySelectorAll(".tab").forEach(btn=>{
   btn.addEventListener("click",()=>{
     document.querySelectorAll(".tab").forEach(b=>{
