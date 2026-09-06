@@ -92,8 +92,8 @@ are odds, not facts.
 ## Keeper economics
 
 **2 keepers max. At most one from rounds 2–6. Never two early. No first-rounders. Keeping a
-player forfeits that round's pick next year. A waiver pickup costs a round-10 pick. Two
-consecutive years maximum, then he returns to the pool.**
+player forfeits that round's pick next year. A waiver pickup costs a round-10 pick. You hold a
+player for three seasons — the draft year plus two keeper years — then he returns to the pool.**
 
 A keeper therefore costs exactly what the forfeited pick is worth:
 
@@ -110,8 +110,9 @@ Two consequences that are easy to miss:
 - **The waiver rule is the best rule in the league.** A midseason breakout won on FAAB costs a
   round-10 pick to keep — effectively free. The keeper race runs all season, so spend FAAB on
   ascending players like they are draft picks.
-- **Age barely matters.** Two years is the entire window, so a 28-year-old in his prime is as
-  good a keeper as a 23-year-old. Target production in 2026 and 2027, not birthdays.
+- **Age matters again on the late swings.** You hold a player through 2028, so a 23-year-old who
+  breaks out is 25 in his final keeper year while a 30-year-old is 32 and fading. It is not a
+  dynasty premium, but between two players with a similar 2026 outlook, take the younger one.
 
 ## Live sync
 
