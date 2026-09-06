@@ -59,6 +59,18 @@ are odds, not facts.
 | `index.html` | The whole app — no build step, no dependencies |
 | `data.js` | 814 players — 231 projected (value, points, tier, bye, superflex ADP) plus 583 depth players from Sleeper's roster feed |
 
+## Unprojected players and contingent value
+
+Depth players carry no VBD of their own — inventing one would be fiction. Instead each shows
+his **depth-chart role and the starter he sits behind**, and where that starter is projected,
+an inherited value: `→44`.
+
+> `Jake Tonges · SF · TE2 behind George Kittle (Q) · →44`
+
+He is worth nothing as a bench tight end and roughly a 44-value starter the day Kittle misses a
+game. Those are two different numbers and the board shows both rather than averaging them into
+one misleading figure. 262 players carry a named starter ahead of them.
+
 ## Depth players
 
 The 231 projected players come from DraftSheets. Everyone else on an NFL roster at QB/RB/WR/TE

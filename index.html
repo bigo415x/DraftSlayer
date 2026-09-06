@@ -120,6 +120,7 @@ button{font-family:var(--body);cursor:pointer}
 .row .meta{font-family:var(--mono);font-size:9.5px;color:var(--ink-3);display:block;letter-spacing:.02em}
 .row .vona{font-family:var(--mono);font-size:12.5px;font-weight:600;font-variant-numeric:tabular-nums;color:var(--ink-2)}
 .row.depth .nm{color:var(--ink-2)}
+.row .val.cont{color:var(--wait)}
 .row .val{font-family:var(--mono);font-size:12.5px;font-weight:600;font-variant-numeric:tabular-nums;min-width:32px;text-align:right}
 .row.best{background:var(--card2);box-shadow:inset 3px 0 0 var(--hot)}
 .row.best .nm{font-weight:600}
@@ -279,6 +280,7 @@ td.p-WR{border-left:3px solid var(--wr)} td.p-TE{border-left:3px solid var(--te)
         <span><i style="background:var(--go)"></i> should last to your next pick</span>
         <span><i style="background:var(--wait)"></i> coin flip</span>
         <span><i style="background:var(--hot)"></i> will be gone</span>
+        <span><span class="val cont" style="font-family:var(--mono);font-size:11px">→44</span> value inherited if the starter misses time</span>
         <span><span class="inj Q">Q</span> questionable &nbsp;<span class="inj OUT">OUT</span> out / IR — ESPN, 2026-09-05</span>
         <span style="margin-left:auto">Click a player to draft him to whoever is on the clock.</span>
       </p>
@@ -377,6 +379,7 @@ td.p-WR{border-left:3px solid var(--wr)} td.p-TE{border-left:3px solid var(--te)
       <label>Rounds<input id="s-rounds" type="number" min="1" max="30" value="14"></label>
     </div>
     <div class="nameedit" id="nameedit"></div>
+    <datalist id="managers"></datalist>
   </details>
 
   <p class="fine">
@@ -575,9 +578,9 @@ function render(){
       prevTier=p.tr;
       b.innerHTML=
         `<span class="dot"></span>`+
-        `<span class="nm">${S.sort==="vona"&&vonaRank.has(p.n)?`<span class="rk ${vonaRank.get(p.n)<=5?"top":""}">#${vonaRank.get(p.n)}</span>`:""}${p.n}${injTag(p)}<span class="meta">${p.t}${p.b?" · bye "+p.b:""}${p.d?" · no projection":" · adp "+p.adp.toFixed(0)+" · t"+p.tr}</span></span>`+
+        `<span class="nm">${S.sort==="vona"&&vonaRank.has(p.n)?`<span class="rk ${vonaRank.get(p.n)<=5?"top":""}">#${vonaRank.get(p.n)}</span>`:""}${p.n}${injTag(p)}<span class="meta">${p.t}${p.b?" · bye "+p.b:""}${p.d?"":" · adp "+p.adp.toFixed(0)+" · t"+p.tr}${p.bk?" · "+p.p+(p.dc||"")+" behind "+p.bk+(p.bki?" ("+p.bki+")":""):(p.d?" · no projection":"")}</span></span>`+
         `<span class="vona">${p.d?"":(p._vona>0?"+":"")+p._vona.toFixed(0)}</span>`+
-        `<span class="val">${p.d?"—":p.v}</span>`;
+        `<span class="val${p.d&&p.bkv!=null?" cont":""}" ${p.d&&p.bkv!=null?`title="No projection of his own. Inherits a ${p.bkv}-value role if ${p.bk} misses time."`:""}>${p.d?(p.bkv!=null?"→"+p.bkv:"—"):p.v}</span>`;
       b.title=`Draft ${p.n} to ${st.isMine?"your team":teamName(slotOnClock(st.cur))}`;
       b.addEventListener("click",()=>draft(p));
       box.appendChild(b);
@@ -651,6 +654,11 @@ function renderTeams(){
 }
 
 /* ---------- team name editor ---------- */
+try{
+  const dl=document.getElementById("managers");
+  if(dl&&typeof MANAGERS!=="undefined"&&!dl.children.length)
+    dl.innerHTML=MANAGERS.map(m=>`<option value="${m}"></option>`).join("");
+}catch(e){}
 let nameEditorBuilt=false;
 function renderNameEditor(){
   if(nameEditorBuilt) return;
@@ -662,6 +670,7 @@ function renderNameEditor(){
     l.innerHTML=`<span class="sl">${s}</span>`;
     const i=document.createElement("input");
     i.type="text"; i.value=(S.names||[])[s-1]||""; i.placeholder="Team "+s;
+    i.setAttribute("list","managers");
     i.addEventListener("input",()=>{
       S.names=S.names||[]; S.names[s-1]=i.value; save();
       renderGrid(state()); renderTeams();
