@@ -117,6 +117,16 @@ button{font-family:var(--body);cursor:pointer}
 .row.best{background:var(--card2);box-shadow:inset 3px 0 0 var(--hot)}
 .row.best .nm{font-weight:600}
 .row.tierbreak{border-bottom:2px solid var(--rule-hard)}
+.inj{
+  font-family:var(--mono);font-size:8.5px;font-weight:600;letter-spacing:.04em;
+  padding:1px 3px;border-radius:2px;margin-left:5px;vertical-align:1px;white-space:nowrap;
+}
+.inj.Q{background:var(--wait);color:#1a1300}
+.inj.D{background:var(--wait);color:#1a1300}
+.inj.OUT{background:var(--hot);color:#fff}
+.inj.IR{background:var(--hot);color:#fff}
+.inj.SUSP{background:var(--ink-2);color:var(--paper)}
+.rec .who .inj{font-size:12px;padding:2px 6px;vertical-align:6px}
 
 /* ---- roster ---- */
 .side{display:flex;flex-direction:column;gap:12px;position:sticky;top:14px}
@@ -233,6 +243,7 @@ td.p-WR{border-left:3px solid var(--wr)} td.p-TE{border-left:3px solid var(--te)
         <span><i style="background:var(--go)"></i> should last to your next pick</span>
         <span><i style="background:var(--wait)"></i> coin flip</span>
         <span><i style="background:var(--hot)"></i> will be gone</span>
+        <span><span class="inj Q">Q</span> questionable &nbsp;<span class="inj OUT">OUT</span> out / IR — ESPN, 2026-09-05</span>
         <span style="margin-left:auto">Click a player to draft him to whoever is on the clock.</span>
       </p>
     </div>
@@ -296,6 +307,7 @@ function teamName(slot){
 const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}};
 
 const byName=new Map(POOL.map(p=>[p.n,p]));
+const injTag=p=>p.inj?`<span class="inj ${p.inj}" title="${(p.injn||p.inj).replace(/"/g,"&quot;")}">${p.inj}</span>`:"";
 const taken=()=>new Set(S.picks.map(x=>x.n));
 
 /* ---------- draft math ---------- */
@@ -403,7 +415,7 @@ function render(){
     rec.classList.toggle("idle",!st.isMine);
     document.getElementById("rec-tag").textContent = st.isMine?"Take":"Plan";
     document.getElementById("rec-who").innerHTML =
-      `${top.n}<span class="pos">${top.p} · ${top.t}${top.b?" · bye "+top.b:""}</span>`;
+      `${top.n}${injTag(top)}<span class="pos">${top.p} · ${top.t}${top.b?" · bye "+top.b:""}</span>`;
     const alt=cands.find(p=>p.p!==top.p);
     const fall=bestAt(top.p,st.compare1??9999,pool);
     const why=[];
@@ -414,6 +426,7 @@ function render(){
       ? `Wait and the best ${top.p} likely left is <b>${fall.n}</b> — ${top.pts-fall.pts} fewer projected points.`
       : `Nothing at ${top.p} projects to survive that long.`);
     if(top._need<1) why.push(`Discounted to ${Math.round(top._need*100)}% — ${top.p} only fits a flex slot or your bench now.`);
+    if(top.inj) why.push(`<b>${top.inj}</b>${top.injn?" — "+top.injn:""}`);
     if(alt) why.push(`Next best is <b>${alt.n}</b> (${alt.p}, VONA ${alt._vona.toFixed(0)}).`);
     document.getElementById("rec-why").innerHTML = why.join(" ");
     document.getElementById("rec-vona").textContent = top._vona.toFixed(0);
@@ -453,7 +466,7 @@ function render(){
       prevTier=p.tr;
       b.innerHTML=
         `<span class="dot"></span>`+
-        `<span class="nm">${p.n}<span class="meta">${p.t}${p.b?" · bye "+p.b:""} · adp ${p.adp.toFixed(0)} · t${p.tr}</span></span>`+
+        `<span class="nm">${p.n}${injTag(p)}<span class="meta">${p.t}${p.b?" · bye "+p.b:""} · adp ${p.adp.toFixed(0)} · t${p.tr}</span></span>`+
         `<span class="vona">${p._vona>0?"+":""}${p._vona.toFixed(0)}</span>`+
         `<span class="val">${p.v}</span>`;
       b.title=`Draft ${p.n} to ${st.isMine?"your team":teamName(slotOnClock(st.cur))}`;
@@ -497,7 +510,7 @@ function renderGrid(st){
       const cls=[pl?"p-"+pl.p:"empty", s===S.slot?"mineCol":"", ovr===st.cur?"now":""]
                  .filter(Boolean).join(" ");
       html+=`<td class="${cls}">`+(pl
-        ? `<span class="pn">${pl.n}</span><span class="pm">${pl.p} · ${pl.t} · ${label(ovr)}</span>`
+        ? `<span class="pn">${pl.n}${injTag(pl)}</span><span class="pm">${pl.p} · ${pl.t} · ${label(ovr)}</span>`
         : `<span class="pm">${label(ovr)}</span>`)+`</td>`;
     }
     html+="</tr>";
@@ -518,10 +531,10 @@ function renderTeams(){
     h+=`<div class="need">${need.length?"NEEDS <b>"+need.join(" · ")+"</b>":"STARTERS FULL"}</div>`;
     for(const f of filled){
       h+=`<div class="slot${f.player?"":" empty"}"><span class="lab">${f.id}</span>`+
-         `<span class="who">${f.player?f.player.n:"—"}</span></div>`;
+         `<span class="who">${f.player?f.player.n+injTag(f.player):"—"}</span></div>`;
     }
     bench.forEach((b,i)=>{
-      h+=`<div class="slot bench"><span class="lab">BN${i+1}</span><span class="who">${b.n}</span></div>`;
+      h+=`<div class="slot bench"><span class="lab">BN${i+1}</span><span class="who">${b.n}${injTag(b)}</span></div>`;
     });
     card.innerHTML=h;
     box.appendChild(card);

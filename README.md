@@ -42,6 +42,11 @@ comparison against the pick after that, then scaled by what your roster still ne
 It answers "how much do I lose by waiting?" rather than "who is best?", which is the
 only question that matters when you're on the clock.
 
+**Injury designations** (Q / OUT / IR / SUSP) come from ESPN's public injuries feed, pulled
+2026-09-05. Hover a badge for the beat-writer note behind it. They are displayed, not baked
+into the value — a questionable tag is information for you, not a number the model should
+quietly apply on your behalf.
+
 Availability uses **Sleeper 2QB ADP**. ADP is a crowd average, not a promise — the dots
 are odds, not facts.
 
@@ -50,7 +55,7 @@ are odds, not facts.
 | File | What it is |
 |---|---|
 | `index.html` | The whole app — no build step, no dependencies |
-| `data.js` | 231 players: value, projected points, tier, team, bye, superflex ADP |
+| `data.js` | 231 players: value, projected points, tier, team, bye, superflex ADP, injury designation |
 
 ## Setup
 
