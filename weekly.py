@@ -9,6 +9,7 @@ schedule, and The QB List's "What We Saw" (last week) and "Sit/Start" (this
 week) articles filtered to your roster. Writes week.js; then commit and push.
 """
 import json, re, sys, subprocess, html, datetime, pathlib, collections
+import qblist
 
 HERE = pathlib.Path(__file__).parent
 LEAGUE = "1388733713705099264"
@@ -203,7 +204,9 @@ def main():
 
     # ---- The QB List ----
     wws, wws_url = qbl_series(f"what-we-saw-roundup-week-{last}") if last >= 1 else ({}, None)
-    ss, ss_url = qbl_series(f"sit-start-{SEASON}-week-{week}-reviewing-all-fantasy-relevant-players-in-every-game")
+    if last >= 1:
+        for k, v in qblist.late_games(get).items(): wws.setdefault(k, v)
+    ss, ss_url = qblist.sitstart(get, f"sit-start-{SEASON}-week-{week}-reviewing-all-fantasy-relevant-players-in-every-game")
     mine_n = {norm(r["n"]): r["n"] for r in roster}
     def mine_only(blocks): return {mine_n[norm(k)]: b for k, b in blocks.items() if norm(k) in mine_n}
 

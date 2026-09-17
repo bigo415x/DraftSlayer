@@ -60,6 +60,8 @@ tr.flip td.slot::after{content:"coin flip";display:block;color:var(--wait);font-
 .game .who b{color:var(--go)} .game .who i{color:var(--hot);font-style:normal}
 .wu{padding:10px 12px;border-bottom:1px solid var(--rule)}
 .wu:last-child{border-bottom:0}
+.verdict{font-family:var(--disp);font-size:11px;font-weight:700;letter-spacing:.12em;padding:2px 7px;border-radius:2px;color:#fff;background:var(--ink-3)}
+.verdict.START{background:var(--go)} .verdict.FLEX{background:var(--wait);color:#1a1300} .verdict.SIT,.verdict.BENCH{background:var(--hot)}
 .wu .line{font-family:var(--mono);font-size:12px;font-weight:600;margin:0 0 4px}
 .wu p{margin:0 0 6px;font-size:13.5px;color:var(--ink-2);line-height:1.5}
 .wu p:last-child{margin:0}
@@ -134,7 +136,13 @@ function writeups(obj,el,urlEl,label){
   $(el).innerHTML=ps.length?ps.map(([n,b])=>`<div class="wu"><p class="line">${b.line}</p>${b.paras.slice(0,3).map(p=>"<p>"+p+"</p>").join("")}</div>`).join(""):`<div class="empty">${label}</div>`;
 }
 writeups(W.wws,"wws","wwsurl","No write-ups matched your roster yet — the roundup usually posts Monday.");
-writeups(W.sitstart,"ss","ssurl","Sit/Start not parsed for this week yet — open the full article above.");
+(function(){
+  const o=W.sitstart, ps=Object.entries(o.players||{});
+  $("ssurl").innerHTML=o.url?`<a href="${o.url}" target="_blank" rel="noopener">full article ↗</a>`:"not published yet";
+  const order={START:0,FLEX:1,SIT:2,BENCH:2};
+  ps.sort((a,b)=>(order[a[1].verdict]??3)-(order[b[1].verdict]??3));
+  $("ss").innerHTML=ps.length?ps.map(([n,b])=>`<div class="wu"><p class="line"><span class="verdict ${b.verdict}">${b.verdict}</span> ${n}${b.tier?` <span class="m" style="display:inline">${b.tier}</span>`:""}</p>${b.note?"<p>"+b.note+"</p>":""}</div>`).join(""):`<div class="empty">Sit/Start usually posts Thursday — open the full article above.</div>`;
+})();
 $("down").innerHTML=(W.down||[]).map(d=>`<div class="down"><b>${d.starter}</b> (${d.team} ${d.pos}) is ${d.st} → backup <b>${d.backup}</b> is ${d.backup_rostered?"already rostered":"<span style='color:var(--go)'>a free agent</span>"}</div>`).join("");
 $("radar").innerHTML=["QB","RB","WR","TE"].map(pos=>`<section><h3>${pos}</h3><table>${(W.radar[pos]||[]).map(f=>`<tr><td><span class="pos ${f.p}">${f.p}</span>${f.n}${inj(f)}<span class="m">${f.t} · age ${f.age||"?"} · ${f.last} pts last wk · proj ${f.proj}</span></td><td class="num">${f.snap}%${f.rise!=null?` <span class="${f.rise>0?"rise":f.rise<0?"fall":""}">${f.rise>0?"+":""}${f.rise}</span>`:""}<span class="m">${f.tgt} tgt · ${f.car} car</span></td></tr>`).join("")}</table></section>`).join("");
 </script>

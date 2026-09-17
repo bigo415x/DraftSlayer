@@ -103,8 +103,14 @@ filtered to your roster). Panels: optimal lineup with coin flips flagged, games 
 your and your opponent's starters, the write-ups, and a waiver radar by snap share and targets
 plus any starter newly Out with his backup. Run Tuesday and Saturday, then push.
 
-Known gap: the Sit/Start article parse returned nothing for week 2 — its markup may differ from
-What We Saw. The page links the full article regardless.
+**It runs itself.** `.github/workflows/weekly.yml` rebuilds `week.js` and refreshes injuries on
+Tuesday, Thursday and Saturday mornings (Pacific) using the workflow's own `GITHUB_TOKEN`, commits
+the result, and Pages redeploys. No personal token is needed for the scheduled runs. To run it on
+demand: Actions tab → *Weekly update* → *Run workflow*.
+
+The QB List parsing lives in `qblist.py`: What We Saw anchors on the bold `Name (TM) vs. OPP:` stat
+line (roundup series sub-pages plus the standalone late-game posts); Sit/Start anchors on verdict
+lines like `Name: START, RB1` across one sub-page per game.
 
 ## Refreshing injuries
 
