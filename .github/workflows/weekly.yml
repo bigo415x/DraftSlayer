@@ -1,0 +1,48 @@
+name: Weekly update
+
+# Rebuilds week.js and refreshes injuries on a schedule, then commits the result.
+# Uses the workflow's own GITHUB_TOKEN — no personal access token involved.
+# GitHub Pages redeploys automatically on the push.
+
+on:
+  schedule:
+    # Cron is UTC. Pacific is UTC-7 (PDT) through early November, UTC-8 after.
+    - cron: "0 14 * * 2"   # Tuesday  7:00 AM PT — What We Saw is up, waivers have run
+    - cron: "0 14 * * 4"   # Thursday 7:00 AM PT — Sit/Start is up
+    - cron: "0 15 * * 6"   # Saturday 8:00 AM PT — final designations before Sunday
+  workflow_dispatch:       # "Run workflow" button in the Actions tab, any time
+
+permissions:
+  contents: write
+
+concurrency:
+  group: weekly-update
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Refresh injury designations
+        run: python refresh_injuries.py
+
+      - name: Build week.js
+        run: python weekly.py
+
+      - name: Commit if anything changed
+        run: |
+          git config user.name "weekly-bot"
+          git config user.email "weekly-bot@users.noreply.github.com"
+          git add data.js artifact.html week.js
+          if git diff --cached --quiet; then
+            echo "nothing changed"
+          else
+            git commit -m "Weekly update: $(date -u +'%Y-%m-%d %H:%M UTC')"
+            git push
+          fi
