@@ -36,10 +36,11 @@ jobs:
         run: python weekly.py
 
       - name: Commit if anything changed
+        # artifact.html is gitignored (a local build for the Claude artifact mirror); never add it here
         run: |
           git config user.name "weekly-bot"
           git config user.email "weekly-bot@users.noreply.github.com"
-          git add data.js artifact.html week.js
+          git add data.js week.js
           if git diff --cached --quiet; then
             echo "nothing changed"
           else
