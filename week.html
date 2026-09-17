@@ -47,12 +47,14 @@ td.slot{font-family:var(--disp);font-size:12px;letter-spacing:.08em;text-transfo
 .pos.QB{background:var(--qb)} .pos.RB{background:var(--rb)} .pos.WR{background:var(--wr)} .pos.TE{background:var(--te)}
 .m{font-family:var(--mono);font-size:10.5px;color:var(--ink-3);display:block}
 tr.flip td{background:color-mix(in srgb,var(--wait) 14%,transparent)}
-tr.flip td.slot::after{content:"coin flip";display:block;color:var(--wait);font-size:9.5px;letter-spacing:.1em}
+tr.flip td.slot::after{content:"coin flip · <3 pts";display:block;color:var(--wait);font-size:9.5px;letter-spacing:.1em}
 .alt{font-size:12.5px;color:var(--ink-2);margin-top:2px}
 .alt b{color:var(--ink)}
 .inj{font-family:var(--mono);font-size:9px;font-weight:600;padding:1px 4px;border-radius:2px;margin-left:5px;background:var(--wait);color:#1a1300}
 .inj.OUT,.inj.IR,.inj.Injured{background:var(--hot);color:#fff}
 .total td{font-family:var(--mono);font-weight:600;background:var(--card2)}
+tr.bench td{opacity:.85}
+.slothead{font-family:var(--disp);font-size:12px;letter-spacing:.11em;text-transform:uppercase;font-weight:700;padding:6px 12px;background:var(--card2);border-bottom:1px solid var(--rule);color:var(--ink-2)}
 .game{padding:8px 12px;border-bottom:1px solid var(--rule);display:grid;grid-template-columns:150px 1fr;gap:10px;font-size:13.5px}
 .game:last-child{border-bottom:0}
 .game .k{font-family:var(--mono);font-size:12px;font-weight:600}
@@ -60,6 +62,7 @@ tr.flip td.slot::after{content:"coin flip";display:block;color:var(--wait);font-
 .game .who b{color:var(--go)} .game .who i{color:var(--hot);font-style:normal}
 .wu{padding:10px 12px;border-bottom:1px solid var(--rule)}
 .wu:last-child{border-bottom:0}
+.verdict.sm{font-size:9px;padding:1px 5px;margin-left:5px;vertical-align:1px}
 .verdict{font-family:var(--disp);font-size:11px;font-weight:700;letter-spacing:.12em;padding:2px 7px;border-radius:2px;color:#fff;background:var(--ink-3)}
 .verdict.START{background:var(--go)} .verdict.FLEX{background:var(--wait);color:#1a1300} .verdict.SIT,.verdict.BENCH{background:var(--hot)}
 .wu .line{font-family:var(--mono);font-size:12px;font-weight:600;margin:0 0 4px}
@@ -106,7 +109,7 @@ tr.flip td.slot::after{content:"coin flip";display:block;color:var(--wait);font-
   </div>
 
   <div class="panel">
-    <h2>Waiver radar <span class="hint">free agents by last week's snap share and targets · Δ vs the week before</span></h2>
+    <h2>Waiver radar <span class="hint">% = share of his team's offensive snaps last week · Δ = change from the week before · tgt/car = targets and carries</span></h2>
     <div id="down"></div>
     <div class="radar" id="radar"></div>
   </div>
@@ -119,17 +122,35 @@ tr.flip td.slot::after{content:"coin flip";display:block;color:var(--wait);font-
 const W=WEEK, $=id=>document.getElementById(id);
 $("title").textContent="Week "+W.week; $("built").textContent="built "+W.built;
 $("oppline").textContent=W.opponent?"vs "+W.opponent:"";
+const SS=(W.sitstart&&W.sitstart.players)||{};
+const ss=p=>{const v=p&&SS[p.n];return v?`<span class="verdict sm ${v.verdict}" title="${(v.note||"").replace(/"/g,"&quot;")}">${v.verdict}${v.tier?" "+v.tier:""}</span>`:"";};
 const inj=p=>p&&p.inj?`<span class="inj ${(p.inj.st||"").split(" ")[0]}" title="${(p.inj.note||"").replace(/"/g,"&quot;")}">${p.inj.st}</span>`:"";
-const name=p=>p?`<span class="pos ${p.p}">${p.p}</span>${p.n}${inj(p)}<span class="m">${p.t} ${p.opp}${p.snap!=null?" · last wk "+p.last+" pts, "+p.snap+"% snaps, "+p.tgt+" tgt":""}</span>`:"—";
+const name=p=>p?`<span class="pos ${p.p}">${p.p}</span>${p.n}${inj(p)}${ss(p)}<span class="m">${p.t} ${p.opp}${p.snap!=null?" · last wk "+p.last+" pts, "+p.snap+"% snaps, "+p.tgt+" tgt":""}</span>`:"—";
 let tot=0, rows="<tr><th>Slot</th><th>Start</th><th>Proj</th></tr>";
 for(const l of W.lineup){
   if(l.pick) tot+=l.pick.proj;
   rows+=`<tr class="${l.flip?"flip":""}"><td class="slot">${l.slot}</td><td>${name(l.pick)}${l.flip&&l.alt?`<div class="alt">or <b>${l.alt.n}</b> ${l.alt.proj} — ${l.alt.opp}${l.alt.snap!=null?", "+l.alt.snap+"% snaps, "+l.alt.tgt+" tgt last wk":""}</div>`:""}</td><td class="num">${l.pick?l.pick.proj.toFixed(1):"—"}</td></tr>`;
 }
 rows+=`<tr class="total"><td class="slot">Total</td><td></td><td class="num">${tot.toFixed(1)}</td></tr>`;
+rows+=`<tr><th colspan="3" style="padding-top:10px">Bench</th></tr>`;
+for(const b of [...W.bench].sort((a,c)=>c.proj-a.proj)){
+  rows+=`<tr class="bench"><td class="slot">${b.opp==="BYE"?"bye":"bn"}</td><td>${name(b)}</td><td class="num">${b.proj.toFixed(1)}</td></tr>`;
+}
 $("lineup").innerHTML=rows;
-$("benchline").innerHTML="<b>Bench:</b> "+W.bench.map(b=>`${b.n} (${b.proj})${inj(b)}`).join(" · ");
-$("games").innerHTML=W.games.map(g=>`<div class="game"><div class="k">${g.game}<small>${g.kick?new Date(g.kick).toLocaleString([], {weekday:"short",hour:"numeric",minute:"2-digit"}):""}</small></div><div class="who">${g.mine.map(x=>"<b>"+x+"</b>").join(", ")}${g.mine.length&&g.theirs.length?" — ":""}${g.theirs.map(x=>"<i>"+x+"</i>").join(", ")}</div></div>`).join("")||`<div class="empty">no games found</div>`;
+$("benchline").hidden=true;
+const PT={timeZone:"America/Los_Angeles"};
+function slotOf(iso){
+  if(!iso) return "Unscheduled";
+  const d=new Date(iso), day=d.toLocaleString("en-US",{...PT,weekday:"long"}), hr=+d.toLocaleString("en-US",{...PT,hour:"numeric",hour12:false});
+  if(day==="Thursday") return "Thursday Night";
+  if(day==="Monday") return "Monday Night";
+  if(day==="Sunday") return hr<12?"Sunday Early":hr<17?"Sunday Late":"Sunday Night";
+  return day;
+}
+const ORDER=["Thursday Night","Friday","Saturday","Sunday Early","Sunday Late","Sunday Night","Monday Night","Unscheduled"];
+const bySlot={};
+for(const g of W.games){(bySlot[slotOf(g.kick)]??=[]).push(g);}
+$("games").innerHTML=ORDER.filter(s=>bySlot[s]).map(s=>`<div class="slothead">${s}</div>`+bySlot[s].sort((a,b)=>a.kick.localeCompare(b.kick)).map(g=>`<div class="game"><div class="k">${g.game}<small>${g.kick?new Date(g.kick).toLocaleString("en-US",{...PT,hour:"numeric",minute:"2-digit"})+" PT":""}</small></div><div class="who">${g.mine.map(x=>"<b>"+x+"</b>").join(", ")}${g.mine.length&&g.theirs.length?" — ":""}${g.theirs.map(x=>"<i>"+x+"</i>").join(", ")}</div></div>`).join("")).join("")||`<div class="empty">no games found</div>`;
 function writeups(obj,el,urlEl,label){
   const ps=Object.entries(obj.players||{});
   $(urlEl).innerHTML=obj.url?`<a href="${obj.url}" target="_blank" rel="noopener">full article ↗</a>`:"not published yet";
