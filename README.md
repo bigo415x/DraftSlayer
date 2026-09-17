@@ -90,6 +90,22 @@ qualify**. The `IR` button in the toolbar filters all four columns to exactly th
 ranked by value, and a drafted IR/Out player is parked in the roster's IR slot rather than
 eating a bench spot.
 
+## Weekly page (in-season)
+
+`week.html` replaces the draft board once the season starts. Build it with:
+
+    python weekly.py            # current NFL week
+    python weekly.py --week 3
+
+It writes `week.js` from Sleeper (roster, matchup, weekly projections, last week's stats), ESPN
+(injuries, schedule) and The QB List (last week's *What We Saw* and this week's *Sit/Start*,
+filtered to your roster). Panels: optimal lineup with coin flips flagged, games to watch with
+your and your opponent's starters, the write-ups, and a waiver radar by snap share and targets
+plus any starter newly Out with his backup. Run Tuesday and Saturday, then push.
+
+Known gap: the Sit/Start article parse returned nothing for week 2 — its markup may differ from
+What We Saw. The page links the full article regardless.
+
 ## Refreshing injuries
 
     python refresh_injuries.py            # update data.js and artifact.html

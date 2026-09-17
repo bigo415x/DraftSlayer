@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Loser Squad Weekly</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+:root{
+  --paper:#E9EBE6; --card:#F7F8F5; --card2:#E2E5DF; --ink:#14181C; --ink-2:#4A5157; --ink-3:#767D82;
+  --rule:#C7CCC3; --rule-hard:#A9B0A6; --hot:#C8102E; --go:#12854F; --wait:#B07A16;
+  --qb:#1B4FA8; --rb:#12854F; --wr:#C2700A; --te:#93359F;
+  --disp:"Barlow Condensed","Arial Narrow",sans-serif; --body:"Barlow","Helvetica Neue",Arial,sans-serif; --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#15171A; --card:#1D2024; --card2:#25292E; --ink:#E6E8E3; --ink-2:#A7AEB3; --ink-3:#7C848A;
+  --rule:#333A40; --rule-hard:#4A535A; --hot:#FF5A6E; --go:#3FD89A; --wait:#E0AC4A;
+  --qb:#6FB2FF; --rb:#3FD89A; --wr:#FFAE3C; --te:#E087F0;
+}}
+:root[data-theme="dark"]{
+  --paper:#15171A; --card:#1D2024; --card2:#25292E; --ink:#E6E8E3; --ink-2:#A7AEB3; --ink-3:#7C848A;
+  --rule:#333A40; --rule-hard:#4A535A; --hot:#FF5A6E; --go:#3FD89A; --wait:#E0AC4A;
+  --qb:#6FB2FF; --rb:#3FD89A; --wr:#FFAE3C; --te:#E087F0;
+}
+*{box-sizing:border-box} [hidden]{display:none!important}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.45;padding:16px 14px 50px}
+.wrap{max-width:1240px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
+.head{display:flex;flex-wrap:wrap;align-items:flex-end;gap:10px 22px;border-bottom:3px solid var(--ink);padding-bottom:10px}
+.head h1{font-family:var(--disp);font-weight:700;font-size:clamp(28px,4.5vw,40px);text-transform:uppercase;letter-spacing:.02em;margin:0;line-height:.95}
+.head .sub{font-family:var(--disp);font-size:15px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-2)}
+.head .meta{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--ink-3);text-align:right;line-height:1.6}
+.head a{color:var(--ink-2)}
+.grid2{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:16px;align-items:start}
+@media(max-width:960px){.grid2{grid-template-columns:1fr}}
+.panel{border:1px solid var(--rule-hard);background:var(--card)}
+.panel h2{font-family:var(--disp);font-weight:700;font-size:14px;letter-spacing:.12em;text-transform:uppercase;margin:0;padding:8px 12px;border-bottom:1px solid var(--rule-hard);display:flex;gap:10px;align-items:baseline}
+.panel h2 .hint{font-family:var(--body);font-size:12px;letter-spacing:0;text-transform:none;color:var(--ink-3);font-weight:400;margin-left:auto}
+table{border-collapse:collapse;width:100%}
+th,td{padding:6px 10px;border-bottom:1px solid var(--rule);text-align:left;vertical-align:top}
+th{font-family:var(--disp);font-size:11px;letter-spacing:.11em;text-transform:uppercase;color:var(--ink-3);font-weight:600}
+tr:last-child td{border-bottom:0}
+td.num{font-family:var(--mono);font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap}
+td.slot{font-family:var(--disp);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);font-weight:600;white-space:nowrap}
+.pos{font-family:var(--mono);font-size:10px;font-weight:600;padding:1px 4px;border-radius:2px;color:#fff;margin-right:6px}
+.pos.QB{background:var(--qb)} .pos.RB{background:var(--rb)} .pos.WR{background:var(--wr)} .pos.TE{background:var(--te)}
+.m{font-family:var(--mono);font-size:10.5px;color:var(--ink-3);display:block}
+tr.flip td{background:color-mix(in srgb,var(--wait) 14%,transparent)}
+tr.flip td.slot::after{content:"coin flip";display:block;color:var(--wait);font-size:9.5px;letter-spacing:.1em}
+.alt{font-size:12.5px;color:var(--ink-2);margin-top:2px}
+.alt b{color:var(--ink)}
+.inj{font-family:var(--mono);font-size:9px;font-weight:600;padding:1px 4px;border-radius:2px;margin-left:5px;background:var(--wait);color:#1a1300}
+.inj.OUT,.inj.IR,.inj.Injured{background:var(--hot);color:#fff}
+.total td{font-family:var(--mono);font-weight:600;background:var(--card2)}
+.game{padding:8px 12px;border-bottom:1px solid var(--rule);display:grid;grid-template-columns:150px 1fr;gap:10px;font-size:13.5px}
+.game:last-child{border-bottom:0}
+.game .k{font-family:var(--mono);font-size:12px;font-weight:600}
+.game .k small{display:block;font-weight:400;color:var(--ink-3);font-size:10px}
+.game .who b{color:var(--go)} .game .who i{color:var(--hot);font-style:normal}
+.wu{padding:10px 12px;border-bottom:1px solid var(--rule)}
+.wu:last-child{border-bottom:0}
+.wu .line{font-family:var(--mono);font-size:12px;font-weight:600;margin:0 0 4px}
+.wu p{margin:0 0 6px;font-size:13.5px;color:var(--ink-2);line-height:1.5}
+.wu p:last-child{margin:0}
+.radar{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:0}
+.radar section{border-right:1px solid var(--rule)} .radar section:last-child{border-right:0}
+.radar h3{font-family:var(--disp);font-size:13px;letter-spacing:.1em;text-transform:uppercase;margin:0;padding:6px 10px;background:var(--card2);border-bottom:1px solid var(--rule)}
+.rise{color:var(--go);font-weight:600} .fall{color:var(--hot)}
+.empty{padding:12px;color:var(--ink-3);font-size:13px}
+.down{padding:6px 12px;border-bottom:1px solid var(--rule);font-size:13.5px}
+.down b{color:var(--hot)}
+.fine{font-size:12px;color:var(--ink-3);border-top:1px solid var(--rule);padding-top:10px;line-height:1.5}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="head">
+    <div><div class="sub">Loser Squad · Superflex</div><h1 id="title">Week —</h1></div>
+    <div class="meta"><span id="built"></span><br><a href="index.html">draft board</a></div>
+  </div>
+
+  <div class="grid2">
+    <div class="panel">
+      <h2>Lineup <span class="hint" id="oppline"></span></h2>
+      <table id="lineup"></table>
+      <div class="empty" id="benchline"></div>
+    </div>
+    <div class="panel">
+      <h2>Games to watch <span class="hint">your starters · <i style="color:var(--hot);font-style:normal">theirs</i></span></h2>
+      <div id="games"></div>
+    </div>
+  </div>
+
+  <div class="grid2">
+    <div class="panel">
+      <h2>What We Saw <span class="hint" id="wwsurl"></span></h2>
+      <div id="wws"></div>
+    </div>
+    <div class="panel">
+      <h2>Sit / Start <span class="hint" id="ssurl"></span></h2>
+      <div id="ss"></div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2>Waiver radar <span class="hint">free agents by last week's snap share and targets · Δ vs the week before</span></h2>
+    <div id="down"></div>
+    <div class="radar" id="radar"></div>
+  </div>
+
+  <p class="fine">Projections are Sleeper's weekly numbers scored with this league's rules (WR 1.0 / TE 1.5 / RB 0.5 per catch, 4-pt pass TD, −1 INT). A coin flip is any slot decided by under 3 points — both options are shown with last week's usage so you can overrule. Designations from ESPN. Write-ups are The QB List's, filtered to your roster; the full articles are linked in each header.</p>
+</div>
+
+<script src="week.js"></script>
+<script>
+const W=WEEK, $=id=>document.getElementById(id);
+$("title").textContent="Week "+W.week; $("built").textContent="built "+W.built;
+$("oppline").textContent=W.opponent?"vs "+W.opponent:"";
+const inj=p=>p&&p.inj?`<span class="inj ${(p.inj.st||"").split(" ")[0]}" title="${(p.inj.note||"").replace(/"/g,"&quot;")}">${p.inj.st}</span>`:"";
+const name=p=>p?`<span class="pos ${p.p}">${p.p}</span>${p.n}${inj(p)}<span class="m">${p.t} ${p.opp}${p.snap!=null?" · last wk "+p.last+" pts, "+p.snap+"% snaps, "+p.tgt+" tgt":""}</span>`:"—";
+let tot=0, rows="<tr><th>Slot</th><th>Start</th><th>Proj</th></tr>";
+for(const l of W.lineup){
+  if(l.pick) tot+=l.pick.proj;
+  rows+=`<tr class="${l.flip?"flip":""}"><td class="slot">${l.slot}</td><td>${name(l.pick)}${l.flip&&l.alt?`<div class="alt">or <b>${l.alt.n}</b> ${l.alt.proj} — ${l.alt.opp}${l.alt.snap!=null?", "+l.alt.snap+"% snaps, "+l.alt.tgt+" tgt last wk":""}</div>`:""}</td><td class="num">${l.pick?l.pick.proj.toFixed(1):"—"}</td></tr>`;
+}
+rows+=`<tr class="total"><td class="slot">Total</td><td></td><td class="num">${tot.toFixed(1)}</td></tr>`;
+$("lineup").innerHTML=rows;
+$("benchline").innerHTML="<b>Bench:</b> "+W.bench.map(b=>`${b.n} (${b.proj})${inj(b)}`).join(" · ");
+$("games").innerHTML=W.games.map(g=>`<div class="game"><div class="k">${g.game}<small>${g.kick?new Date(g.kick).toLocaleString([], {weekday:"short",hour:"numeric",minute:"2-digit"}):""}</small></div><div class="who">${g.mine.map(x=>"<b>"+x+"</b>").join(", ")}${g.mine.length&&g.theirs.length?" — ":""}${g.theirs.map(x=>"<i>"+x+"</i>").join(", ")}</div></div>`).join("")||`<div class="empty">no games found</div>`;
+function writeups(obj,el,urlEl,label){
+  const ps=Object.entries(obj.players||{});
+  $(urlEl).innerHTML=obj.url?`<a href="${obj.url}" target="_blank" rel="noopener">full article ↗</a>`:"not published yet";
+  $(el).innerHTML=ps.length?ps.map(([n,b])=>`<div class="wu"><p class="line">${b.line}</p>${b.paras.slice(0,3).map(p=>"<p>"+p+"</p>").join("")}</div>`).join(""):`<div class="empty">${label}</div>`;
+}
+writeups(W.wws,"wws","wwsurl","No write-ups matched your roster yet — the roundup usually posts Monday.");
+writeups(W.sitstart,"ss","ssurl","Sit/Start not parsed for this week yet — open the full article above.");
+$("down").innerHTML=(W.down||[]).map(d=>`<div class="down"><b>${d.starter}</b> (${d.team} ${d.pos}) is ${d.st} → backup <b>${d.backup}</b> is ${d.backup_rostered?"already rostered":"<span style='color:var(--go)'>a free agent</span>"}</div>`).join("");
+$("radar").innerHTML=["QB","RB","WR","TE"].map(pos=>`<section><h3>${pos}</h3><table>${(W.radar[pos]||[]).map(f=>`<tr><td><span class="pos ${f.p}">${f.p}</span>${f.n}${inj(f)}<span class="m">${f.t} · age ${f.age||"?"} · ${f.last} pts last wk · proj ${f.proj}</span></td><td class="num">${f.snap}%${f.rise!=null?` <span class="${f.rise>0?"rise":f.rise<0?"fall":""}">${f.rise>0?"+":""}${f.rise}</span>`:""}<span class="m">${f.tgt} tgt · ${f.car} car</span></td></tr>`).join("")}</table></section>`).join("");
+</script>
+</body>
+</html>
