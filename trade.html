@@ -29,6 +29,8 @@ h2{font-size:20px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;
 .eyebrow{font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);font-weight:600}
 header{display:flex;flex-wrap:wrap;gap:14px 28px;align-items:flex-end;justify-content:space-between;margin-bottom:18px}
 header p{margin:6px 0 0;color:var(--muted);max-width:62ch}
+.sitenav a{color:var(--accent);text-decoration:none;border-bottom:1px solid currentColor}
+.sitenav a:hover{opacity:.8}
 .num{font-family:"IBM Plex Mono",ui-monospace,monospace;font-variant-numeric:tabular-nums}
 .method{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin:0 0 22px}
 .method div{background:var(--panel);border:1px solid var(--line);padding:12px 14px}
@@ -90,7 +92,7 @@ tr.tier td{border-top:2px solid var(--pc)}
     <h1>Loser Squad Trade Board</h1>
     <p id="sub"></p>
   </div>
-  <div class="eyebrow" id="built"></div>
+  <div class="eyebrow" style="text-align:right;line-height:1.8"><nav class="sitenav"><a href="week.html">Weekly</a> · <a href="index.html">Draft board</a></nav><span id="built"></span></div>
 </header>
 
 <section class="method" id="method"></section>
