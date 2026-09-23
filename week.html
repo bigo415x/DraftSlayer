@@ -65,6 +65,7 @@ tr.bench td{opacity:.85}
 .verdict.sm{font-size:9px;padding:1px 5px;margin-left:5px;vertical-align:1px}
 .verdict{font-family:var(--disp);font-size:11px;font-weight:700;letter-spacing:.12em;padding:2px 7px;border-radius:2px;color:#fff;background:var(--ink-3)}
 .verdict.START{background:var(--go)} .verdict.FLEX{background:var(--wait);color:#1a1300} .verdict.SIT,.verdict.BENCH{background:var(--hot)}
+.mscore{font-family:var(--mono);font-weight:700;font-size:13px;background:var(--card2);border:1px solid var(--rule-hard);border-radius:3px;padding:1px 6px;margin-right:2px}
 .wu .line{font-family:var(--mono);font-size:12px;font-weight:600;margin:0 0 4px}
 .wu p{margin:0 0 6px;font-size:13.5px;color:var(--ink-2);line-height:1.5}
 .wu p:last-child{margin:0}
@@ -106,6 +107,31 @@ tr.bench td{opacity:.85}
       <h2>Sit / Start <span class="hint" id="ssurl"></span></h2>
       <div id="ss"></div>
     </div>
+  </div>
+
+  <div class="panel">
+    <h2>WR matchup score <span class="hint">pilot, week 3 · DVP + scheme fit + CB personnel, gated by real volume · full reasoning on the doc linked below</span></h2>
+    <div id="matchup">
+      <div class="wu"><p class="line"><span class="mscore">29</span> <b>McLaurin</b> <span class="m" style="display:inline">vs. SEA</span> <span class="verdict sm">FLEX</span></p>
+        <p>SEA is the stingiest D against WRs in the NFL right now (#32) — the toughest matchup of the week, not the easiest. Jayden Daniels is OUT (dislocated elbow, same one as 2025) and Marcus Mariota starts. Still likely the right start — bench options are worse and Wk2 usage trended up (9 targets) — but go in with expectations lowered twice over.</p>
+      </div>
+      <div class="wu"><p class="line"><span class="mscore">45</span> <b>Jameson Williams</b> <span class="m" style="display:inline">vs. NYJ</span> <span class="verdict sm FLEX">FLEX</span></p>
+        <p>NYJ is actually one of the more generous defenses against WRs (#4) — matchup's fine. His role isn't: snaps rose to 97% in Wk2 while targets fell to 4. Risky flex, not an auto-sit, but don't expect volume.</p>
+      </div>
+      <div class="wu"><p class="line"><span class="mscore">—</span> <b>Alec Pierce</b> <span class="m" style="display:inline">vs. HOU</span> <span class="verdict sm SIT">OUT</span></p>
+        <p>Confirmed heel re-injury, likely IR, expected to miss several weeks. Snap share had already collapsed 59%→26% before the injury news broke.</p>
+      </div>
+      <div class="wu"><p class="line"><span class="mscore">72</span> <b>Worthy</b> <span class="m" style="display:inline">at MIA</span> <span class="verdict sm START">START</span></p>
+        <p>MIA is genuinely generous against WRs (#7) — a green DC (Sean Duggan, year 1) and an unproven CB room (rookie Chris Johnson, no established starter) back that up. Real WR2 role (77% snaps). Clean start.</p>
+      </div>
+      <div class="wu"><p class="line"><span class="mscore">45</span> <b>Lemon</b> <span class="m" style="display:inline">at CHI</span> <span class="verdict sm">BENCH</span></p>
+        <p>CHI is fairly generous on the raw numbers (#8), but the heaviest man rate in the NFL is a bad style matchup for a slot/option-route archetype specifically. Moot either way — he's barely playing.</p>
+      </div>
+      <div class="wu"><p class="line"><span class="mscore">55</span> <b>Wicks</b> <span class="m" style="display:inline">at CHI</span> <span class="verdict sm FLEX">FLEX</span> <span class="m" style="display:inline">waiver add</span></p>
+        <p>Same CHI read as Lemon's, but with real usage behind it (4 tgt/73 yds/TD Wk1, 6 tgt/74 yds Wk2). Playable flex, not just a volume-justified add.</p>
+      </div>
+    </div>
+    <p class="fine" style="padding:0 12px 10px">Full methodology, sourcing, and the correction log: <a href="https://claude.ai/artifact/DHsstZi5zxgkX65wvE9BJm" target="_blank">WR Matchup Scoring doc</a>. RB version in progress.</p>
   </div>
 
   <div class="panel">
