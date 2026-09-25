@@ -71,8 +71,12 @@ tr.bench td{opacity:.85}
 .reasons b{color:var(--ink);font-weight:600}
 .bottom{font-size:13.5px;color:var(--ink-2);line-height:1.5;margin:0 0 6px}
 .bottom b{color:var(--ink);font-weight:600}
-.qblist{font-size:12px;color:var(--ink-3);line-height:1.5;margin:0;padding-top:6px;border-top:1px solid var(--rule)}
-.qblist b{color:var(--ink-2);font-weight:600}
+.adv,.qblist{font-size:12px;color:var(--ink-3);line-height:1.5;margin:0}
+.adv{padding-top:6px;border-top:1px solid var(--rule)}
+.adv + .qblist{margin-top:5px}
+.qblist{padding-top:6px;border-top:1px solid var(--rule)}
+.adv + .qblist{padding-top:0;border-top:0}
+.adv b,.qblist b{color:var(--ink-2);font-weight:600}
 .rank{font-family:var(--mono);font-weight:700;font-size:11px;color:var(--ink-3);background:transparent;border:1px solid var(--rule-hard);border-radius:50%;width:16px;height:16px;display:inline-flex;align-items:center;justify-content:center;margin-right:3px;vertical-align:1px}
 .wu .line{font-family:var(--mono);font-size:12px;font-weight:600;margin:0 0 4px}
 .wu p{margin:0 0 6px;font-size:13.5px;color:var(--ink-2);line-height:1.5}
@@ -118,7 +122,7 @@ tr.bench td{opacity:.85}
   </div>
 
   <div class="panel">
-    <h2>WR matchup score <span class="hint">pilot, week 3 · firm start/bench calls, ranked top to bottom · full reasoning on the doc linked below</span></h2>
+    <h2>WR matchup score <span class="hint">pilot, week 3 · the number by each name is a 0–100 matchup score, higher = better spot — it's not points or a percentage · firm start/bench calls, ranked top to bottom · full reasoning on the doc linked below</span></h2>
     <div id="matchup">
       <div class="wu"><p class="line"><span class="rank">1</span><span class="mscore">72</span> <b>Worthy</b> <span class="m" style="display:inline">at MIA</span> <span class="verdict sm START">START — WR1</span></p>
         <ul class="reasons">
@@ -127,6 +131,7 @@ tr.bench td{opacity:.85}
           <li><b>Corners:</b> First-year defensive coordinator, unproven room with no established starter — nobody there to punish a bad read.</li>
         </ul>
         <p class="bottom"><b>Bottom line:</b> real WR2 role (77% snaps). Clean start.</p>
+        <p class="adv"><b>Tracking data (NFL Next Gen Stats):</b> best separation of your WR corps both weeks (4.2, then 4.6 yards — league average is ~3.0) and a rising catch rate (50% → 71%). He's winning his routes clean, not just benefiting from scheme.</p>
         <p class="qblist"><b>The QB List:</b> FLEX (WR4) — agrees he's startable, grades it a hair below where I have him.</p>
       </div>
       <div class="wu"><p class="line"><span class="rank">2</span><span class="mscore">68</span> <b>Adonai Mitchell</b> <span class="m" style="display:inline">NYJ at DET</span> <span class="verdict sm START">START — FLEX</span> <span class="m" style="display:inline">added this week</span></p>
@@ -136,6 +141,7 @@ tr.bench td{opacity:.85}
           <li><b>Corners:</b> No standout corner on the roster — the unit was publicly criticized as disorganized last season.</li>
         </ul>
         <p class="bottom"><b>Bottom line:</b> his role just changed fast — 3 targets Wk1 → 12 targets Wk2, tied to Geno Smith taking over at QB. Matchup and role both point up — good add.</p>
+        <p class="adv"><b>Tracking data (NFL Next Gen Stats):</b> commands 68% of the Jets' intended air yards — he's the clear focal point of the deep passing game — but separation (2.7 yds) and catch rate (50%) are just average. The volume is carrying him more than pure route-winning right now.</p>
         <p class="qblist"><b>The QB List:</b> FLEX (WR4) — agrees, same read on the target-share surge.</p>
       </div>
       <div class="wu"><p class="line"><span class="rank">3</span><span class="mscore">45</span> <b>Jameson Williams</b> <span class="m" style="display:inline">vs. NYJ</span> <span class="verdict sm START">START — WR2</span></p>
@@ -145,6 +151,7 @@ tr.bench td{opacity:.85}
           <li><b>Corners:</b> Their top corner is solid, not elite — no reason to be scared of this matchup specifically.</li>
         </ul>
         <p class="bottom"><b>Bottom line:</b> the matchup's fine, his role isn't — snaps rose to 97% in Wk2 while his targets fell to 4. Weakest of the three starts, but still ranks ahead of the bench options.</p>
+        <p class="adv"><b>Tracking data (NFL Next Gen Stats):</b> below-average separation (2.8 yds vs. ~3.0 league average) and a poor 44% catch rate on his one week with enough targets to qualify. Not a route-winning problem alone — Detroit just isn't targeting him enough to matter.</p>
         <p class="qblist"><b>The QB List:</b> START (WR3) — more confident than I am; they're leaning on the matchup, I'm leaning on the target trend.</p>
       </div>
       <div class="wu"><p class="line"><span class="rank">4</span><span class="mscore">29</span> <b>McLaurin</b> <span class="m" style="display:inline">vs. SEA</span> <span class="verdict sm">BENCH</span></p>
@@ -153,8 +160,9 @@ tr.bench td{opacity:.85}
           <li><b>Scheme:</b> They play heavy zone with two safeties deep — exactly the look that shuts down a boundary receiver hunting a big play.</li>
           <li><b>Corners:</b> Their room is thin after their top corner left in free agency, which is the only real thing keeping this from being unplayable.</li>
         </ul>
-        <p class="bottom"><b>Bottom line:</b> Jayden Daniels is out (dislocated elbow) and Marcus Mariota starts, stacking bad news on the league's toughest matchup. He'd have started most weeks this season, but with Worthy, Mitchell, and Jameson all grading out ahead of him now, this is the week to sit him — it's close (his Wk2 target trend was real), but not a clean call.</p>
-        <p class="qblist"><b>The QB List:</b> START (WR3) — real disagreement here. They cite his 7 targets/game and red-zone role; I'm weighing the SEA matchup and Mariota downgrade more heavily. Your call if you'd rather ride the volume.</p>
+        <p class="bottom"><b>Bottom line:</b> Jayden Daniels is out (dislocated elbow) and Marcus Mariota starts, stacking bad news on the league's toughest matchup. He'd have started most weeks this season, but with Worthy, Mitchell, and Jameson all grading out ahead of him now, this is the week to sit him.</p>
+        <p class="adv"><b>Tracking data (NFL Next Gen Stats):</b> the weakest separation of your four WRs (2.5 yds, worse than league average and worse than Worthy, Mitchell, and Jameson) and the worst catch rate (22% — 2 catches on 9 targets). This isn't just a tough matchup on paper; he genuinely wasn't getting open against Dallas in Wk2, before Seattle or the QB downgrade even enter it. That data point is what moved this from a close call to a real one.</p>
+        <p class="qblist"><b>The QB List:</b> START (WR3) — real disagreement here. They cite his 7 targets/game and red-zone role; I'm weighing the separation/catch-rate numbers above, the SEA matchup, and the Mariota downgrade more heavily. Your call if you'd rather ride the volume.</p>
       </div>
       <div class="wu"><p class="line"><span class="rank">5</span><span class="mscore">28</span> <b>Malik Washington</b> <span class="m" style="display:inline">vs. KC</span> <span class="verdict sm">BENCH</span> <span class="m" style="display:inline">added this week</span></p>
         <ul class="reasons">
@@ -173,7 +181,7 @@ tr.bench td{opacity:.85}
   </div>
 
   <div class="panel">
-    <h2>RB matchup score <span class="hint">pilot, week 3 · firm start/bench calls, ranked top to bottom</span></h2>
+    <h2>RB matchup score <span class="hint">pilot, week 3 · the number by each name is a 0–100 matchup score, higher = better spot — it's not points or a percentage · firm start/bench calls, ranked top to bottom</span></h2>
     <div id="matchuprb">
       <div class="wu"><p class="line"><span class="rank">1</span><span class="mscore">49</span> <b>Bijan Robinson</b> <span class="m" style="display:inline">at GB</span> <span class="verdict sm START">START — RB1</span></p>
         <ul class="reasons">
