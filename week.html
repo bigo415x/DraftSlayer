@@ -66,6 +66,10 @@ tr.bench td{opacity:.85}
 .verdict{font-family:var(--disp);font-size:11px;font-weight:700;letter-spacing:.12em;padding:2px 7px;border-radius:2px;color:#fff;background:var(--ink-3)}
 .verdict.START{background:var(--go)} .verdict.FLEX{background:var(--wait);color:#1a1300} .verdict.SIT,.verdict.BENCH{background:var(--hot)}
 .mscore{font-family:var(--mono);font-weight:700;font-size:13px;background:var(--card2);border:1px solid var(--rule-hard);border-radius:3px;padding:1px 6px;margin-right:2px}
+.factors{display:flex;gap:4px;flex-wrap:wrap;margin:4px 0 7px}
+.factors span{font-family:var(--mono);font-size:10.5px;color:var(--ink-3);background:var(--card2);border:1px solid var(--rule);border-radius:3px;padding:1px 6px;white-space:nowrap}
+.factors b{color:var(--ink-2);font-weight:600}
+.factors i{font-style:normal;color:var(--ink);font-weight:700;font-variant-numeric:tabular-nums;margin-left:3px}
 .wu .line{font-family:var(--mono);font-size:12px;font-weight:600;margin:0 0 4px}
 .wu p{margin:0 0 6px;font-size:13.5px;color:var(--ink-2);line-height:1.5}
 .wu p:last-child{margin:0}
@@ -110,24 +114,29 @@ tr.bench td{opacity:.85}
   </div>
 
   <div class="panel">
-    <h2>WR matchup score <span class="hint">pilot, week 3 · DVP + scheme fit + CB personnel, gated by real volume · full reasoning on the doc linked below</span></h2>
+    <h2>WR matchup score <span class="hint">pilot, week 3 · 40% DVP + 35% scheme fit + 25% CB personnel, gated by real volume · full reasoning on the doc linked below</span></h2>
     <div id="matchup">
       <div class="wu"><p class="line"><span class="mscore">29</span> <b>McLaurin</b> <span class="m" style="display:inline">vs. SEA</span> <span class="verdict sm">FLEX</span></p>
+        <div class="factors"><span><b>DVP</b> 40%<i>3</i></span><span><b>Scheme fit</b> 35%<i>30</i></span><span><b>Personnel</b> 25%<i>70</i></span></div>
         <p>SEA is the stingiest D against WRs in the NFL right now (#32) — the toughest matchup of the week, not the easiest. Jayden Daniels is OUT (dislocated elbow, same one as 2025) and Marcus Mariota starts. Still likely the right start — bench options are worse and Wk2 usage trended up (9 targets) — but go in with expectations lowered twice over.</p>
       </div>
       <div class="wu"><p class="line"><span class="mscore">45</span> <b>Jameson Williams</b> <span class="m" style="display:inline">vs. NYJ</span> <span class="verdict sm FLEX">FLEX</span></p>
+        <div class="factors"><span><b>DVP</b> 40%<i>91</i></span><span><b>Scheme fit</b> 35%<i>20</i></span><span><b>Personnel</b> 25%<i>40</i></span></div>
         <p>NYJ is actually one of the more generous defenses against WRs (#4) — matchup's fine. His role isn't: snaps rose to 97% in Wk2 while targets fell to 4. Risky flex, not an auto-sit, but don't expect volume.</p>
       </div>
       <div class="wu"><p class="line"><span class="mscore">—</span> <b>Alec Pierce</b> <span class="m" style="display:inline">vs. HOU</span> <span class="verdict sm SIT">OUT</span></p>
         <p>Confirmed heel re-injury, likely IR, expected to miss several weeks. Snap share had already collapsed 59%→26% before the injury news broke.</p>
       </div>
       <div class="wu"><p class="line"><span class="mscore">72</span> <b>Worthy</b> <span class="m" style="display:inline">at MIA</span> <span class="verdict sm START">START</span></p>
+        <div class="factors"><span><b>DVP</b> 40%<i>81</i></span><span><b>Scheme fit</b> 35%<i>60</i></span><span><b>Personnel</b> 25%<i>75</i></span></div>
         <p>MIA is genuinely generous against WRs (#7) — a green DC (Sean Duggan, year 1) and an unproven CB room (rookie Chris Johnson, no established starter) back that up. Real WR2 role (77% snaps). Clean start.</p>
       </div>
       <div class="wu"><p class="line"><span class="mscore">68</span> <b>Adonai Mitchell</b> <span class="m" style="display:inline">NYJ at DET</span> <span class="verdict sm START">START</span> <span class="m" style="display:inline">added this week</span></p>
+        <div class="factors"><span><b>DVP</b> 40%<i>72</i></span><span><b>Scheme fit</b> 35%<i>65</i></span><span><b>Personnel</b> 25%<i>65</i></span></div>
         <p>Same boundary/deep-threat archetype as Pierce and McLaurin, but his role just changed fast: 3 targets Wk1 → 12 targets Wk2, tied to Geno Smith taking over at QB. DET is #10 against WRs (generous) with no standout corner. Matchup and role both point up — good add.</p>
       </div>
       <div class="wu"><p class="line"><span class="mscore">28</span> <b>Malik Washington</b> <span class="m" style="display:inline">vs. KC</span> <span class="verdict sm FLEX">FLEX</span> <span class="m" style="display:inline">added this week</span></p>
+        <div class="factors"><span><b>DVP</b> 40%<i>6</i></span><span><b>Scheme fit</b> 35%<i>40</i></span><span><b>Personnel</b> 25%<i>45</i></span></div>
         <p>Toughest matchup on your WRs this week — KC is #31, and Spagnuolo's scheme has been elite for years. Mitigating factor: KC traded away Trent McDuffie and is starting a rookie outside, while the slot spot was still unsettled in camp — and Washington's whole game is slot/underneath volume (98% then 73% snaps, 8 then 5 targets). Risky, but the role is real.</p>
       </div>
     </div>
@@ -135,18 +144,22 @@ tr.bench td{opacity:.85}
   </div>
 
   <div class="panel">
-    <h2>RB matchup score <span class="hint">pilot, week 3 · DVP + run-scheme/archetype fit + front-seven personnel, gated by real volume</span></h2>
+    <h2>RB matchup score <span class="hint">pilot, week 3 · 40% DVP + 35% run-scheme/archetype fit + 25% front-seven personnel, gated by real volume</span></h2>
     <div id="matchuprb">
       <div class="wu"><p class="line"><span class="mscore">49</span> <b>Bijan Robinson</b> <span class="m" style="display:inline">at GB</span> <span class="verdict sm START">START</span></p>
+        <div class="factors"><span><b>DVP</b> 40%<i>41</i></span><span><b>Scheme fit</b> 35%<i>55</i></span><span><b>Personnel</b> 25%<i>55</i></span></div>
         <p>Matchup grades out average (#20) and GB added size this offseason specifically to stop backs like him — but a true three-down back with a 10-target Week 1 doesn't get benched off a matchup score. Start regardless; this is context, not a lever, for a genuine alpha.</p>
       </div>
       <div class="wu"><p class="line"><span class="mscore">38</span> <b>Brian Robinson</b> <span class="m" style="display:inline">at GB</span> <span class="verdict sm">BENCH</span></p>
+        <div class="factors"><span><b>DVP</b> 40%<i>41</i></span><span><b>Scheme fit</b> 35%<i>30</i></span><span><b>Personnel</b> 25%<i>45</i></span></div>
         <p>His power/short-yardage style runs into the exact front GB built to stop it. The real story: his snap share nearly doubled (25%→48%) Wk1→Wk2 while Bijan's nearly halved. Worth tracking as a season trend, not just insurance.</p>
       </div>
       <div class="wu"><p class="line"><span class="mscore">18</span> <b>Hubbard</b> <span class="m" style="display:inline">at CLE</span> <span class="verdict sm FLEX">FLEX</span></p>
+        <div class="factors"><span><b>DVP</b> 40%<i>19</i></span><span><b>Scheme fit</b> 35%<i>20</i></span><span><b>Personnel</b> 25%<i>15</i></span></div>
         <p>Toughest matchup on your roster (#27) — Cleveland's Schwesinger/Quincy Williams LB duo is built to stop exactly his running style. Same call as McLaurin's: bad matchup, but probably still your best play at the position without a better bench option.</p>
       </div>
       <div class="wu"><p class="line"><span class="mscore">26</span> <b>Dobbins</b> <span class="m" style="display:inline">vs. LAR</span> <span class="verdict sm">SIT</span></p>
+        <div class="factors"><span><b>DVP</b> 40%<i>38</i></span><span><b>Scheme fit</b> 35%<i>20</i></span><span><b>Personnel</b> 25%<i>15</i></span></div>
         <p>Two problems stack: a tougher matchup (LAR's front got a real talent upgrade from the Myles Garrett trade) and a role that isn't delivering on his archetype — no receiving work either week, declining snap share. Sit if you have any alternative.</p>
       </div>
     </div>
