@@ -66,10 +66,11 @@ tr.bench td{opacity:.85}
 .verdict{font-family:var(--disp);font-size:11px;font-weight:700;letter-spacing:.12em;padding:2px 7px;border-radius:2px;color:#fff;background:var(--ink-3)}
 .verdict.START{background:var(--go)} .verdict.FLEX{background:var(--wait);color:#1a1300} .verdict.SIT,.verdict.BENCH{background:var(--hot)}
 .mscore{font-family:var(--mono);font-weight:700;font-size:13px;background:var(--card2);border:1px solid var(--rule-hard);border-radius:3px;padding:1px 6px;margin-right:2px}
-.factors{display:flex;gap:4px;flex-wrap:wrap;margin:4px 0 7px}
-.factors span{font-family:var(--mono);font-size:10.5px;color:var(--ink-3);background:var(--card2);border:1px solid var(--rule);border-radius:3px;padding:1px 6px;white-space:nowrap}
-.factors b{color:var(--ink-2);font-weight:600}
-.factors i{font-style:normal;color:var(--ink);font-weight:700;font-variant-numeric:tabular-nums;margin-left:3px}
+.reasons{margin:2px 0 8px;padding:0;list-style:none;display:flex;flex-direction:column;gap:3px}
+.reasons li{font-size:13.5px;color:var(--ink-2);line-height:1.5}
+.reasons b{color:var(--ink);font-weight:600}
+.bottom{font-size:13.5px;color:var(--ink-2);line-height:1.5;margin:0}
+.bottom b{color:var(--ink);font-weight:600}
 .wu .line{font-family:var(--mono);font-size:12px;font-weight:600;margin:0 0 4px}
 .wu p{margin:0 0 6px;font-size:13.5px;color:var(--ink-2);line-height:1.5}
 .wu p:last-child{margin:0}
@@ -114,53 +115,89 @@ tr.bench td{opacity:.85}
   </div>
 
   <div class="panel">
-    <h2>WR matchup score <span class="hint">pilot, week 3 · 40% DVP + 35% scheme fit + 25% CB personnel, gated by real volume · full reasoning on the doc linked below</span></h2>
+    <h2>WR matchup score <span class="hint">pilot, week 3 · how the defense, the scheme, and the corners actually line up against him · full reasoning on the doc linked below</span></h2>
     <div id="matchup">
       <div class="wu"><p class="line"><span class="mscore">29</span> <b>McLaurin</b> <span class="m" style="display:inline">vs. SEA</span> <span class="verdict sm">FLEX</span></p>
-        <div class="factors"><span><b>DVP</b> 40%<i>3</i></span><span><b>Scheme fit</b> 35%<i>30</i></span><span><b>Personnel</b> 25%<i>70</i></span></div>
-        <p>SEA is the stingiest D against WRs in the NFL right now (#32) — the toughest matchup of the week, not the easiest. Jayden Daniels is OUT (dislocated elbow, same one as 2025) and Marcus Mariota starts. Still likely the right start — bench options are worse and Wk2 usage trended up (9 targets) — but go in with expectations lowered twice over.</p>
+        <ul class="reasons">
+          <li><b>Matchup:</b> Seattle is the toughest defense against receivers in the league right now.</li>
+          <li><b>Scheme:</b> They play heavy zone with two safeties deep — exactly the look that shuts down a boundary receiver hunting a big play.</li>
+          <li><b>Corners:</b> Their room is thin after their top corner left in free agency, which is the main reason to still trust him despite the tough matchup.</li>
+        </ul>
+        <p class="bottom"><b>Bottom line:</b> Jayden Daniels is out (dislocated elbow) and Marcus Mariota starts, which stacks bad news on a bad matchup — but start him anyway, since Wk2 usage trended up (9 targets) and your bench options are worse. Go in with expectations lowered twice over.</p>
       </div>
       <div class="wu"><p class="line"><span class="mscore">45</span> <b>Jameson Williams</b> <span class="m" style="display:inline">vs. NYJ</span> <span class="verdict sm FLEX">FLEX</span></p>
-        <div class="factors"><span><b>DVP</b> 40%<i>91</i></span><span><b>Scheme fit</b> 35%<i>20</i></span><span><b>Personnel</b> 25%<i>40</i></span></div>
-        <p>NYJ is actually one of the more generous defenses against WRs (#4) — matchup's fine. His role isn't: snaps rose to 97% in Wk2 while targets fell to 4. Risky flex, not an auto-sit, but don't expect volume.</p>
+        <ul class="reasons">
+          <li><b>Matchup:</b> The Jets are actually one of the more generous defenses against receivers so far this season.</li>
+          <li><b>Scheme:</b> Their coach has a strong defensive backs pedigree, but it hasn't shown up in the results yet — the scheme concern doesn't really apply here.</li>
+          <li><b>Corners:</b> Their top corner is solid, not elite — no reason to be scared of this matchup specifically.</li>
+        </ul>
+        <p class="bottom"><b>Bottom line:</b> the matchup's fine, his role isn't — snaps rose to 97% in Wk2 while his targets fell to 4. Detroit isn't getting him the ball. Risky flex, not an auto-sit, but don't expect volume.</p>
       </div>
       <div class="wu"><p class="line"><span class="mscore">—</span> <b>Alec Pierce</b> <span class="m" style="display:inline">vs. HOU</span> <span class="verdict sm SIT">OUT</span></p>
-        <p>Confirmed heel re-injury, likely IR, expected to miss several weeks. Snap share had already collapsed 59%→26% before the injury news broke.</p>
+        <p class="bottom">Confirmed heel re-injury, likely IR, expected to miss several weeks. Snap share had already collapsed 59%→26% before the injury news broke.</p>
       </div>
       <div class="wu"><p class="line"><span class="mscore">72</span> <b>Worthy</b> <span class="m" style="display:inline">at MIA</span> <span class="verdict sm START">START</span></p>
-        <div class="factors"><span><b>DVP</b> 40%<i>81</i></span><span><b>Scheme fit</b> 35%<i>60</i></span><span><b>Personnel</b> 25%<i>75</i></span></div>
-        <p>MIA is genuinely generous against WRs (#7) — a green DC (Sean Duggan, year 1) and an unproven CB room (rookie Chris Johnson, no established starter) back that up. Real WR2 role (77% snaps). Clean start.</p>
+        <ul class="reasons">
+          <li><b>Matchup:</b> Miami is one of the more generous defenses against receivers.</li>
+          <li><b>Scheme:</b> Their zone-heavy approach leaves the underneath space his motion/slot role thrives in.</li>
+          <li><b>Corners:</b> First-year defensive coordinator, unproven room with no established starter — nobody there to punish a bad read.</li>
+        </ul>
+        <p class="bottom"><b>Bottom line:</b> real WR2 role (77% snaps). Clean start.</p>
       </div>
       <div class="wu"><p class="line"><span class="mscore">68</span> <b>Adonai Mitchell</b> <span class="m" style="display:inline">NYJ at DET</span> <span class="verdict sm START">START</span> <span class="m" style="display:inline">added this week</span></p>
-        <div class="factors"><span><b>DVP</b> 40%<i>72</i></span><span><b>Scheme fit</b> 35%<i>65</i></span><span><b>Personnel</b> 25%<i>65</i></span></div>
-        <p>Same boundary/deep-threat archetype as Pierce and McLaurin, but his role just changed fast: 3 targets Wk1 → 12 targets Wk2, tied to Geno Smith taking over at QB. DET is #10 against WRs (generous) with no standout corner. Matchup and role both point up — good add.</p>
+        <ul class="reasons">
+          <li><b>Matchup:</b> Detroit is a fairly generous defense against receivers.</li>
+          <li><b>Scheme:</b> Same deep-threat profile as Pierce and McLaurin, and Detroit doesn't have a strong coverage identity to take that away.</li>
+          <li><b>Corners:</b> No standout corner on the roster — the unit was publicly criticized as disorganized last season.</li>
+        </ul>
+        <p class="bottom"><b>Bottom line:</b> his role just changed fast — 3 targets Wk1 → 12 targets Wk2, tied to Geno Smith taking over at QB. Matchup and role both point up — good add.</p>
       </div>
       <div class="wu"><p class="line"><span class="mscore">28</span> <b>Malik Washington</b> <span class="m" style="display:inline">vs. KC</span> <span class="verdict sm FLEX">FLEX</span> <span class="m" style="display:inline">added this week</span></p>
-        <div class="factors"><span><b>DVP</b> 40%<i>6</i></span><span><b>Scheme fit</b> 35%<i>40</i></span><span><b>Personnel</b> 25%<i>45</i></span></div>
-        <p>Toughest matchup on your WRs this week — KC is #31, and Spagnuolo's scheme has been elite for years. Mitigating factor: KC traded away Trent McDuffie and is starting a rookie outside, while the slot spot was still unsettled in camp — and Washington's whole game is slot/underneath volume (98% then 73% snaps, 8 then 5 targets). Risky, but the role is real.</p>
+        <ul class="reasons">
+          <li><b>Matchup:</b> Kansas City is one of the stingiest defenses against receivers in the league.</li>
+          <li><b>Scheme:</b> Their coordinator's disguise-heavy approach has been elite for years regardless of personnel turnover.</li>
+          <li><b>Corners:</b> But they just traded away their top corner and are starting a rookie outside, and the slot spot specifically was still unsettled in camp — which matters, since Washington's whole game is underneath/slot volume, not outside routes.</li>
+        </ul>
+        <p class="bottom"><b>Bottom line:</b> toughest matchup on your WRs this week, but the role is real (98% then 73% snaps, 8 then 5 targets). Risky, not a bench.</p>
       </div>
     </div>
     <p class="fine" style="padding:0 12px 10px">Full methodology, sourcing, and the correction log: <a href="https://claude.ai/artifact/DHsstZi5zxgkX65wvE9BJm" target="_blank">WR Matchup Scoring doc</a>.</p>
   </div>
 
   <div class="panel">
-    <h2>RB matchup score <span class="hint">pilot, week 3 · 40% DVP + 35% run-scheme/archetype fit + 25% front-seven personnel, gated by real volume</span></h2>
+    <h2>RB matchup score <span class="hint">pilot, week 3 · how the run defense, the front, and the linebackers actually line up against him</span></h2>
     <div id="matchuprb">
       <div class="wu"><p class="line"><span class="mscore">49</span> <b>Bijan Robinson</b> <span class="m" style="display:inline">at GB</span> <span class="verdict sm START">START</span></p>
-        <div class="factors"><span><b>DVP</b> 40%<i>41</i></span><span><b>Scheme fit</b> 35%<i>55</i></span><span><b>Personnel</b> 25%<i>55</i></span></div>
-        <p>Matchup grades out average (#20) and GB added size this offseason specifically to stop backs like him — but a true three-down back with a 10-target Week 1 doesn't get benched off a matchup score. Start regardless; this is context, not a lever, for a genuine alpha.</p>
+        <ul class="reasons">
+          <li><b>Matchup:</b> Green Bay's run defense grades out as average so far.</li>
+          <li><b>Scheme:</b> They added size up front this offseason specifically to get tougher against backs like him.</li>
+          <li><b>Front seven:</b> It's a new coordinator's first year installing that plan, so there's real uncertainty in how much it's actually working yet.</li>
+        </ul>
+        <p class="bottom"><b>Bottom line:</b> none of that matters — he's a true three-down back with a real receiving role (10 targets Wk1). Start him regardless; this is context, not a lever, for a genuine alpha.</p>
       </div>
       <div class="wu"><p class="line"><span class="mscore">38</span> <b>Brian Robinson</b> <span class="m" style="display:inline">at GB</span> <span class="verdict sm">BENCH</span></p>
-        <div class="factors"><span><b>DVP</b> 40%<i>41</i></span><span><b>Scheme fit</b> 35%<i>30</i></span><span><b>Personnel</b> 25%<i>45</i></span></div>
-        <p>His power/short-yardage style runs into the exact front GB built to stop it. The real story: his snap share nearly doubled (25%→48%) Wk1→Wk2 while Bijan's nearly halved. Worth tracking as a season trend, not just insurance.</p>
+        <ul class="reasons">
+          <li><b>Matchup:</b> Same average Green Bay number as Bijan faces.</li>
+          <li><b>Scheme:</b> His power, short-yardage running style runs right into the kind of front Green Bay built specifically to stop.</li>
+          <li><b>Front seven:</b> Same first-year uncertainty as above.</li>
+        </ul>
+        <p class="bottom"><b>Bottom line:</b> the real story is his snap share nearly doubled (25%→48%) while Bijan's nearly halved. Worth tracking all season, not just this week.</p>
       </div>
       <div class="wu"><p class="line"><span class="mscore">18</span> <b>Hubbard</b> <span class="m" style="display:inline">at CLE</span> <span class="verdict sm FLEX">FLEX</span></p>
-        <div class="factors"><span><b>DVP</b> 40%<i>19</i></span><span><b>Scheme fit</b> 35%<i>20</i></span><span><b>Personnel</b> 25%<i>15</i></span></div>
-        <p>Toughest matchup on your roster (#27) — Cleveland's Schwesinger/Quincy Williams LB duo is built to stop exactly his running style. Same call as McLaurin's: bad matchup, but probably still your best play at the position without a better bench option.</p>
+        <ul class="reasons">
+          <li><b>Matchup:</b> Cleveland is one of the toughest run defenses in the league.</li>
+          <li><b>Scheme:</b> His north-south running style runs right into a defense built to stop exactly that.</li>
+          <li><b>Front seven:</b> Their linebacker duo (Schwesinger/Quincy Williams) is legitimately great even after trading away their star pass rusher.</li>
+        </ul>
+        <p class="bottom"><b>Bottom line:</b> toughest matchup on your roster, same situation as McLaurin's — bad matchup, but probably still your best play at the position without a better bench option.</p>
       </div>
       <div class="wu"><p class="line"><span class="mscore">26</span> <b>Dobbins</b> <span class="m" style="display:inline">vs. LAR</span> <span class="verdict sm">SIT</span></p>
-        <div class="factors"><span><b>DVP</b> 40%<i>38</i></span><span><b>Scheme fit</b> 35%<i>20</i></span><span><b>Personnel</b> 25%<i>15</i></span></div>
-        <p>Two problems stack: a tougher matchup (LAR's front got a real talent upgrade from the Myles Garrett trade) and a role that isn't delivering on his archetype — no receiving work either week, declining snap share. Sit if you have any alternative.</p>
+        <ul class="reasons">
+          <li><b>Matchup:</b> Below-average matchup, and it's trending worse.</li>
+          <li><b>Scheme:</b> His explosive, cutback running style runs into a defense that just got a lot faster and more talented up front.</li>
+          <li><b>Front seven:</b> The Rams' front got a real talent upgrade from the Myles Garrett trade — arguably a top-3 unit in the league now.</li>
+        </ul>
+        <p class="bottom"><b>Bottom line:</b> the role isn't delivering either — no receiving work, declining snaps either week. Sit if you have any alternative.</p>
       </div>
     </div>
     <p class="fine" style="padding:0 12px 10px">Full methodology and sourcing: <a href="https://claude.ai/artifact/CjDE2nnS4PGMApYqnxhq84" target="_blank">RB Matchup Scoring doc</a>.</p>
