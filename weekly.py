@@ -138,14 +138,23 @@ def main():
     roster = [row(p) for p in mine]
 
     # ---- optimal lineup with coin flips ----
+    # Two passes: first lock in who actually starts (greedy by slot), then label
+    # each slot's "alt" from what's left on the BENCH once every slot is filled.
+    # An alt who ends up starting in a different slot (e.g. Dak Prescott: the QB
+    # slot's runner-up, but the SF slot's own pick) is not a real coin flip -
+    # both players are already in the lineup, so there's nothing to flip.
     OUT = ("Out", "Injured Reserve", "IR", "Doubtful", "NA", "Suspension")
     avail = [r for r in roster if not (r["inj"] and r["inj"]["st"] in OUT) and r["opp"] != "BYE"]
-    used, lineup = set(), []
+    used, picks = set(), []
     for slot, acc in SLOTS:
         c = sorted([r for r in avail if r["p"] in acc and r["id"] not in used], key=lambda z: -z["proj"])
         pick = c[0] if c else None
-        alt = c[1] if len(c) > 1 else None
         if pick: used.add(pick["id"])
+        picks.append((slot, acc, pick))
+    lineup = []
+    for slot, acc, pick in picks:
+        bench_c = sorted([r for r in avail if r["p"] in acc and r["id"] not in used], key=lambda z: -z["proj"])
+        alt = bench_c[0] if bench_c else None
         lineup.append({"slot": slot, "pick": pick, "alt": alt,
                        "flip": bool(pick and alt and pick["proj"] - alt["proj"] < 3)})
     bench = [r for r in roster if r["id"] not in used]
