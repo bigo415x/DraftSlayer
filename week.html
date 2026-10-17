@@ -55,10 +55,11 @@ tr.flip td.slot::after{content:"coin flip · <3 pts";display:block;color:var(--w
 .total td{font-family:var(--mono);font-weight:600;background:var(--card2)}
 tr.bench td{opacity:.85}
 .slothead{font-family:var(--disp);font-size:12px;letter-spacing:.11em;text-transform:uppercase;font-weight:700;padding:6px 12px;background:var(--card2);border-bottom:1px solid var(--rule);color:var(--ink-2)}
-.game{padding:8px 12px;border-bottom:1px solid var(--rule);display:grid;grid-template-columns:150px 1fr;gap:10px;font-size:13.5px}
+.game{padding:8px 12px;border-bottom:1px solid var(--rule);display:grid;grid-template-columns:230px 1fr;gap:10px;font-size:13.5px}
 .game:last-child{border-bottom:0}
 .game .k{font-family:var(--mono);font-size:12px;font-weight:600}
 .game .k small{display:block;font-weight:400;color:var(--ink-3);font-size:10px}
+.game .k small.tv{color:var(--ink-2)}
 .game .who b{color:var(--go)} .game .who i{color:var(--hot);font-style:normal}
 .wu{padding:10px 12px;border-bottom:1px solid var(--rule)}
 .wu:last-child{border-bottom:0}
@@ -175,7 +176,7 @@ function slotOf(iso){
 const ORDER=["Thursday Night","Friday","Saturday","Sunday Early","Sunday Late","Sunday Night","Monday Night","Unscheduled"];
 const bySlot={};
 for(const g of W.games){(bySlot[slotOf(g.kick)]??=[]).push(g);}
-$("games").innerHTML=ORDER.filter(s=>bySlot[s]).map(s=>`<div class="slothead">${s}</div>`+bySlot[s].sort((a,b)=>a.kick.localeCompare(b.kick)).map(g=>`<div class="game"><div class="k">${g.game}<small>${g.kick?new Date(g.kick).toLocaleString("en-US",{...PT,hour:"numeric",minute:"2-digit"})+" PT":""}</small></div><div class="who">${g.mine.map(x=>"<b>"+x+"</b>").join(", ")}${g.mine.length&&g.theirs.length?" — ":""}${g.theirs.map(x=>"<i>"+x+"</i>").join(", ")}</div></div>`).join("")).join("")||`<div class="empty">no games found</div>`;
+$("games").innerHTML=ORDER.filter(s=>bySlot[s]).map(s=>`<div class="slothead">${s}</div>`+bySlot[s].sort((a,b)=>a.kick.localeCompare(b.kick)).map(g=>`<div class="game"><div class="k">${g.game}<small>${g.kick?new Date(g.kick).toLocaleString("en-US",{...PT,hour:"numeric",minute:"2-digit"})+" PT":""}${g.net?" · "+g.net:""}</small>${(g.local||[]).map(l=>`<small class="tv">${l.net}: ${l.call} ch ${l.ch} (${l.city}) · ${l.whose==="yours"?"your player's market":"opponent's market"}</small>`).join("")}</div><div class="who">${g.mine.map(x=>"<b>"+x+"</b>").join(", ")}${g.mine.length&&g.theirs.length?" — ":""}${g.theirs.map(x=>"<i>"+x+"</i>").join(", ")}</div></div>`).join("")).join("")||`<div class="empty">no games found</div>`;
 function writeups(obj,el,urlEl,label){
   const ps=Object.entries(obj.players||{});
   $(urlEl).innerHTML=obj.url?`<a href="${obj.url}" target="_blank" rel="noopener">full article ↗</a>`:"not published yet";

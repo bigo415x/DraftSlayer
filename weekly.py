@@ -170,17 +170,30 @@ def main():
         opp_name = users.get(rr.get("owner_id"))
         opp_starters = [row(p) for p in (opp_r.get("starters") or rr.get("starters") or []) if p and p != "0"]
     my_starters = [l["pick"] for l in lineup if l["pick"]]
+    # network + home-market station: my player's team by default, else the opponent's player's team
+    try: affiliates = json.loads((HERE / "affiliates.json").read_text(encoding="utf-8"))
+    except Exception: affiliates = {}
+    OTA = {"CBS": "CBS", "FOX": "FOX", "Fox": "FOX", "NBC": "NBC", "ABC": "ABC"}
+    def station(team, nets):
+        net = next((OTA[n] for n in nets if n in OTA), None)
+        a = (affiliates.get(team) or {}).get(net) if net else None
+        return {"team": team, "net": net, "call": a["call"], "ch": a["ch"], "city": a["city"]} if a else None
     games = {}
     for e in sched.get("events", []):
         c = (e.get("competitions") or [{}])[0]
         teams = [(x.get("team") or {}).get("abbreviation") for x in (c.get("competitors") or [])]
         teams = ["WAS" if t == "WSH" else t for t in teams]
         key = " @ ".join(reversed(teams)) if len(teams) == 2 else "?"
-        g = {"game": key, "kick": e.get("date", ""), "mine": [], "theirs": []}
+        nets = [n for b in (c.get("broadcasts") or []) for n in (b.get("names") or [])]
+        g = {"game": key, "kick": e.get("date", ""), "mine": [], "theirs": [], "net": " / ".join(nets), "local": []}
+        mine_t, theirs_t = [], []
         for r in my_starters:
-            if r["t"] in teams: g["mine"].append(f"{r['p']} {r['n']}")
+            if r["t"] in teams: g["mine"].append(f"{r['p']} {r['n']}"); mine_t.append(r["t"])
         for r in opp_starters:
-            if r["t"] in teams: g["theirs"].append(f"{r['p']} {r['n']}")
+            if r["t"] in teams: g["theirs"].append(f"{r['p']} {r['n']}"); theirs_t.append(r["t"])
+        for tm in dict.fromkeys(mine_t or theirs_t):
+            s = station(tm, nets)
+            if s: g["local"].append({**s, "whose": "yours" if mine_t else "theirs"})
         if g["mine"] or g["theirs"]: games[key] = g
     games = sorted(games.values(), key=lambda g: (-(len(g["mine"]) + len(g["theirs"])), g["kick"]))
 

@@ -1,0 +1,706 @@
+{
+ "ARI": {
+  "CBS": {
+   "call": "KPHO-TV",
+   "ch": "5",
+   "city": "Phoenix"
+  },
+  "FOX": {
+   "call": "KSAZ-TV",
+   "ch": "10",
+   "city": "Phoenix"
+  },
+  "NBC": {
+   "call": "KPNX",
+   "ch": "12",
+   "city": "Phoenix"
+  },
+  "ABC": {
+   "call": "KNXV-TV",
+   "ch": "15",
+   "city": "Phoenix"
+  }
+ },
+ "ATL": {
+  "CBS": {
+   "call": "WUPA",
+   "ch": "69",
+   "city": "Atlanta"
+  },
+  "FOX": {
+   "call": "WAGA-TV",
+   "ch": "5",
+   "city": "Atlanta"
+  },
+  "NBC": {
+   "call": "WXIA-TV",
+   "ch": "11",
+   "city": "Atlanta"
+  },
+  "ABC": {
+   "call": "WSB-TV",
+   "ch": "2",
+   "city": "Atlanta"
+  }
+ },
+ "BAL": {
+  "CBS": {
+   "call": "WJZ-TV",
+   "ch": "13",
+   "city": "Baltimore"
+  },
+  "FOX": {
+   "call": "WBFF",
+   "ch": "45",
+   "city": "Baltimore"
+  },
+  "NBC": {
+   "call": "WBAL-TV",
+   "ch": "11",
+   "city": "Baltimore"
+  },
+  "ABC": {
+   "call": "WMAR-TV",
+   "ch": "2",
+   "city": "Baltimore"
+  }
+ },
+ "BUF": {
+  "CBS": {
+   "call": "WIVB-TV",
+   "ch": "4",
+   "city": "Buffalo"
+  },
+  "FOX": {
+   "call": "WUTV",
+   "ch": "29",
+   "city": "Buffalo"
+  },
+  "NBC": {
+   "call": "WGRZ",
+   "ch": "2",
+   "city": "Buffalo"
+  },
+  "ABC": {
+   "call": "WKBW-TV",
+   "ch": "7",
+   "city": "Buffalo"
+  }
+ },
+ "CAR": {
+  "CBS": {
+   "call": "WBTV",
+   "ch": "3",
+   "city": "Charlotte"
+  },
+  "FOX": {
+   "call": "WJZY",
+   "ch": "46",
+   "city": "Charlotte"
+  },
+  "NBC": {
+   "call": "WCNC-TV",
+   "ch": "36",
+   "city": "Charlotte"
+  },
+  "ABC": {
+   "call": "WSOC-TV",
+   "ch": "9",
+   "city": "Charlotte"
+  }
+ },
+ "CHI": {
+  "CBS": {
+   "call": "WBBM-TV",
+   "ch": "2",
+   "city": "Chicago"
+  },
+  "FOX": {
+   "call": "WFLD",
+   "ch": "32",
+   "city": "Chicago"
+  },
+  "NBC": {
+   "call": "WMAQ-TV",
+   "ch": "5",
+   "city": "Chicago"
+  },
+  "ABC": {
+   "call": "WLS-TV",
+   "ch": "7",
+   "city": "Chicago"
+  }
+ },
+ "CIN": {
+  "CBS": {
+   "call": "WKRC-TV",
+   "ch": "12",
+   "city": "Cincinnati"
+  },
+  "FOX": {
+   "call": "WXIX-TV",
+   "ch": "19",
+   "city": "Cincinnati"
+  },
+  "NBC": {
+   "call": "WLWT",
+   "ch": "5",
+   "city": "Cincinnati"
+  },
+  "ABC": {
+   "call": "WCPO-TV",
+   "ch": "9",
+   "city": "Cincinnati"
+  }
+ },
+ "CLE": {
+  "CBS": {
+   "call": "WOIO",
+   "ch": "19",
+   "city": "Cleveland"
+  },
+  "FOX": {
+   "call": "WJW",
+   "ch": "8",
+   "city": "Cleveland"
+  },
+  "NBC": {
+   "call": "WKYC",
+   "ch": "3",
+   "city": "Cleveland"
+  },
+  "ABC": {
+   "call": "WEWS-TV",
+   "ch": "5",
+   "city": "Cleveland"
+  }
+ },
+ "DAL": {
+  "CBS": {
+   "call": "KTVT",
+   "ch": "11",
+   "city": "Dallas"
+  },
+  "FOX": {
+   "call": "KDFW",
+   "ch": "4",
+   "city": "Dallas"
+  },
+  "NBC": {
+   "call": "KXAS-TV",
+   "ch": "5",
+   "city": "Fort Worth"
+  },
+  "ABC": {
+   "call": "WFAA",
+   "ch": "8",
+   "city": "Dallas"
+  }
+ },
+ "DEN": {
+  "CBS": {
+   "call": "KCNC-TV",
+   "ch": "4",
+   "city": "Denver"
+  },
+  "FOX": {
+   "call": "KDVR",
+   "ch": "31",
+   "city": "Denver"
+  },
+  "NBC": {
+   "call": "KUSA-TV",
+   "ch": "9",
+   "city": "Denver"
+  },
+  "ABC": {
+   "call": "KMGH-TV",
+   "ch": "7",
+   "city": "Denver"
+  }
+ },
+ "DET": {
+  "CBS": {
+   "call": "WWJ-TV",
+   "ch": "62",
+   "city": "Detroit"
+  },
+  "FOX": {
+   "call": "WJBK",
+   "ch": "2",
+   "city": "Detroit"
+  },
+  "NBC": {
+   "call": "WDIV-TV",
+   "ch": "4",
+   "city": "Detroit"
+  },
+  "ABC": {
+   "call": "WXYZ-TV",
+   "ch": "7",
+   "city": "Detroit"
+  }
+ },
+ "GB": {
+  "CBS": {
+   "call": "WFRV-TV",
+   "ch": "5",
+   "city": "Green Bay"
+  },
+  "FOX": {
+   "call": "WLUK-TV",
+   "ch": "11",
+   "city": "Green Bay"
+  },
+  "NBC": {
+   "call": "WGBA-TV",
+   "ch": "26",
+   "city": "Green Bay"
+  },
+  "ABC": {
+   "call": "WBAY-TV",
+   "ch": "2",
+   "city": "Green Bay"
+  }
+ },
+ "HOU": {
+  "CBS": {
+   "call": "KHOU",
+   "ch": "11",
+   "city": "Houston"
+  },
+  "FOX": {
+   "call": "KRIV",
+   "ch": "26",
+   "city": "Houston"
+  },
+  "NBC": {
+   "call": "KPRC-TV",
+   "ch": "2",
+   "city": "Houston"
+  },
+  "ABC": {
+   "call": "KTRK-TV",
+   "ch": "13",
+   "city": "Houston"
+  }
+ },
+ "IND": {
+  "CBS": {
+   "call": "WTTV",
+   "ch": "4",
+   "city": "Indianapolis"
+  },
+  "FOX": {
+   "call": "WXIN",
+   "ch": "59",
+   "city": "Indianapolis"
+  },
+  "NBC": {
+   "call": "WTHR",
+   "ch": "13",
+   "city": "Indianapolis"
+  },
+  "ABC": {
+   "call": "WRTV",
+   "ch": "6",
+   "city": "Indianapolis"
+  }
+ },
+ "JAX": {
+  "CBS": {
+   "call": "WJAX-TV",
+   "ch": "47",
+   "city": "Jacksonville"
+  },
+  "FOX": {
+   "call": "WFOX-TV",
+   "ch": "30",
+   "city": "Jacksonville"
+  },
+  "NBC": {
+   "call": "WTLV",
+   "ch": "12",
+   "city": "Jacksonville"
+  },
+  "ABC": {
+   "call": "WJXX",
+   "ch": "25",
+   "city": "Jacksonville"
+  }
+ },
+ "KC": {
+  "CBS": {
+   "call": "KCTV",
+   "ch": "5",
+   "city": "Kansas City"
+  },
+  "FOX": {
+   "call": "WDAF-TV",
+   "ch": "4",
+   "city": "Kansas City"
+  },
+  "NBC": {
+   "call": "KSHB-TV",
+   "ch": "41",
+   "city": "Kansas City"
+  },
+  "ABC": {
+   "call": "KMBC-TV",
+   "ch": "9",
+   "city": "Kansas City"
+  }
+ },
+ "LV": {
+  "CBS": {
+   "call": "KLAS-TV",
+   "ch": "8",
+   "city": "Las Vegas"
+  },
+  "FOX": {
+   "call": "KVVU-TV",
+   "ch": "5",
+   "city": "Las Vegas"
+  },
+  "NBC": {
+   "call": "KSNV",
+   "ch": "3",
+   "city": "Las Vegas"
+  },
+  "ABC": {
+   "call": "KTNV-TV",
+   "ch": "13",
+   "city": "Las Vegas"
+  }
+ },
+ "LAC": {
+  "CBS": {
+   "call": "KCBS-TV",
+   "ch": "2",
+   "city": "Los Angeles"
+  },
+  "FOX": {
+   "call": "KTTV",
+   "ch": "11",
+   "city": "Los Angeles"
+  },
+  "NBC": {
+   "call": "KNBC",
+   "ch": "4",
+   "city": "Los Angeles"
+  },
+  "ABC": {
+   "call": "KABC-TV",
+   "ch": "7",
+   "city": "Los Angeles"
+  }
+ },
+ "LAR": {
+  "CBS": {
+   "call": "KCBS-TV",
+   "ch": "2",
+   "city": "Los Angeles"
+  },
+  "FOX": {
+   "call": "KTTV",
+   "ch": "11",
+   "city": "Los Angeles"
+  },
+  "NBC": {
+   "call": "KNBC",
+   "ch": "4",
+   "city": "Los Angeles"
+  },
+  "ABC": {
+   "call": "KABC-TV",
+   "ch": "7",
+   "city": "Los Angeles"
+  }
+ },
+ "MIA": {
+  "CBS": {
+   "call": "WFOR-TV",
+   "ch": "4",
+   "city": "Miami"
+  },
+  "FOX": {
+   "call": "WSVN",
+   "ch": "7",
+   "city": "Miami"
+  },
+  "NBC": {
+   "call": "WTVJ",
+   "ch": "6",
+   "city": "Miami"
+  },
+  "ABC": {
+   "call": "WSVN",
+   "ch": "7.2",
+   "city": "Miami"
+  }
+ },
+ "MIN": {
+  "CBS": {
+   "call": "WCCO-TV",
+   "ch": "4",
+   "city": "Minneapolis"
+  },
+  "FOX": {
+   "call": "KMSP-TV",
+   "ch": "9",
+   "city": "Minneapolis"
+  },
+  "NBC": {
+   "call": "KARE",
+   "ch": "11",
+   "city": "Minneapolis"
+  },
+  "ABC": {
+   "call": "KSTP-TV",
+   "ch": "5",
+   "city": "Minneapolis"
+  }
+ },
+ "NE": {
+  "CBS": {
+   "call": "WBZ-TV",
+   "ch": "4",
+   "city": "Boston"
+  },
+  "FOX": {
+   "call": "WFXT",
+   "ch": "25",
+   "city": "Boston"
+  },
+  "NBC": {
+   "call": "WBTS-CD",
+   "ch": "15",
+   "city": "Boston"
+  },
+  "ABC": {
+   "call": "WCVB-TV",
+   "ch": "5",
+   "city": "Boston"
+  }
+ },
+ "NO": {
+  "CBS": {
+   "call": "WWL-TV",
+   "ch": "4",
+   "city": "New Orleans"
+  },
+  "FOX": {
+   "call": "WVUE-DT",
+   "ch": "8",
+   "city": "New Orleans"
+  },
+  "NBC": {
+   "call": "WDSU",
+   "ch": "6",
+   "city": "New Orleans"
+  },
+  "ABC": {
+   "call": "WGNO",
+   "ch": "26",
+   "city": "New Orleans"
+  }
+ },
+ "NYG": {
+  "CBS": {
+   "call": "WCBS-TV",
+   "ch": "2",
+   "city": "New York City"
+  },
+  "FOX": {
+   "call": "WNYW",
+   "ch": "5",
+   "city": "New York City"
+  },
+  "NBC": {
+   "call": "WNBC",
+   "ch": "4",
+   "city": "New York City"
+  },
+  "ABC": {
+   "call": "WABC-TV",
+   "ch": "7",
+   "city": "New York City"
+  }
+ },
+ "NYJ": {
+  "CBS": {
+   "call": "WCBS-TV",
+   "ch": "2",
+   "city": "New York City"
+  },
+  "FOX": {
+   "call": "WNYW",
+   "ch": "5",
+   "city": "New York City"
+  },
+  "NBC": {
+   "call": "WNBC",
+   "ch": "4",
+   "city": "New York City"
+  },
+  "ABC": {
+   "call": "WABC-TV",
+   "ch": "7",
+   "city": "New York City"
+  }
+ },
+ "PHI": {
+  "CBS": {
+   "call": "KYW-TV",
+   "ch": "3",
+   "city": "Philadelphia"
+  },
+  "FOX": {
+   "call": "WTXF-TV",
+   "ch": "29",
+   "city": "Philadelphia"
+  },
+  "NBC": {
+   "call": "WCAU",
+   "ch": "10",
+   "city": "Philadelphia"
+  },
+  "ABC": {
+   "call": "WPVI-TV",
+   "ch": "6",
+   "city": "Philadelphia"
+  }
+ },
+ "PIT": {
+  "CBS": {
+   "call": "KDKA-TV",
+   "ch": "2",
+   "city": "Pittsburgh"
+  },
+  "FOX": {
+   "call": "WPGH-TV",
+   "ch": "53",
+   "city": "Pittsburgh"
+  },
+  "NBC": {
+   "call": "WPXI",
+   "ch": "11",
+   "city": "Pittsburgh"
+  },
+  "ABC": {
+   "call": "WTAE-TV",
+   "ch": "4",
+   "city": "Pittsburgh"
+  }
+ },
+ "SF": {
+  "CBS": {
+   "call": "KPIX-TV",
+   "ch": "5",
+   "city": "San Francisco"
+  },
+  "FOX": {
+   "call": "KTVU",
+   "ch": "2",
+   "city": "San Francisco"
+  },
+  "NBC": {
+   "call": "KNTV",
+   "ch": "11",
+   "city": "San Francisco"
+  },
+  "ABC": {
+   "call": "KGO-TV",
+   "ch": "7",
+   "city": "San Francisco"
+  }
+ },
+ "SEA": {
+  "CBS": {
+   "call": "KIRO-TV",
+   "ch": "7",
+   "city": "Seattle"
+  },
+  "FOX": {
+   "call": "KCPQ",
+   "ch": "13",
+   "city": "Seattle"
+  },
+  "NBC": {
+   "call": "KING-TV",
+   "ch": "5",
+   "city": "Seattle"
+  },
+  "ABC": {
+   "call": "KOMO-TV",
+   "ch": "4",
+   "city": "Seattle"
+  }
+ },
+ "TB": {
+  "CBS": {
+   "call": "WTSP",
+   "ch": "10",
+   "city": "Tampa"
+  },
+  "FOX": {
+   "call": "WTVT",
+   "ch": "13",
+   "city": "Tampa"
+  },
+  "NBC": {
+   "call": "WFLA-TV",
+   "ch": "8",
+   "city": "Tampa"
+  },
+  "ABC": {
+   "call": "WFTS-TV",
+   "ch": "28",
+   "city": "Tampa"
+  }
+ },
+ "TEN": {
+  "CBS": {
+   "call": "WTVF",
+   "ch": "5",
+   "city": "Nashville"
+  },
+  "FOX": {
+   "call": "WZTV",
+   "ch": "17",
+   "city": "Nashville"
+  },
+  "NBC": {
+   "call": "WSMV-TV",
+   "ch": "4",
+   "city": "Nashville"
+  },
+  "ABC": {
+   "call": "WKRN-TV",
+   "ch": "2",
+   "city": "Nashville"
+  }
+ },
+ "WAS": {
+  "CBS": {
+   "call": "WUSA",
+   "ch": "9",
+   "city": "Washington"
+  },
+  "FOX": {
+   "call": "WTTG",
+   "ch": "5",
+   "city": "Washington"
+  },
+  "NBC": {
+   "call": "WRC-TV",
+   "ch": "4",
+   "city": "Washington"
+  },
+  "ABC": {
+   "call": "WJLA-TV",
+   "ch": "7",
+   "city": "Washington"
+  }
+ }
+}
