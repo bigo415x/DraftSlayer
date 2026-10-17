@@ -22,32 +22,37 @@ import json, math, pathlib, datetime, collections, re
 from weekly import get, API, LEAGUE, ME, SEASON
 
 HERE = pathlib.Path(__file__).parent
-CHART_DATE = "09/15/26"
-CHART = {  # PeakedInHighSkool week 2, 4pt / 2QB / 1.0 PPR
- "RB": {"Jahmyr Gibbs":83,"Bijan Robinson":74.5,"Christian McCaffrey":70.5,"James Cook":68.5,"Jonathan Taylor":67,
-  "Kenneth Walker":60,"Saquon Barkley":59,"Chase Brown":59,"Devon Achane":56.5,"Ashton Jeanty":56,"Derrick Henry":53.5,
-  "Omarion Hampton":48.5,"Javonte Williams":44.5,"Breece Hall":41.5,"D'Andre Swift":41,"Kyren Williams":40.5,
-  "Jeremiyah Love":38,"David Montgomery":36,"Travis Etienne":34,"Bucky Irving":32,"Cam Skattebo":31,"Quinshon Judkins":25.5,
-  "Rhamondre Stevenson":23.5,"Bhayshul Tuten":23.5,"Jaylen Warren":23,"Jadarian Price":23,"TreVeyon Henderson":21,
-  "Chuba Hubbard":19,"Rico Dowdle":18,"Tony Pollard":17,"Jordan Mason":14,"Josh Jacobs":13.5,"RJ Harvey":12.5,
-  "Jonathon Brooks":10.5,"Kyle Monangai":10.5,"Blake Corum":9,"J.K. Dobbins":7.5,"MarShawn Lloyd":5,"Jacory Croskey-Merritt":2.5},
- "WR": {"Ja'Marr Chase":79,"Jaxon Smith-Njigba":70,"CeeDee Lamb":64.5,"Justin Jefferson":64,"Puka Nacua":64,"Nico Collins":54.5,
-  "Amon-Ra St. Brown":51,"Chris Olave":49.5,"Malik Nabers":49,"Zay Flowers":47,"George Pickens":43,"Garrett Wilson":39.5,
-  "Drake London":38.5,"Ladd McConkey":38.5,"DeVonta Smith":38,"Tee Higgins":34,"Rashee Rice":33,"Tetairoa McMillan":32,
-  "Emeka Egbuka":32,"Christian Watson":31,"D.J. Moore":29.5,"Jaylen Waddle":29,"Mike Evans":29,"A.J. Brown":28.5,
-  "Luther Burden":28,"Jameson Williams":27.5,"Parker Washington":27,"Davante Adams":21,"Terry McLaurin":20.5,"Stefon Diggs":19,
-  "DK Metcalf":18.5,"Carnell Tate":18.5,"Rome Odunze":16.5,"Marvin Harrison":13.5,"Jalen Coker":10,"Chris Godwin":9.5,
-  "Alec Pierce":5.5,"Deebo Samuel":1.5,"Michael Wilson":1},
- "TE": {"Trey McBride":56,"Brock Bowers":41,"Colston Loveland":28.5,"Sam LaPorta":26.5,"Tyler Warren":26.5,"Tucker Kraft":24,
-  "Dalton Kincaid":19,"Isaiah Likely":18,"George Kittle":17,"Harold Fannin":16.5,"Dallas Goedert":16,"Travis Kelce":15.5,
-  "Mark Andrews":14.5,"Juwan Johnson":14.5,"Kyle Pitts":14.5,"Dalton Schultz":13,"Jake Ferguson":11,"Brenton Strange":10.5,
-  "Hunter Henry":10,"T.J. Hockenson":6.5},
- "QB": {"Josh Allen":82.5,"Lamar Jackson":81,"Caleb Williams":72.5,"Joe Burrow":68.5,"Drake Maye":59.5,"Jalen Hurts":55,
-  "Trevor Lawrence":50.5,"Jayden Daniels":50.5,"Brock Purdy":45,"Dak Prescott":45,"Justin Herbert":44.5,"Jaxson Dart":42,
-  "Patrick Mahomes":38,"Jared Goff":35.5,"Jordan Love":33,"Bo Nix":33,"Tyler Shough":33,"Matthew Stafford":31,
-  "Baker Mayfield":30.5,"Bryce Young":28,"Malik Willis":25,"C.J. Stroud":24,"Kyler Murray":22,"Sam Darnold":21,
-  "Daniel Jones":20,"Drew Lock":19.5,"Jacoby Brissett":19,"Cam Ward":17,"Aaron Rodgers":16.5,"Carson Wentz":15.5,
-  "Geno Smith":13,"Kirk Cousins":12.5},
+CHART_DATE = "09/29/26"
+CHART = {  # PeakedInHighSkool week 4, 4pt / 2QB / 1.0 PPR
+ "RB": {"Jahmyr Gibbs":80.5,"Bijan Robinson":79.5,"Kenneth Walker":78,"Jonathan Taylor":73,"Christian McCaffrey":68,
+  "Derrick Henry":63.5,"James Cook":62.5,"Ashton Jeanty":61.5,"Chase Brown":58,"Javonte Williams":52,"D'Andre Swift":50.5,
+  "Saquon Barkley":47,"Kyren Williams":45,"Jeremiyah Love":44.5,"Breece Hall":39.5,"Bucky Irving":39.5,"Omarion Hampton":39,
+  "Chuba Hubbard":35,"Cam Skattebo":34.5,"Bhayshul Tuten":31.5,"David Montgomery":31,"Jaylen Warren":27.5,
+  "TreVeyon Henderson":25.5,"Travis Etienne":24,"Quinshon Judkins":24,"Aaron Jones":23,"Rhamondre Stevenson":21.5,
+  "Jadarian Price":21.5,"Tony Pollard":20.5,"Josh Jacobs":20,"RJ Harvey":19,"Blake Corum":18.5,"Kyle Monangai":18.5,
+  "Rachaad White":18,"Jacory Croskey-Merritt":17.5,"J.K. Dobbins":14.5,"Rico Dowdle":14,"Woody Marks":13,"Jordan Mason":12.5,
+  "Alvin Kamara":11,"MarShawn Lloyd":8.5,"Jonah Coleman":7,"Kenneth Gainwell":3,"Tyler Allgeier":3,"Zach Charbonnet":1,
+  "Emmett Johnson":0.5},
+ "WR": {"Jaxon Smith-Njigba":80.5,"Ja'Marr Chase":76.5,"Amon-Ra St. Brown":73.5,"CeeDee Lamb":71,"Chris Olave":68,
+  "Puka Nacua":68,"Justin Jefferson":60,"Drake London":55,"Nico Collins":53,"Zay Flowers":51,"Garrett Wilson":47,
+  "DeVonta Smith":46.5,"George Pickens":43,"Christian Watson":43,"Parker Washington":39,"Davante Adams":38,"Tee Higgins":36,
+  "Malik Nabers":35.5,"Rashee Rice":33,"Tetairoa McMillan":33,"Jaylen Waddle":32.5,"D.J. Moore":30.5,"Ladd McConkey":30.5,
+  "Matthew Golden":29.5,"Emeka Egbuka":29.5,"Jalen Coker":28,"A.J. Brown":27.5,"Terry McLaurin":26.5,"Luther Burden":26.5,
+  "Mike Evans":25.5,"Michael Wilson":25.5,"Jameson Williams":24.5,"Josh Downs":24,"Stefon Diggs":23,"DK Metcalf":21,
+  "Deebo Samuel":20,"Carnell Tate":20,"Denzel Boston":20,"Rome Odunze":19,"Jakobi Meyers":17.5,"Jordan Addison":17.5,
+  "Devaughn Vele":17.5,"Courtland Sutton":17,"Chris Godwin":17,"KC Concepcion":16.5,"Wan'Dale Robinson":16,"Jordyn Tyson":15.5,
+  "Adonai Mitchell":15,"Dontayvion Wicks":14.5,"Brian Thomas":14,"Xavier Worthy":13.5,"Romeo Doubs":12,"Tre Tucker":12,
+  "Khalil Shakir":9.5,"Malik Washington":6.5,"Quentin Johnston":6,"Michael Pittman":4.5,"Marvin Harrison":4.5,"Tre Harris":4.5,
+  "Rashod Bateman":2.5,"Keenan Allen":2},
+ "TE": {"Brock Bowers":53.5,"Trey McBride":51.5,"Tyler Warren":31.5,"Dalton Kincaid":27.5,"George Kittle":24.5,"Sam LaPorta":24,
+  "Travis Kelce":20.5,"Juwan Johnson":17.5,"Colston Loveland":17,"Tucker Kraft":16.5,"Harold Fannin":16.5,"Isaiah Likely":15.5,
+  "Dalton Schultz":15,"Jake Ferguson":14,"Mark Andrews":13.5,"Kenyon Sadiq":11.5,"Kyle Pitts":10.5,"Dallas Goedert":10},
+ "QB": {"Josh Allen":83,"Lamar Jackson":78.5,"Joe Burrow":68,"Brock Purdy":60.5,"Patrick Mahomes":58,"Jalen Hurts":55,
+  "Dak Prescott":53,"Caleb Williams":50,"Tyler Shough":49.5,"Trevor Lawrence":48.5,"Jared Goff":47,"Drake Maye":42.5,
+  "Matthew Stafford":36.5,"Jordan Love":35,"Bryce Young":34.5,"Bo Nix":33,"Justin Herbert":32.5,"C.J. Stroud":29,
+  "Jayden Daniels":28.5,"Sam Darnold":24.5,"Baker Mayfield":22.5,"Malik Willis":21.5,"Kyler Murray":21,"Kirk Cousins":20.5,
+  "Geno Smith":19.5,"Daniel Jones":19,"Jacoby Brissett":18.5,"Michael Penix":18,"Cam Ward":15.5,"Aaron Rodgers":13,
+  "Deshaun Watson":13},
 }
 LEAGUE_REC = {"QB": .5, "RB": .5, "WR": 1.0, "TE": 1.5}
 CHART_REC  = {"QB": 1.0, "RB": 1.0, "WR": 1.0, "TE": 1.0}
@@ -141,7 +146,9 @@ def main():
         p = r["p"]
         model = curve(p, r["vbdL"]) if r["vbdL"] > 0 else 0.0
         if r.get("chart"):
-            if r["vbdC"] > 5 and r["vbdL"] > 0:
+            if LEAGUE_REC[p] == CHART_REC[p]:  # same scoring as the chart: nothing to re-price
+                adj = r["chart"]
+            elif r["vbdC"] > 5 and r["vbdL"] > 0:
                 ratio = min(max(r["vbdL"] / r["vbdC"], .5), 1.8)
                 adj = r["chart"] * ratio
             else:  # too little VBD to re-price multiplicatively; move the market number toward the model

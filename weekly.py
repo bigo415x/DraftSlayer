@@ -8,8 +8,9 @@ Pulls: Sleeper roster/matchup/projections/last-week stats, ESPN injuries and
 schedule, and The QB List's "What We Saw" (last week) and "Sit/Start" (this
 week) articles filtered to your roster. Writes week.js; then commit and push.
 """
-import json, re, sys, subprocess, html, datetime, pathlib, collections
+import json, re, sys, subprocess, html, datetime, pathlib, collections, traceback
 import qblist
+import matchups as matchup_cards
 
 HERE = pathlib.Path(__file__).parent
 LEAGUE = "1388733713705099264"
@@ -23,11 +24,12 @@ SLOTS = [("QB", ["QB"]), ("RB", ["RB"]), ("RB", ["RB"]), ("WR", ["WR"]), ("WR", 
          ("TE", ["TE"]), ("FLEX", ["RB", "WR", "TE"]), ("SF", ["QB", "RB", "WR", "TE"])]
 
 
-def get(url, text=False):
-    """ESPN 403s a browser UA; The QB List 403s curl's default. Try both."""
+def get(url, text=False, referer=None):
+    """ESPN 403s a browser UA; The QB List 403s curl's default. Try both. NGS needs a Referer."""
+    ref = ["-H", f"Referer: {referer}"] if referer else []
     for ua in (["-A", "Mozilla/5.0"], []):
         try:
-            out = subprocess.run(["curl", "-sSL", "-m", "90", *ua, url], capture_output=True, check=True).stdout
+            out = subprocess.run(["curl", "-sSL", "-m", "90", *ua, *ref, url], capture_output=True, check=True).stdout
             return out.decode("utf-8", "replace") if text else json.loads(out)
         except (subprocess.CalledProcessError, json.JSONDecodeError):
             continue
@@ -219,11 +221,18 @@ def main():
     mine_n = {norm(r["n"]): r["n"] for r in roster}
     def mine_only(blocks): return {mine_n[norm(k)]: b for k, b in blocks.items() if norm(k) in mine_n}
 
+    # ---- matchup-score panels (never let them break the rest of the page) ----
+    try:
+        mu = matchup_cards.build(get, score, players, SEASON, week, roster, lineup, mine_only(ss), inj_raw, sched)
+    except Exception:
+        traceback.print_exc(); mu = None
+
     out = {"week": week, "built": datetime.datetime.now().strftime("%Y-%m-%d %H:%M"),
            "opponent": opp_name, "lineup": lineup, "bench": bench, "games": games,
            "radar": radar, "down": down[:12],
            "wws": {"url": wws_url, "players": mine_only(wws)},
-           "sitstart": {"url": ss_url, "players": mine_only(ss)}}
+           "sitstart": {"url": ss_url, "players": mine_only(ss)},
+           "matchups": mu}
     (HERE / "week.js").write_text("const WEEK = " + json.dumps(out, separators=(",", ":")) + ";\n", encoding="utf-8")
     print(f"week.js written: lineup {sum(1 for l in lineup if l['pick'])}/8, {sum(1 for l in lineup if l['flip'])} coin flips, "
           f"{len(games)} games, WWS {len(out['wws']['players'])} players, Sit/Start {len(out['sitstart']['players'])} players")
